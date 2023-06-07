@@ -19,3 +19,4 @@ Route::get('/welcome', function () {
 });
 
 Route::get('/', [Controller::class, 'index']);
+Route::get('/list/{model}', [Controller::class, 'list']);
