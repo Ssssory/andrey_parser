@@ -4,12 +4,14 @@ namespace App\Classes;
 
 use App\Enums\Sources;
 use App\Models\DirtyData;
+use App\Models\Url;
 use Illuminate\Support\Facades\Storage;
 
 final class Poslovnabazasrbije extends ParserAbstract
 {
     protected $prefixStorage = 'poslovnabazasrbije';
     private string $hash;
+    private string $category = '2';
 
     function __construct()
     {
@@ -47,8 +49,16 @@ final class Poslovnabazasrbije extends ParserAbstract
         $pagination = $html->find('.pagination')[0];
         $links = $pagination->find('a');
         $result = [];
-        foreach ($links as $link) {
-            $result[] = $link->getAttribute('href');
+        foreach ($links as $a) {
+            $link = $a->getAttribute('href');
+            if (!Url::where('url', $link)->exists()){
+                $url = new Url();
+                $url->source = Sources::Poslovnabazasrbije->name;
+                $url->url = $link;
+                $url->category = $this->category;
+                $url->save();
+            }
+            $result[] = $link;
         }
         return $result;
     }
