@@ -18,7 +18,10 @@ Route::get('/welcome', function () {
     return view('welcome');
 });
 
-Route::get('/', [Controller::class, 'index']);
+Route::get('/', function(){
+    return view('landing');
+});
+Route::get('/dashboard', [Controller::class, 'index']);
 Route::get('/list/{model}', [Controller::class, 'list']);
 Route::get('/new', [Controller::class, 'startPage']);
 Route::get('/test', [Controller::class, 'test']);
