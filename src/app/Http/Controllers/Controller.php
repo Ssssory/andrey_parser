@@ -23,6 +23,8 @@ class Controller extends BaseController
 
     public function index(Request $request)
     {
+        $countSources = Url::select(DB::raw('count(distinct(source)) as total'))->firstOrFail();
+
         $links = Url::select(DB::raw('source, count(source) as total'))->groupBy('source')->get();
         $totalLinks = $this->prepareCounts($links);
 
@@ -34,7 +36,7 @@ class Controller extends BaseController
         // dump($activeLinks);
         return view('pages.dashboard', [
             'title' => 'Dashboard',
-            'sources' => Sources::cases(),
+            'sources' => $countSources->total,
             'totalLinksCount' => Url::count(),
             'totalLinks' => $totalLinks,
             'totalData' => $totalData,
@@ -118,11 +120,18 @@ class Controller extends BaseController
         Storage::disk('public')->put('test.csv', '');
         // $str = '';
         foreach ($data as $key => $value) {
+            $codeNmae = explode(' - ', $value->name);
+            $fullAddress = explode(',', $value->address);
+            $city = array_shift($fullAddress);
             $str = '';
-            $str .= $value->name . ';';
-            $str .= $value->address . ';';
-            $str .= $value->email . ';';
-            Storage::append('filename.txt', $str);
+            $str .= $codeNmae[0]  . ';';
+            $str .= $codeNmae[1]  . ';';
+            // $str .= $value->name . ';';
+            $str .= $city  . ';';
+            $str .= implode($fullAddress)  . ';';
+            // $str .= $value->address . ';';
+            $str .= str_replace('-','',$value->email) . ';';
+            Storage::append('data.csv', $str);
         }
     }
 

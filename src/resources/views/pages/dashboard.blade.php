@@ -8,8 +8,8 @@
             <div class="col-lg-3 col-6">
                 <div class="small-box bg-info">
                     <div class="inner">
-                        <h3>{{ count($sources) }}</h3>
-                        <p>Количество источников</p>
+                        <h3>{{ $sources }}</h3>
+                        <p>Количество обработанных источников</p>
                     </div>
                     <div class="icon">
                         <i class="ion ion-bag"></i>
