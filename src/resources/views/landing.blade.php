@@ -6,11 +6,12 @@
 -->
 <html>
 	<head>
-		<title>http://detpars.pro/</title>
+		<title>detpars wellcome</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="/assets/css/main.css" />
 		<noscript><link rel="stylesheet" href="/assets/css/noscript.css" /></noscript>
+		<link rel="icon" type="image/x-icon" href="/favicon.ico">
 	</head>
 	<body class="is-preload">
 
@@ -34,11 +35,11 @@
 				<!-- Intro -->
 					<section id="intro" class="wrapper style1 fullscreen fade-up">
 						<div class="inner">
-							<h1>detpars</h1>
-							<p>Посадочная страница. База данных наполняется. Описание в разработке</p>
-							<ul class="actions">
+							<h1>Detpars</h1>
+							<p>Много данных, в одном месте</p>
+							{{-- <ul class="actions">
 								<li><a href="#one" class="button scrolly">Learn more</a></li>
-							</ul>
+							</ul> --}}
 						</div>
 					</section>
 
@@ -48,15 +49,17 @@
 							<a href="#" class="image"><img src="images/pic01.jpg" alt="" data-position="center center" /></a>
 							<div class="content">
 								<div class="inner">
-									<h2>Sed ipsum dolor</h2>
-									<p>Phasellus convallis elit id ullamcorper pulvinar. Duis aliquam turpis mauris, eu ultricies erat malesuada quis. Aliquam dapibus.</p>
-									<ul class="actions">
+									<h2>Окрытые данные</h2>
+									<p>Собираем данные из открытых источников. Всё, что вы можете найти сами, уже собрали мы, в удобном формате!</p>
+									{{-- <ul class="actions">
 										<li><a href="generic.html" class="button">Learn more</a></li>
-									</ul>
+									</ul> --}}
 								</div>
 							</div>
 						</section>
-						<section>
+						<section style="min-height:0px"></section>
+						<section style="min-height:0px"></section>
+						{{-- <section>
 							<a href="#" class="image"><img src="images/pic02.jpg" alt="" data-position="top center" /></a>
 							<div class="content">
 								<div class="inner">
@@ -80,25 +83,25 @@
 								</div>
 							</div>
 						</section>
-					</section>
+					</section> --}}
 
 				<!-- Two -->
 					<section id="two" class="wrapper style3 fade-up">
 						<div class="inner">
 							<h2>What we do</h2>
-							<p>Phasellus convallis elit id ullamcorper pulvinar. Duis aliquam turpis mauris, eu ultricies erat malesuada quis. Aliquam dapibus, lacus eget hendrerit bibendum, urna est aliquam sem, sit amet imperdiet est velit quis lorem.</p>
+							<p></p>
 							<div class="features">
 								<section>
 									<span class="icon solid major fa-code"></span>
-									<h3>Lorem ipsum amet</h3>
-									<p>Phasellus convallis elit id ullam corper amet et pulvinar. Duis aliquam turpis mauris, sed ultricies erat dapibus.</p>
+									<h3>Собираем данные</h3>
+									<p>Собираем окрытые данные и складываем их у себя</p>
 								</section>
 								<section>
 									<span class="icon solid major fa-lock"></span>
-									<h3>Aliquam sed nullam</h3>
-									<p>Phasellus convallis elit id ullam corper amet et pulvinar. Duis aliquam turpis mauris, sed ultricies erat dapibus.</p>
+									<h3>Анализируем</h3>
+									<p>Если соспоставить данные из разных источников, то можно найти много интересного.</p>
 								</section>
-								<section>
+								{{-- <section>
 									<span class="icon solid major fa-cog"></span>
 									<h3>Sed erat ullam corper</h3>
 									<p>Phasellus convallis elit id ullam corper amet et pulvinar. Duis aliquam turpis mauris, sed ultricies erat dapibus.</p>
@@ -117,11 +120,11 @@
 									<span class="icon major fa-gem"></span>
 									<h3>Aliquam urna dapibus</h3>
 									<p>Phasellus convallis elit id ullam corper amet et pulvinar. Duis aliquam turpis mauris, sed ultricies erat dapibus.</p>
-								</section>
+								</section> --}}
 							</div>
-							<ul class="actions">
+							{{-- <ul class="actions">
 								<li><a href="generic.html" class="button">Learn more</a></li>
-							</ul>
+							</ul> --}}
 						</div>
 					</section>
 
@@ -129,9 +132,10 @@
 					<section id="three" class="wrapper style1 fade-up">
 						<div class="inner">
 							<h2>Get in touch</h2>
-							<p>Phasellus convallis elit id ullamcorper pulvinar. Duis aliquam turpis mauris, eu ultricies erat malesuada quis. Aliquam dapibus, lacus eget hendrerit bibendum, urna est aliquam sem, sit amet imperdiet est velit quis lorem.</p>
+							<p></p>
 							<div class="split style1">
-								<section>
+							<section></section>
+								{{-- <section>
 									<form method="post" action="#">
 										<div class="fields">
 											<div class="field half">
@@ -147,28 +151,27 @@
 												<textarea name="message" id="message" rows="5"></textarea>
 											</div>
 										</div>
-										{{-- <ul class="actions">
+										<ul class="actions">
 											<li><a href="" class="button submit">Send Message</a></li>
-										</ul> --}}
+										</ul>
 									</form>
-								</section>
+								</section> --}}
 								<section>
 									<ul class="contact">
 										<li>
 											<h3>Address</h3>
-											<span>12345 Somewhere Road #654<br />
-											Nashville, TN 00000-0000<br />
-											USA</span>
+											<span>Belgrad<br />
+											</span>
 										</li>
 										<li>
 											<h3>Email</h3>
-											<a href="#">user@untitled.tld</a>
+											<a href="#">itrubchaninov@list.ru</a>
 										</li>
 										<li>
 											<h3>Phone</h3>
-											<span>(000) 000-0000</span>
+											<span>+(381) 62-822-4319</span>
 										</li>
-										<li>
+										{{-- <li>
 											<h3>Social</h3>
 											<ul class="icons">
 												<li><a href="#" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
@@ -177,7 +180,7 @@
 												<li><a href="#" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
 												<li><a href="#" class="icon brands fa-linkedin-in"><span class="label">LinkedIn</span></a></li>
 											</ul>
-										</li>
+										</li> --}}
 									</ul>
 								</section>
 							</div>
