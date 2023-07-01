@@ -1,6 +1,9 @@
 <?php
 
+use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\LoginController;
+use Illuminate\Routing\RouteGroup;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,15 +17,44 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/welcome', function () {
-    return view('welcome');
-});
+Route::get('/login', function(){
+    return view('auth.login');
+})->name('login');
+
+Route::post('/login', [LoginController::class, 'authenticate']);
+
+// Route::get('/registration', function(){
+//     return view('auth.registration');
+// });
 
 Route::get('/', function(){
     return view('landing');
 });
-Route::get('/dashboard', [Controller::class, 'index']);
-Route::get('/list/{model}', [Controller::class, 'list']);
-Route::get('/new', [Controller::class, 'startPage']);
-Route::get('/test', [Controller::class, 'test']);
-Route::get('/save', [Controller::class, 'saveCsv']);
+// Route::get('/users/new', [AdminUserController::class, 'newUser']);
+// Route::post('/users/new', [AdminUserController::class, 'createUser']);
+
+
+Route::group(['middleware' => 'auth'], function(){
+    Route::get('/dashboard', [Controller::class, 'index'])->name('dashboard');
+    Route::get('/list/{model}', [Controller::class, 'list']);
+    Route::get('/new', [Controller::class, 'startPage']);
+    Route::get('/test', [Controller::class, 'test']);
+    Route::get('/save', [Controller::class, 'saveCsv']);
+    Route::prefix('admin')->group(function (){
+        Route::get('/users', [AdminUserController::class, 'users']);
+        Route::get('/users/{id}', [AdminUserController::class, 'user']);
+        Route::get('/users/{id}/edit', [AdminUserController::class, 'editUser']);
+        Route::post('/users/{id}/edit', [AdminUserController::class, 'updateUser']);
+        Route::get('/users/{id}/delete', [AdminUserController::class, 'deleteUser']);
+        Route::get('/users/new', [AdminUserController::class, 'newUser']);
+        Route::post('/users/new', [AdminUserController::class, 'createUser']);
+    });
+});
+
+
+
+
+
+Route::get('/welcome', function () {
+    return view('welcome');
+});
