@@ -4,9 +4,10 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Bootstrap demo</title>
+    <title>Datpars</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/css/adminlte.min.css">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
 </head>
 
 <body class="hold-transition sidebar-mini">
@@ -20,12 +21,12 @@
                 <li class="nav-item">
                     <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
                 </li>
-                <li class="nav-item d-none d-sm-inline-block">
+                {{-- <li class="nav-item d-none d-sm-inline-block">
                     <a href="../../index3.html" class="nav-link">Home</a>
                 </li>
                 <li class="nav-item d-none d-sm-inline-block">
                     <a href="#" class="nav-link">Contact</a>
-                </li>
+                </li> --}}
             </ul>
         </nav>
         <!-- /.navbar -->
@@ -33,9 +34,9 @@
         <!-- Main Sidebar Container -->
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <!-- Brand Logo -->
-            <a href="../../index3.html" class="brand-link">
-                <!--img src="../../dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8"-->
-                <span class="brand-text font-weight-light">AdminLTE 3</span>
+            <a href="/dashboard" class="brand-link">
+                <img src="/logo.png" alt="Detpars Logo" class="brand-image" style="opacity: .8">
+                <span class="brand-text font-weight-light" style="color: #343a40">ddd </span>
             </a>
 
             <!-- Sidebar -->
@@ -43,10 +44,10 @@
                 <!-- Sidebar user (optional) -->
                 <div class="user-panel mt-3 pb-3 mb-3 d-flex">
                     <div class="image">
-                        <img src="img/user2-160x160.jpg" class="img-circle elevation-2" alt="Img">
+                        {{-- <img src="/img/user2-160x160.jpg" class="img-circle elevation-2" alt="Img"> --}}
                     </div>
                     <div class="info">
-                        <a href="#" class="d-block">Alexander Pierce</a>
+                        <a href="#" class="d-block">{{Auth::user()->name}}</a>
                     </div>
                 </div>
 
