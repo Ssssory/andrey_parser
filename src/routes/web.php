@@ -40,12 +40,13 @@ Route::group(['middleware' => 'auth'], function(){
     Route::get('/new', [Controller::class, 'startPage']);
     Route::get('/test', [Controller::class, 'test']);
     Route::get('/save', [Controller::class, 'saveCsv']);
+
     Route::prefix('admin')->group(function (){
         Route::get('/users', [AdminUserController::class, 'users']);
-        Route::get('/users/{id}', [AdminUserController::class, 'user']);
-        Route::get('/users/{id}/edit', [AdminUserController::class, 'editUser']);
-        Route::post('/users/{id}/edit', [AdminUserController::class, 'updateUser']);
-        Route::get('/users/{id}/delete', [AdminUserController::class, 'deleteUser']);
+        // Route::get('/users/{id}', [AdminUserController::class, 'user']);
+        // Route::get('/users/{id}/edit', [AdminUserController::class, 'editUser']);
+        // Route::post('/users/{id}/edit', [AdminUserController::class, 'updateUser']);
+        // Route::get('/users/{id}/delete', [AdminUserController::class, 'deleteUser']);
         Route::get('/users/new', [AdminUserController::class, 'newUser']);
         Route::post('/users/new', [AdminUserController::class, 'createUser']);
     });
