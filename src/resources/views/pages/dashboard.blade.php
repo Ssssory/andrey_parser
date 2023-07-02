@@ -52,7 +52,11 @@
 
                         <div class="small-box bg-info">
                             <div class="inner">
-                                <h3>{{ $totalData[ucfirst($sourcename)] }}</h3>
+                                @if (array_key_exists(ucfirst($sourcename), $totalData))
+                                    <h3>{{ $totalData[ucfirst($sourcename)] }}</h3>
+                                @else
+                                    <h3>0</h3>
+                                @endif
                                 <p>Количество полученных сырых данных</p>
                             </div>
                             <div class="icon">

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Classes\Clutch;
+use App\Classes\Forzida;
 use App\Classes\Poslovnabazasrbije;
 use App\Enums\Sources;
 use App\Models\DirtyData;
@@ -102,15 +103,22 @@ class Controller extends BaseController
 
     public function test(Request $request)
     {
-        $path = 'web-developers';
-        $clutch = new Clutch();
+        // $path = 'web-developers';
+        // $clutch = new Clutch();
 
-        $html = $clutch->getHtml($path);
-        $document = new Document($html);
-        // $result = $clutch->getCompaniesFromPage($document);
-        $pagination = $clutch->getPagination($document);
-        dump($pagination);
-        // return view('pages.index');
+        // $html = $clutch->getHtml($path);
+        // $document = new Document($html);
+        // // $result = $clutch->getCompaniesFromPage($document);
+        // $pagination = $clutch->getPagination($document);
+        // dump($pagination);
+        // // return view('pages.index');
+        $forzida = new Forzida();
+        // $html = $forzida->getHtml('https://www.4zida.rs/izdavanje-stanova/hram-svetog-save-neimar-vracar-beograd/trosoban-stan/6478a25545b87ac9e402fe95');
+        // $document = new Document($html);
+        // $result = $forzida->getStateFromPage($document);
+        // dd($result);
+
+        $forzida->getUrlsFromSitemap();
     }
 
     public function saveCsv()

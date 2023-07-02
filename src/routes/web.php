@@ -32,13 +32,13 @@ Route::get('/', function(){
 });
 // Route::get('/users/new', [AdminUserController::class, 'newUser']);
 // Route::post('/users/new', [AdminUserController::class, 'createUser']);
+Route::get('/test', [Controller::class, 'test']);
 
 
 Route::group(['middleware' => 'auth'], function(){
     Route::get('/dashboard', [Controller::class, 'index'])->name('dashboard');
     Route::get('/list/{model}', [Controller::class, 'list']);
     Route::get('/new', [Controller::class, 'startPage']);
-    Route::get('/test', [Controller::class, 'test']);
     Route::get('/save', [Controller::class, 'saveCsv']);
 
     Route::prefix('admin')->group(function (){

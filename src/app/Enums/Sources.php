@@ -3,11 +3,14 @@ namespace App\Enums;
 
 enum Sources:string
 {
+    // business
     case Poslovnabazasrbije = 'poslovnabazasrbije';
     case Companywall = 'companywall';
     case Navidiku = 'navidiku';
     case Clutch = 'clutch';
     case Yell = 'yell';
+    // real estate
+    case Forzida = 'forzida';
 
     public static function getUrl(self $value)
     {
@@ -17,6 +20,7 @@ enum Sources:string
             Sources::Navidiku => 'https://www.navidiku.rs/',
             Sources::Clutch => 'https://clutch.co/',
             Sources::Yell => 'https://www.yell.rs/',
+            Sources::Forzida => 'https://www.4zida.rs/',
         };
     }
 }
