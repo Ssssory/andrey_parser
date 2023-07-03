@@ -42,7 +42,7 @@ class ParsingForzida extends Command
             sleep(5);
         }
 
-        $urls = Url::where('status', 'new')->where('source', Sources::Poslovnabazasrbije->name)->get();
+        $urls = Url::where('status', 'new')->where('source', Sources::Forzida->name)->get();
         if ($urls->isEmpty()) {
             $this->info('Finish');
         }
