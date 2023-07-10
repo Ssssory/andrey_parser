@@ -52,7 +52,7 @@ final class Forzida extends ParserAbstract
             $data->hash = $this->hash;
             $data->url = $this->uri;
             $data->name = $name;
-            $data->images = $gallery;
+            $data->images = implode(',', $gallery);
             $data->description = $description;
             $data->address = $address;
             $data->save();
