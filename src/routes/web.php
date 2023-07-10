@@ -38,6 +38,7 @@ Route::get('/test', [Controller::class, 'test']);
 Route::group(['middleware' => 'auth'], function(){
     Route::get('/dashboard', [Controller::class, 'index'])->name('dashboard');
     Route::get('/list/{model}', [Controller::class, 'list']);
+    Route::get('/rent/{model}', [Controller::class, 'rentList']);
     Route::get('/new', [Controller::class, 'startPage']);
     Route::get('/save', [Controller::class, 'saveCsv']);
 
