@@ -3,7 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Enums\Sources;
-use App\Jobs\SourceJob;
+use App\Jobs\TempForzidaJob;
 use App\Models\Url;
 use Illuminate\Console\Command;
 
@@ -38,7 +38,7 @@ class ParsingForzida extends Command
         foreach ($urls as $url) {
             $url->status = 'in progress';
             $url->save();
-            SourceJob::dispatch($url);
+            TempForzidaJob::dispatch($url);
             sleep(5);
         }
 
