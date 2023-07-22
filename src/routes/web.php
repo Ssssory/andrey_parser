@@ -3,6 +3,7 @@
 use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\TestController;
 use Illuminate\Routing\RouteGroup;
 use Illuminate\Support\Facades\Route;
 
@@ -41,6 +42,8 @@ Route::group(['middleware' => 'auth'], function(){
     Route::get('/rent/{model}', [Controller::class, 'rentList']);
     Route::get('/new', [Controller::class, 'startPage']);
     Route::get('/save', [Controller::class, 'saveCsv']);
+    Route::match(array('GET', 'POST'), '/test', [TestController::class, 'index']);
+    Route::get('/sendMessage', [TestController::class, 'sendMessage']);
 
     Route::prefix('admin')->group(function (){
         Route::get('/users', [AdminUserController::class, 'users']);
