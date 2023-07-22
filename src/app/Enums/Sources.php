@@ -11,6 +11,7 @@ enum Sources:string
     case Yell = 'yell';
     // real estate
     case Forzida = 'forzida';
+    case Halooglasi = 'halooglasi';
 
     public static function getUrl(self $value)
     {
@@ -21,6 +22,7 @@ enum Sources:string
             Sources::Clutch => 'https://clutch.co/',
             Sources::Yell => 'https://www.yell.rs/',
             Sources::Forzida => 'https://www.4zida.rs/',
+            Sources::Halooglasi => 'https://www.halooglasi.com/',
         };
     }
 }
