@@ -1,0 +1,12 @@
+FROM node:18-alpine
+# WORKDIR /srv/app
+
+RUN mkdir /srv/app
+RUN mkdir /srv/consumer
+
+ADD ./node/index.js /srv/consumer
+
+WORKDIR /srv/consumer
+
+EXPOSE 3000
+CMD ["node", "index.js"]
