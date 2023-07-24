@@ -42,7 +42,7 @@ Route::group(['middleware' => 'auth'], function(){
     Route::get('/rent/{model}', [Controller::class, 'rentList']);
     Route::get('/new', [Controller::class, 'startPage']);
     Route::get('/save', [Controller::class, 'saveCsv']);
-    Route::match(array('GET', 'POST'), '/test', [TestController::class, 'index']);
+    Route::match(array('GET', 'POST'), '/temp', [TestController::class, 'index']);
     Route::get('/sendMessage', [TestController::class, 'sendMessage']);
 
     Route::prefix('admin')->group(function (){
