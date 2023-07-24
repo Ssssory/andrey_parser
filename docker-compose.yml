@@ -38,8 +38,6 @@ services:
     container_name: db
     restart: unless-stopped
     tty: true
-    ports:
-      - "3306:3306"
     environment:
       MYSQL_DATABASE: laravel
       MYSQL_ROOT_PASSWORD: 123456
@@ -52,35 +50,36 @@ services:
     networks:
       - app-network
 
-  rabbitmq:
-    image: rabbitmq:3.8-management-alpine
-    container_name: 'rabbitmq'
-    ports:
-        - 5673:5672
-        - 15673:15672
-    volumes:
-        - ./rabbitmq/data/:/var/lib/rabbitmq/
-        - ./rabbitmq/log/:/var/log/rabbitmq
-    networks:
-        - mq_rabbit
+  # rabbitmq:
+  #   image: rabbitmq:3.8-management-alpine
+  #   container_name: 'rabbitmq'
+  #   ports:
+  #       - 5673:5672
+  #       - 15673:15672
+  #   volumes:
+  #       - ./rabbitmq/data/:/var/lib/rabbitmq/
+  #       - ./rabbitmq/log/:/var/log/rabbitmq
+  #   networks:
+  #       - mq_rabbit
 
-  consumer:
-    build:
-      context: ./docker/
-      dockerfile: Dokerfile_node
-    volumes:
-      - ./consumer:/srv/app
-    depends_on:
-      - "rabbitmq"
-    # command: sh -c '/bin/wait-for-it.sh rabbitmq:5672 --timeout=30 -- node consumer.js'
-    environment:
-      NODE_ENV: production
-      AMQP_URL: amqp://guest:guest@rabbitmq:5672
-      DOCKER_BUILDKIT: 1
-    networks:
-      - mq_rabbit
+  # consumer:
+  #   build:
+  #     context: ./docker/
+  #     dockerfile: Dokerfile_node
+  #   volumes:
+  #     - ./consumer:/srv/app
+  #   security_opt:
+  #     - seccomp:unconfined
+  #   # depends_on:
+  #   #   - "rabbitmq"
+  #   # command: sh -c '/bin/wait-for-it.sh rabbitmq:5672 --timeout=30 -- node consumer.js'
+  #   environment:
+  #     NODE_ENV: production
+  #     AMQP_URL: amqp://guest:guest@rabbitmq:5672
+  #     DOCKER_BUILDKIT: 1
+  #   networks:
+  #     - mq_rabbit
 
-#Docker Networks
 networks:
   app-network:
     driver: bridge
