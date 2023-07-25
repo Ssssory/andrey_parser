@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Classes\Forzida;
 use App\Enums\Sources;
 use App\Jobs\TempForzidaJob;
 use App\Models\Url;
@@ -28,6 +29,10 @@ class ParsingForzida extends Command
      */
     public function handle()
     {
+        $forzida = new Forzida();
+
+        $forzida->getUrlsFromSitemap();
+        
         $urls = Url::where('status', 'new')->where('source', Sources::Forzida->name)->get();
         if ($urls->isEmpty()) {
             $this->info('No new urls');

@@ -73,21 +73,6 @@ class Controller extends BaseController
         ]);
     }
 
-    function rentList(Request $request, string $model)
-    {
-        if (!$model) {
-            throw new Exception("Error Processing Request");
-        }
-        $source = Sources::from($model);
-        $list = DirtyStateData::where('source', $source->name)->limit(100)->orderByDesc('id')->get();
-        $count = DirtyStateData::where('source', $source->name)->count();
-
-        return view('pages.rent-table', [
-            'title' => $model,
-            'list' => $list,
-            'count' => $count,
-        ]);
-    }
     public function startPage(Request $request)
     {
         $url = $request->input('url', null);
@@ -129,13 +114,12 @@ class Controller extends BaseController
         // $pagination = $clutch->getPagination($document);
         // dump($pagination);
         // // return view('pages.index');
-        $forzida = new Forzida();
         // $html = $forzida->getHtml('https://www.4zida.rs/izdavanje-stanova/hram-svetog-save-neimar-vracar-beograd/trosoban-stan/6478a25545b87ac9e402fe95');
         // $document = new Document($html);
         // $result = $forzida->getStateFromPage($document);
         // dd($result);
 
-        $forzida->getUrlsFromSitemap();
+        die('empty');
     }
 
     public function saveCsv()
