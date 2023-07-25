@@ -104,7 +104,7 @@
                                 </p>
                             </a>
                         </li>
-                        <li class="nav-item">
+                        <!--li class="nav-item">
                             <a href="/list/poslovnabazasrbije" class="nav-link">
                                 <i class="nav-icon fas fa-tachometer-alt"></i>
                                 <p>
@@ -112,7 +112,7 @@
                                     <i class="right fas fa-angle-left"></i>
                                 </p>
                             </a>
-                        </li>
+                        </li-->
                         <li class="nav-item">
                             <a href="/rent/forzida" class="nav-link">
                                 <i class="nav-icon fas fa-tachometer-alt"></i>

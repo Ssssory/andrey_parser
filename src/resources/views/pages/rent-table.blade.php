@@ -30,7 +30,7 @@
                     <td>{{$model->price}}</td>
                     <td>{{$model->address}}</td>
                     <td>{{$model->url}}</td>
-                    <td>{{$model->phone}}</td>
+                    <td><a href="/rent/form/{{$model->id}}" target="_blank" rel="noopener noreferrer">✍️✉️</a></td>
                 </tr>
                 <tr>
                     <td colspan="7">
