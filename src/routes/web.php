@@ -3,8 +3,8 @@
 use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\RentController;
 use App\Http\Controllers\TestController;
-use Illuminate\Routing\RouteGroup;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -31,19 +31,22 @@ Route::post('/login', [LoginController::class, 'authenticate']);
 Route::get('/', function(){
     return view('landing');
 });
-// Route::get('/users/new', [AdminUserController::class, 'newUser']);
-// Route::post('/users/new', [AdminUserController::class, 'createUser']);
+
 Route::get('/test', [Controller::class, 'test']);
 
 
 Route::group(['middleware' => 'auth'], function(){
     Route::get('/dashboard', [Controller::class, 'index'])->name('dashboard');
+
     Route::get('/list/{model}', [Controller::class, 'list']);
-    Route::get('/rent/{model}', [Controller::class, 'rentList']);
     Route::get('/new', [Controller::class, 'startPage']);
     Route::get('/save', [Controller::class, 'saveCsv']);
+
     Route::match(array('GET', 'POST'), '/temp', [TestController::class, 'index']);
     Route::get('/sendMessage', [TestController::class, 'sendMessage']);
+
+    Route::get('/rent/{model}', [RentController::class, 'list']);
+    Route::get('/rent/form/{model}', [RentController::class, 'form']);
 
     Route::prefix('admin')->group(function (){
         Route::get('/users', [AdminUserController::class, 'users']);
