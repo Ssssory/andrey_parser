@@ -53,28 +53,4 @@ class TestController extends Controller
         return new Response('OK', 200);
     }
 
-    function sendTextMesage(string $text): void
-    {
-        $this->bot->sendMessage(
-            text: $text,
-            chat_id: self::CHAT_ID
-        );
-    }
-
-    function sendOnePhotoMesage(string $urlPhoto): void
-    {
-        $this->bot->sendPhoto(
-                photo: InputFile::make($urlPhoto),
-                chat_id: self::CHAT_ID
-            );
-    }
-
-    function sendRentMessage(Message $message): void 
-    {
-        $this->bot->sendMediaGroup(
-            $message->getMessage(),
-            self::CHAT_ID
-        );
-    }
-
 }
