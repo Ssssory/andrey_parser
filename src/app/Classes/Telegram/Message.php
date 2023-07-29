@@ -64,11 +64,27 @@ final class Message
         }
     }
 
+    function getTags(): string 
+    {
+        return trim(implode(' #', $this->tags)); 
+    }
+
+    function getType(): string 
+    {
+        if ($this->type == 'rent') {
+            return '#rent #аренда';
+        }elseif ($this->type == 'sell') {
+            return '#sell #продажа';
+        }
+        return '';
+    }
+
+
     private function getDescription() : string 
     {
     
         $description = '#' . $this->getId() . PHP_EOL;
-        $description .= trim(implode(' #', $this->tags)) . PHP_EOL;
+        $description .= $this->getTags(). PHP_EOL;
         if ($this->type == 'rent') {
             $description .= '#rent  #аренда' . PHP_EOL;
         }
