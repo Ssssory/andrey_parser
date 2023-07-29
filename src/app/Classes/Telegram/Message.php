@@ -62,6 +62,7 @@ final class Message
         if (!$this->id) {
             return substr(md5(uniqid()), 0, 8);
         }
+        return $this->id;
     }
 
     function getTags(): string 
