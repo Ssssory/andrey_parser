@@ -45,8 +45,9 @@ Route::group(['middleware' => 'auth'], function(){
     Route::match(array('GET', 'POST'), '/temp', [TestController::class, 'index']);
     Route::get('/sendMessage', [TestController::class, 'sendMessage']);
 
-    Route::get('/rent/{model}', [RentController::class, 'list']);
+    Route::get('/rent/{model}', [RentController::class, 'list'])->name('rent.list');
     Route::get('/rent/form/{model}', [RentController::class, 'form']);
+    Route::post('/rent/form/{model}/send', [RentController::class, 'send']);
 
     Route::prefix('admin')->group(function (){
         Route::get('/users', [AdminUserController::class, 'users']);

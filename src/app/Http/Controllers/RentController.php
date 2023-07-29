@@ -3,13 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Classes\Telegram\Message;
+use App\Classes\Telegram\Telegram;
 use App\Enums\Sources;
 use App\Models\DirtyStateData;
 use App\Models\DirtyStateParametersData;
 use Carbon\Carbon;
 use Exception;
+use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Illuminate\Support\Facades\Request;
+use Illuminate\Support\Facades\Log;
 
 final class RentController extends Controller
 {
@@ -52,5 +54,30 @@ final class RentController extends Controller
             'model' => $model,
             'message' => $message,
         ]);
+    }
+
+    function send(Request $request, DirtyStateData $model, Telegram $telegram)
+    {
+        $message = new Message();
+        $message->id = $request->input('id');
+        $message->tags = explode(' ', $request->input('tags',''));
+        $message->price = $request->input('price');
+        $message->square = $request->input('square');
+        $message->rooms = $request->input('rooms');
+        $message->location = $request->input('location');
+        $message->setImages(explode(',', $model->images));
+        // dd($message->getMessage());
+
+        $telegram->sendRentMessage($message);
+
+        try {
+            return redirect()->route('rent.list',['model' => $model->source])->with('message', 'success');
+        } catch (\Throwable $th) {
+            Log::error($th->getMessage());
+            return redirect()->back()->with('message', 'error');
+        }
+
+
+        // 
     }
 }

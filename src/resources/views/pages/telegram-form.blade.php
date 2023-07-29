@@ -4,7 +4,7 @@
 
 @section('content')
 
-<form action="" method="POST">
+<form action="/rent/form/{{$model->id}}/send" method="POST">
     @csrf
     <div class="row">
         <div class="col-sm-6">
