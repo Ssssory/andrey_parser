@@ -9,7 +9,6 @@ final class Client
 {
     private ?Nutgram $client = null;
 
-    const TOKEN = '6603078627:AAHbofAmoe_uV8B-RseAVkKFDa4-adwXP7E';
 
     function __invoke()
     {
@@ -21,7 +20,7 @@ final class Client
             $config = new Configuration(
                 clientTimeout: 20,
             );
-            $this->client = new Nutgram(self::TOKEN, $config);
+            $this->client = new Nutgram(env('TELEGRAM_TOKEN'), $config);
         }
         return $this->client;
     }
