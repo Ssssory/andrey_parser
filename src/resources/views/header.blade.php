@@ -84,7 +84,7 @@
                                     </a>
                                 </li>
                             </ul> --}}
-                        {{-- </li>
+                            {{-- </li>
                             <li class="nav-item">
                             <a href="/admin/users/new" class="nav-link">
                                 <i class="nav-icon fas fa-tachometer-alt"></i>
@@ -95,7 +95,7 @@
                             </a>
                         </li> --}}
                         </li>
-                            <li class="nav-item">
+                        <li class="nav-item">
                             <a href="/admin/users" class="nav-link">
                                 <i class="nav-icon fas fa-tachometer-alt"></i>
                                 <p>
@@ -141,17 +141,20 @@
                         </div>
                         <div class="col-sm-6">
                             <ol class="breadcrumb float-sm-right">
-                                <li class="breadcrumb-item"><a href="#">Home</a></li>
-                                <li class="breadcrumb-item active">Blank Page</li>
+                                <li class="breadcrumb-item"><a href="/dashboard">Home</a></li>
+                                <!-- <li class="breadcrumb-item active">Blank Page</li> -->
                             </ol>
                         </div>
                     </div>
                 </div><!-- /.container-fluid -->
             </section>
             @if (session()->has('message'))
-            <div class="alert alert-danger alert-dismissible">
-                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                <h5><i class="icon fas fa-ban"></i> Alert!</h5>
-                {{ session('message') }}
-            </div>
-            @endif
+                @if (session('message') == 'success')
+                <div class="alert alert-{{session('message')}} alert-dismissible">
+                @else
+                <div class="alert alert-danger alert-dismissible">
+                    @endif
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                    <h5><i class="icon fas fa-ban"></i> {{ session('message') }}</h5>
+                </div>
+                @endif
