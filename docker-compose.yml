@@ -18,20 +18,26 @@ services:
     networks:
       - app-network
 
-  webserver:
+  nginx:
     image: nginx:alpine
-    container_name: webserver
+    container_name: nginx
     restart: unless-stopped
     tty: true
     volumes:
-     - ./src/:/var/www
-     - ./docker/nginx/conf.d/:/etc/nginx/conf.d/
+      - ./docker/nginx/conf.d/:/etc/nginx/conf.d/:ro
+      - ./certbot/www:/var/www/certbot/:ro
+      - ./certbot/conf/:/etc/nginx/ssl/:ro
     ports:
-      - "80:80"
+      - "{PORT-80}:80"
       - "443:443"
     networks:
       - app-network
       - mq_rabbit
+  certbot:
+    image: certbot/certbot:latest
+    volumes:
+      - ./certbot/www/:/var/www/certbot/:rw
+      - ./certbot/conf/:/etc/letsencrypt/:rw
 
   db:
     image: mysql:5.7.22
@@ -53,9 +59,9 @@ services:
   # rabbitmq:
   #   image: rabbitmq:3.8-management-alpine
   #   container_name: 'rabbitmq'
-  #   ports:
-  #       - 5673:5672
-  #       - 15673:15672
+  #   # ports:
+  #   #     - 5673:5672
+  #   #     - 15673:15672
   #   volumes:
   #       - ./rabbitmq/data/:/var/lib/rabbitmq/
   #       - ./rabbitmq/log/:/var/log/rabbitmq
