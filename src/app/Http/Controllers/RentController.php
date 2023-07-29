@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Classes\Telegram\Message;
 use App\Enums\Sources;
 use App\Models\DirtyStateData;
+use App\Models\DirtyStateParametersData;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Request;
@@ -28,6 +31,26 @@ final class RentController extends Controller
 
     function form(Request $request, DirtyStateData $model) 
     {
-        dd($model);
+        //dd($model);
+        $message = new Message();
+        $message->id = Carbon::now()->format('my') . substr(strval($model->id / 100000), 2, -1);
+        // $message->tags = $model->tags;
+        $message->setImages(explode(',',$model->images));
+        // $message->deposit = $model->deposit;
+        $message->price = $model->price;
+        // $message->type = $model->type;
+        // $message->square = $model->square;
+        // $message->floor = $model->floor;
+        // $message->rooms = $model->rooms;
+        // $message->pets = $model->pets;
+        $message->location = $model->address;
+
+        $model->load('dirtyStateParametersData');
+
+        return view('pages.telegram-form', [
+            'title' => 'Send to telegramm',
+            'model' => $model,
+            'message' => $message,
+        ]);
     }
 }
