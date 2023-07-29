@@ -29,10 +29,11 @@ class ParsingForzida extends Command
      */
     public function handle()
     {
+        echo 'parce sitemap' . PHP_EOL;
         $forzida = new Forzida();
 
         $forzida->getUrlsFromSitemap();
-        
+        echo 'parce urls' . PHP_EOL;
         $urls = Url::where('status', 'new')->where('source', Sources::Forzida->name)->get();
         if ($urls->isEmpty()) {
             $this->info('No new urls');
