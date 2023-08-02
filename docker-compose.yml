@@ -13,6 +13,7 @@ services:
       SERVICE_NAME: app
       SERVICE_TAGS: dev
     working_dir: /var/www
+    user: '1000:1000'
     volumes:
       - ./src/:/var/www
     networks:
@@ -31,6 +32,7 @@ services:
     ports:
       - "${PORT-80}:80"
       - "443:443"
+    user: '1000:1000'
     networks:
       - app-network
       - mq_rabbit
