@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Classes\Telegram\Message;
+use App\Classes\Telegram\MessageRent;
 use App\Classes\Telegram\Telegram;
 use App\Enums\Sources;
 use App\Models\DirtyStateData;
@@ -24,7 +24,7 @@ final class RentController extends Controller
         $list = DirtyStateData::where('source', $source->name)->limit(100)->orderByDesc('id')->get();
         $count = DirtyStateData::where('source', $source->name)->count();
 
-        return view('pages.rent-table', [
+        return view('pages.rent.table', [
             'title' => $model,
             'list' => $list,
             'count' => $count,
@@ -34,7 +34,7 @@ final class RentController extends Controller
     function form(Request $request, DirtyStateData $model) 
     {
         //dd($model);
-        $message = new Message();
+        $message = new MessageRent();
         $message->id = Carbon::now()->format('my') . substr(strval($model->id / 100000), 2, -1);
         // $message->tags = $model->tags;
         $message->setImages(explode(',',$model->images));
@@ -49,7 +49,7 @@ final class RentController extends Controller
 
         $model->load('dirtyStateParametersData');
 
-        return view('pages.telegram-form', [
+        return view('pages.rent.telegram-form', [
             'title' => 'Send to telegramm',
             'model' => $model,
             'message' => $message,
@@ -58,7 +58,7 @@ final class RentController extends Controller
 
     function send(Request $request, DirtyStateData $model, Telegram $telegram)
     {
-        $message = new Message();
+        $message = new MessageRent();
         $message->id = $request->input('id');
         $message->tags = explode(' ', $request->input('tags',''));
         $message->price = $request->input('price');
@@ -68,7 +68,7 @@ final class RentController extends Controller
         $message->setImages(explode(',', $model->images));
         // dd($message->getMessage());
 
-        $telegram->sendRentMessage($message);
+        $telegram->sendMediaMessage($message);
 
         try {
             return redirect()->route('rent.list',['model' => $model->source])->with('message', 'success');
