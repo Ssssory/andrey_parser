@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AdminUserController;
+use App\Http\Controllers\CarController;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RentController;
@@ -48,6 +49,10 @@ Route::group(['middleware' => 'auth'], function(){
     Route::get('/rent/{model}', [RentController::class, 'list'])->name('rent.list');
     Route::get('/rent/form/{model}', [RentController::class, 'form']);
     Route::post('/rent/form/{model}/send', [RentController::class, 'send']);
+
+    Route::get('/car/{model}', [CarController::class, 'list'])->name('car.list');
+    Route::get('/car/form/{model}', [CarController::class, 'form']);
+    Route::post('/car/form/{model}/send', [CarController::class, 'send']);
 
     Route::prefix('admin')->group(function (){
         Route::get('/users', [AdminUserController::class, 'users']);
