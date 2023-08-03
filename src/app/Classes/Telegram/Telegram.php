@@ -31,7 +31,7 @@ final class Telegram
         );
     }
 
-    function sendRentMessage(Message $message): void
+    function sendMediaMessage(MessageInterface $message): void
     {
         $this->client->sendMediaGroup(
             $message->getMessage(),

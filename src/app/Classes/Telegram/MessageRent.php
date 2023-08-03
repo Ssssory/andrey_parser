@@ -6,7 +6,7 @@ use Exception;
 use SergiX44\Nutgram\Telegram\Types\Input\InputMediaPhoto;
 
 /**
- * Class Message
+ * Class MessageRent
  * @package App\Classes\Telegram
  * @property string $id
  * @property array $tags
@@ -21,7 +21,7 @@ use SergiX44\Nutgram\Telegram\Types\Input\InputMediaPhoto;
  * @property string $location
  * 
  */
-final class Message
+final class MessageRent implements MessageInterface
 {
     public ?string $id = null;
     public array $tags = [];
