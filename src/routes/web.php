@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\LoginController;
@@ -43,7 +44,6 @@ Route::group(['middleware' => 'auth'], function(){
     Route::get('/save', [Controller::class, 'saveCsv']);
 
     Route::match(array('GET', 'POST'), '/temp', [TestController::class, 'index']);
-    Route::get('/sendMessage', [TestController::class, 'sendMessage']);
 
     Route::get('/rent/{model}', [RentController::class, 'list'])->name('rent.list');
     Route::get('/rent/form/{model}', [RentController::class, 'form']);
@@ -57,13 +57,7 @@ Route::group(['middleware' => 'auth'], function(){
         // Route::get('/users/{id}/edit', [AdminUserController::class, 'editUser']);
         // Route::post('/users/{id}/edit', [AdminUserController::class, 'updateUser']);
         // Route::get('/users/{id}/delete', [AdminUserController::class, 'deleteUser']);
+        Route::match(array('GET', 'POST'), '/settings/telegram', [AdminController::class, 'settingsTelegram']);
     });
 });
 
-
-
-
-
-Route::get('/welcome', function () {
-    return view('welcome');
-});
