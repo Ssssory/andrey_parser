@@ -70,7 +70,7 @@ class Controller extends BaseController
         $list = DirtyData::where('source', $source->name)->paginate(15);
         $count = DirtyData::where('source', $source->name)->count();
 
-        return view('pages.table', [
+        return view('pages.poslovna.table', [
             'title' => $model,
             'list' => $list,
             'count' => $count,
