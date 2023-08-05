@@ -1,4 +1,4 @@
-@extends('page')
+@extends('page',['h1' => 'Telegram keys'])
 
 @section('title', 'telegram keys')
 

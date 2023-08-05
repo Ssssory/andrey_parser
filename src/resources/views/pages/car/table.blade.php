@@ -1,4 +1,4 @@
-@extends('page')
+@extends('page',['h1' => 'Car Table'])
 
 @section('title', 'Cars list')
 

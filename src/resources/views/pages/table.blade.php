@@ -1,4 +1,4 @@
-@extends('page')
+@extends('page'['h1' => 'Organization Table'])
 
 @section('title', 'first')
 

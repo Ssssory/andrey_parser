@@ -1,4 +1,4 @@
-@extends('page')
+@extends('page'['h1' => 'Send to telegramm'])
 
 @section('title', 'Send to telegramm')
 

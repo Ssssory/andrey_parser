@@ -1,4 +1,4 @@
-@extends('page')
+@extends('page'['h1' => 'Test'])
 
 @section('title', 'Url')
 
@@ -13,7 +13,7 @@
                 <label>url</label>
                 <input type="test" class="form-control" id="url" name="url" placeholder="url" value="{{old('url')}}">
             </div>
-           
+
             <div class="form-group">
                 <button type="submit" class="btn btn-primary">Submit</button>
             </div>

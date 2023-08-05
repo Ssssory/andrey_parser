@@ -40,7 +40,7 @@
                 <div class="container-fluid">
                     <div class="row mb-2">
                         <div class="col-sm-6">
-                            <h1>Blank Page</h1>
+                            <h1>@yield('h1',$h1)</h1>
                         </div>
                         <div class="col-sm-6">
                             <ol class="breadcrumb float-sm-right">
@@ -52,12 +52,12 @@
                 </div><!-- /.container-fluid -->
             </section>
             @if (session()->has('message'))
-                @if (session('message') == 'success')
-                <div class="alert alert-{{session('message')}} alert-dismissible">
+            @if (session('message') == 'success')
+            <div class="alert alert-{{session('message')}} alert-dismissible">
                 @else
                 <div class="alert alert-danger alert-dismissible">
-                @endif
+                    @endif
                     <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
                     <h5><i class="icon fas fa-ban"></i> {{ session('message') }}</h5>
                 </div>
-            @endif
+                @endif

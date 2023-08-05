@@ -1,4 +1,4 @@
-@include('header')
+@include('header',['h1' => 'Dashboard'])
 
 
 <!-- Main content -->
@@ -14,7 +14,7 @@
                     <div class="icon">
                         <i class="ion ion-bag"></i>
                     </div>
-                    <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                    <!-- <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a> -->
                 </div>
             </div>
             <div class="col-lg-3 col-6">
@@ -26,76 +26,73 @@
                     <div class="icon">
                         <i class="ion ion-bag"></i>
                     </div>
-                    <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                    <!-- <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a> -->
                 </div>
             </div>
         </div>
         @foreach ($totalLinks as $sourcename => $count)
-            @if ($count > 0)
-                <div class="row">
-                    <h2>{{ ucfirst($sourcename) }}</h2>
-                    <div class="col-lg-3 col-6">
+        @if ($count > 0)
+        <div class="row">
+            <h2>{{ ucfirst($sourcename) }}</h2>
+            <div class="col-lg-3 col-6">
 
-                        <div class="small-box bg-info">
-                            <div class="inner">
-                                <h3>{{ $count }}</h3>
-                                <p>Количество ссылок</p>
-                            </div>
-                            <div class="icon">
-                                <i class="ion ion-bag"></i>
-                            </div>
-                            <a href="#" class="small-box-footer">More info <i
-                                    class="fas fa-arrow-circle-right"></i></a>
-                        </div>
+                <div class="small-box bg-info">
+                    <div class="inner">
+                        <h3>{{ $count }}</h3>
+                        <p>Количество ссылок</p>
                     </div>
-                    <div class="col-lg-3 col-6">
-
-                        <div class="small-box bg-info">
-                            <div class="inner">
-                                @if (array_key_exists(ucfirst($sourcename), $totalData))
-                                    <h3>{{ $totalData[ucfirst($sourcename)] }}</h3>
-                                @else
-                                    <h3>0</h3>
-                                @endif
-                                <p>Количество полученных сырых данных</p>
-                            </div>
-                            <div class="icon">
-                                <i class="ion ion-bag"></i>
-                            </div>
-                            <a href="#" class="small-box-footer">More info <i
-                                    class="fas fa-arrow-circle-right"></i></a>
-                        </div>
+                    <div class="icon">
+                        <i class="ion ion-bag"></i>
                     </div>
-                    @if (array_key_exists(ucfirst($sourcename), $activeLinksData))
-                        <div class="col-lg-3 col-6">
-
-                            <div class="small-box bg-info">
-                                <div class="inner">
-                                    <h3>{{ $activeLinksData[ucfirst($sourcename)] }}</h3>
-                                    <p>Активные ссылки в работе</p>
-                                </div>
-                                <div class="icon">
-                                    <i class="ion ion-bag"></i>
-                                </div>
-                                <a href="#" class="small-box-footer">More info <i
-                                        class="fas fa-arrow-circle-right"></i></a>
-                            </div>
-                        </div>
-                    @else
-                        <div class="col-lg-3 col-6">
-                            <div class="small-box bg-warning">
-                                <div class="inner">
-                                    <h3>0</h3>
-                                    <p>Активные ссылки в работе</p>
-                                </div>
-                                <div class="icon">
-                                    <i class="ion ion-person-add"></i>
-                                </div>
-                            </div>
-                        </div>
-                    @endif
+                    <!-- <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a> -->
                 </div>
+            </div>
+            <div class="col-lg-3 col-6">
+
+                <div class="small-box bg-info">
+                    <div class="inner">
+                        @if (array_key_exists($sourcename, $totalData))
+                        <h3>{{ $totalData[$sourcename] }}</h3>
+                        @else
+                        <h3>0</h3>
+                        @endif
+                        <p>Количество полученных сырых данных</p>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-bag"></i>
+                    </div>
+                    <!-- <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a> -->
+                </div>
+            </div>
+            @if (array_key_exists($sourcename, $activeLinksData))
+            <div class="col-lg-3 col-6">
+
+                <div class="small-box bg-warning">
+                    <div class="inner">
+                        <h3>{{ $activeLinksData[$sourcename] }}</h3>
+                        <p>Активные ссылки в работе</p>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-bag"></i>
+                    </div>
+                    <!-- <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a> -->
+                </div>
+            </div>
+            @else
+            <div class="col-lg-3 col-6">
+                <div class="small-box bg-info">
+                    <div class="inner">
+                        <h3>0</h3>
+                        <p>Активные ссылки в работе</p>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-person-add"></i>
+                    </div>
+                </div>
+            </div>
             @endif
+        </div>
+        @endif
         @endforeach
     </div>
 </section>

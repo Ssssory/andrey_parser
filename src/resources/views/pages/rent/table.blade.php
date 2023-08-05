@@ -1,4 +1,4 @@
-@extends('page')
+@extends('page',['h1' => 'Rent Table'])
 
 @section('title', 'first')
 
