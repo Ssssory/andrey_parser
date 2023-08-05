@@ -152,11 +152,11 @@ final class Polovniautomobili extends ParserAbstract
     private function savePageUrl($urls)
     {
         foreach ($urls as $item) {
-            $url = substr(Sources::getUrl(Sources::Polovniautomobili),0,-1) . $item->getAttribute('href');
-            if (!Url::where('url', $url)->exists()) {
+            $uri = substr(Sources::getUrl(Sources::Polovniautomobili),0,-1) . $item->getAttribute('href');
+            if (!Url::where('url', $uri)->exists()) {
                 $url = new Url();
                 $url->source = Sources::Polovniautomobili->name;
-                $url->url = $url;
+                $url->url = $uri ;
                 $url->category = "car";
                 $url->save();
             }

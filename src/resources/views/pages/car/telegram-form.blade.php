@@ -22,7 +22,16 @@
         </div>
     </div>
 
-
+    <div class="row">
+        @foreach ($model->dirtyCarParametersData as $key => $item)
+        <div class="col-sm-3">
+            <div class="form-group">
+                <label for="{{$key}}">{{$item->property}}</label>
+                <input type="input" class="form-control" id="{{$key}}" name="{{$key}}" value="{{$item->value}}">
+            </div>
+        </div>
+        @endforeach
+    </div>
     <hr><br>
     <div class="row">
         <div class="col-sm-6">

@@ -7,7 +7,8 @@ use SergiX44\Nutgram\Telegram\Types\Internal\InputFile;
 
 final class Telegram
 {
-    const TEST_CHAT_ID = -925022442;
+    // const TEST_CHAT_ID = -925022442;
+    const TEST_CHAT_ID = -1001592144637;
 
     private Nutgram $client;
 

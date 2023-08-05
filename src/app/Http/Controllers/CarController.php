@@ -38,6 +38,10 @@ class CarController extends Controller
 
         $message->setImages(explode(',', $model->images));
         $message->price = $model->price;
+        $message->name = $model->name;
+
+
+        $model->load('dirtyCarParametersData');
 
         return view('pages.car.telegram-form', [
             'title' => 'Send to telegramm',
@@ -53,6 +57,13 @@ class CarController extends Controller
         $message->tags = explode(' ', $request->input('tags', ''));
         $message->price = $request->input('price');
         $message->setImages(explode(',', $model->images));
+        $message->name = $request->input('name');
+        $message->model = $request->input('model');
+        $message->year = $request->input('year');
+        $message->mileage = $request->input('mileage');
+        $message->engineType = $request->input('engineType');
+        $message->engineVolume = $request->input('engineVolume');
+        $message->transmission = $request->input('transmission');
         // dd($message->getMessage());
 
         $telegram->sendMediaMessage($message);

@@ -10,4 +10,9 @@ class DirtyCarData extends Model
     use HasFactory;
 
     protected $guarded = [];
+
+    function dirtyCarParametersData()
+    {
+        return $this->hasMany(DirtyCarParametersData::class, 'car_id', 'id');
+    }
 }
