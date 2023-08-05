@@ -67,6 +67,12 @@ final class Poslovnabazasrbije extends ParserAbstract
     {
         $hash = md5($path);
         $this->hash = $hash;
+
+        if (!config('app.debug')) {
+            $response = $this->sendRequest($path);
+            return $response->getBody()->getContents();
+        }
+        
         $hash = $this->getCachePath($hash);
         if (Storage::disk('local')->exists($hash)) {
             return Storage::disk('local')->get($hash);
