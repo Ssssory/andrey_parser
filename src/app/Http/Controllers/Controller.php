@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Enums\Sources;
+use App\Models\DirtyCarData;
 use App\Models\DirtyData;
+use App\Models\DirtyStateData;
 use App\Models\Url;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -22,11 +24,19 @@ class Controller extends BaseController
     {
         $countSources = Url::select(DB::raw('count(distinct(source)) as total'))->firstOrFail();
 
-        $links = Url::select(DB::raw('source, count(source) as total'))->groupBy('source')->get();
+        $links = Url::select(DB::raw('lower(source) as source, count(source) as total'))->groupBy('source')->get();
         $totalLinks = $this->prepareCounts($links);
 
-        $dirtyData = DirtyData::select(DB::raw('source, count(source) as total'))->groupBy('source')->get();
+        $dirtyData = DirtyData::select(DB::raw('lower(source) as source, count(source) as total'))->groupBy('source')->get();
         $totalData = $this->prepareCounts($dirtyData);
+
+        $dirtyRentData = DirtyStateData::select(DB::raw('source, count(source) as total'))->groupBy('source')->get();
+        $totalRentData = $this->prepareCounts($dirtyRentData);
+
+        $dirtyCarData = DirtyCarData::select(DB::raw('source, count(source) as total'))->groupBy('source')->get();
+        $totalCarData = $this->prepareCounts($dirtyCarData);
+
+        // dd($dirtyRentData);
 
         $activeLinks = Url::select(DB::raw('source, count(source) as total'))->where('status', 'in progress')->groupBy('source')->get();
         $activeLinksData = $this->prepareCounts($activeLinks);
@@ -36,7 +46,7 @@ class Controller extends BaseController
             'sources' => $countSources->total,
             'totalLinksCount' => Url::count(),
             'totalLinks' => $totalLinks,
-            'totalData' => $totalData,
+            'totalData' => $totalCarData + $totalRentData + $totalData,
             'activeLinksData' => $activeLinksData,
         ]);
     }
