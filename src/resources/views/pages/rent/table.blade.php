@@ -15,7 +15,7 @@
                     <th>id</th>
                     <th>name</th>
                     <th>description</th>
-                    <th>images</th>
+                    <th>price</th>
                     <th>address</th>
                     <th>url</th>
                     <th>action</th>

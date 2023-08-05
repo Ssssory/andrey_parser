@@ -15,8 +15,8 @@
                     <th>id</th>
                     <th>name</th>
                     <th>description</th>
-                    <th>images</th>
-                    <th>address</th>
+                    <th>source</th>
+                    <th>price</th>
                     <th>url</th>
                     <th>action</th>
                 </tr>
@@ -27,10 +27,10 @@
                     <td>{{$loop->index}}</td>
                     <td>{{$model->name}}</td>
                     <td>{{$model->description}}</td>
+                    <td>{{$model->source}}</td>
                     <td>{{$model->price}}</td>
-                    <td>{{$model->address}}</td>
                     <td>{{$model->url}}</td>
-                    <td><a href="/rent/form/{{$model->id}}" target="_blank" rel="noopener noreferrer">✍️✉️</a></td>
+                    <td><a href="/car/form/{{$model->id}}" target="_blank" rel="noopener noreferrer">✍️✉️</a></td>
                 </tr>
                 <tr>
                     <td colspan="7">
