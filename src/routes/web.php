@@ -34,7 +34,7 @@ Route::get('/', function(){
     return view('landing');
 });
 
-Route::get('/test', [Controller::class, 'test']);
+Route::get('/test', [TestController::class, 'index']);
 
 
 Route::group(['middleware' => 'auth'], function(){
