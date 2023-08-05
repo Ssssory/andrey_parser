@@ -67,7 +67,7 @@ class Controller extends BaseController
         }
 
         $source = Sources::from($model);
-        $list = DirtyData::where('source', $source->name)->limit(10)->get();
+        $list = DirtyData::where('source', $source->name)->paginate(15);
         $count = DirtyData::where('source', $source->name)->count();
 
         return view('pages.table', [

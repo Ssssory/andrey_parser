@@ -21,7 +21,7 @@ final class RentController extends Controller
             throw new Exception("Error Processing Request");
         }
         $source = Sources::from($model);
-        $list = DirtyStateData::where('source', $source->name)->limit(100)->orderByDesc('id')->get();
+        $list = DirtyStateData::where('source', $source->name)->limit(100)->orderByDesc('id')->paginate(15);
         $count = DirtyStateData::where('source', $source->name)->count();
 
         return view('pages.rent.table', [

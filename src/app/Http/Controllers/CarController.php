@@ -20,7 +20,7 @@ class CarController extends Controller
             throw new Exception("Error Processing Request");
         }
         $source = Sources::from($model);
-        $list = DirtyCarData::where('source', $source->name)->limit(100)->orderByDesc('id')->get();
+        $list = DirtyCarData::where('source', $source->name)->limit(100)->orderByDesc('id')->paginate(15);
         $count = DirtyCarData::where('source', $source->name)->count();
 
         return view('pages.car.table', [

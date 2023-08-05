@@ -48,8 +48,15 @@
                     <th></th>
                     <th></th>
                     <th></th>
-                    <th></th>
-                    <th></th>
+                    <th colspan="2">
+                        @if ($list->currentPage() > 1)
+                            <a href="{{$list->previousPageUrl()}}">prev</a>
+                        @endif
+                        {{$list->currentPage()}} of {{$list->lastPage()}}
+                        @if ($list->hasMorePages())
+                            <a href="{{$list->nextPageUrl()}}">next</a>
+                        @endif
+                    </th>
                 </tr>
             </tfoot>
         </table>
