@@ -2,7 +2,7 @@
 
 namespace App\Jobs;
 
-use App\Classes\Forzida;
+use App\Classes\Car\Polovniautomobili;
 use App\Models\Url;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -11,7 +11,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use DiDom\Document;
 
-class TempForzidaJob implements ShouldQueue
+class TempPolovniautomobiliJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
@@ -31,10 +31,10 @@ class TempForzidaJob implements ShouldQueue
     public function handle(): void
     {
 
-        $forzida = new Forzida();
-        $html = $forzida->getHtml($this->url->url);
+        $polovniautomobili = new Polovniautomobili();
+        $html = $polovniautomobili->getHtml($this->url->url);
         $document = new Document($html);
-        $result = $forzida->getStateFromPage($document);
+        $polovniautomobili->getDataFromPage($document);
 
         $this->url->status = 'done';
         $this->url->complete = true;
