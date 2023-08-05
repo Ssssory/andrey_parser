@@ -13,6 +13,9 @@ enum Sources:string
     case Forzida = 'forzida';
     case Halooglasi = 'halooglasi';
 
+    // car
+    case Polovniautomobili = 'polovniautomobili';
+
     public static function getUrl(self $value)
     {
         return match ($value) {
@@ -23,6 +26,7 @@ enum Sources:string
             Sources::Yell => 'https://www.yell.rs/',
             Sources::Forzida => 'https://www.4zida.rs/',
             Sources::Halooglasi => 'https://www.halooglasi.com/',
+            Sources::Polovniautomobili => 'https://www.polovniautomobili.com/',
         };
     }
 }
