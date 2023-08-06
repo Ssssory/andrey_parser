@@ -62,15 +62,6 @@
                             </a>
                         </li> --}}
                 </li>
-                <li class="nav-item">
-                    <a href="/admin/users" class="nav-link">
-                        <i class="nav-icon fas fa-tachometer-alt"></i>
-                        <p>
-                            Все пользователи
-                            <i class="right fas fa-angle-left"></i>
-                        </p>
-                    </a>
-                </li>
                 <!--li class="nav-item">
                             <a href="/list/poslovnabazasrbije" class="nav-link">
                                 <i class="nav-icon fas fa-tachometer-alt"></i>
@@ -100,14 +91,83 @@
                 </li>
 
                 <li class="nav-item">
-                    <a href="/admin/settings/telegram" class="nav-link">
-                        <i class="nav-icon fas fa-tachometer-alt"></i>
+                    <a href="#" class="nav-link" onclick="elementMenuToggler(this)">
+                        <i class="nav-icon fas fa-circle"></i>
                         <p>
-                            telegram setings
+                            Settings &darr;
                             <i class="right fas fa-angle-left"></i>
                         </p>
                     </a>
+                    <ul class="nav nav-treeview" style="display: none;">
+                        <li class="nav-item">
+                            <a href="/admin/settings/telegram" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p> &nbsp; telegram</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/admin/users" class="nav-link">
+                                <i class="nav-icon fas fa-tachometer-alt"></i>
+                                <p>
+                                    &nbsp; Все пользователи
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
+                            </a>
+                        </li>
+                    </ul>
                 </li>
+                <!-- <li class="nav-item">
+                    <a href="#" class="nav-link" onclick="elementMenuToggler(this)">
+                        <i class="nav-icon fas fa-circle"></i>
+                        <p>
+                            Level 1 &darr;
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview" style="display: none;">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p> &nbsp; Level 2</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" onclick="elementMenuToggler(this)">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>
+                                    &nbsp; Level 2 &darr;
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="#" class="nav-link">
+                                        <i class="far fa-dot-circle nav-icon"></i>
+                                        <p>&nbsp;&nbsp;&nbsp;&nbsp;Level 3</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="#" class="nav-link">
+                                        <i class="far fa-dot-circle nav-icon"></i>
+                                        <p>&nbsp;&nbsp;&nbsp;&nbsp;Level 3</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="#" class="nav-link">
+                                        <i class="far fa-dot-circle nav-icon"></i>
+                                        <p>&nbsp;&nbsp;&nbsp;&nbsp;Level 3</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p> &nbsp; Level 2</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li> -->
 
 
 
@@ -117,3 +177,13 @@
     </div>
     <!-- /.sidebar -->
 </aside>
+
+<script>
+    function elementMenuToggler(el) {
+        if (el.nextSibling.nextSibling.style.display == 'none') {
+            el.nextSibling.nextSibling.style.display = 'block';
+        } else {
+            el.nextSibling.nextSibling.style.display = 'none'
+        }
+    }
+</script>
