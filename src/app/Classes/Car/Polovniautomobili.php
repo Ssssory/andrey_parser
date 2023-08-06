@@ -165,8 +165,8 @@ final class Polovniautomobili extends ParserAbstract
     private function urlConstructor(string $brand) : string 
     {
         $parts = [
-            'price' => '&price_from=10000&price_to=30000',
-            'year' => '&year_from=2001&year_to=2021',
+            'price' => '&price_from=2000&price_to=30000',
+            'year' => '&year_from=2001&year_to=2021', // -1 от текущего
             'date_limit' => '&date_limit=1',
 
         ];
