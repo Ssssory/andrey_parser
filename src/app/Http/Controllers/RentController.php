@@ -35,7 +35,7 @@ final class RentController extends Controller
     {
         //dd($model);
         $message = new MessageRent();
-        $message->id = Carbon::now()->format('my') . substr(strval($model->id / 100000), 2, -1);
+        $message->id = Carbon::now()->format('my') . str_pad($model->id, 5, 0, STR_PAD_LEFT);
         // $message->tags = $model->tags;
         $message->setImages(explode(',',$model->images));
         // $message->deposit = $model->deposit;

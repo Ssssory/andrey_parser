@@ -6,6 +6,7 @@ use App\Classes\Telegram\MessageCar;
 use App\Classes\Telegram\Telegram;
 use App\Enums\Sources;
 use App\Models\DirtyCarData;
+use App\Models\DirtyCarParametersData;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
@@ -23,10 +24,15 @@ class CarController extends Controller
         $list = DirtyCarData::where('source', $source->name)->limit(100)->orderByDesc('id')->paginate(15);
         $count = DirtyCarData::where('source', $source->name)->count();
 
+        $engineTypes = DirtyCarParametersData::where('property', 'Gorivo')->distinct()->get(['value']);
+
         return view('pages.car.table', [
             'title' => $model,
             'list' => $list,
             'count' => $count,
+            'fillter' => [
+                'engineTypes' => $engineTypes->pluck('value'),
+            ]
         ]);
     }
 
@@ -34,7 +40,7 @@ class CarController extends Controller
     {
         //dd($model);
         $message = new MessageCar();
-        $message->id = Carbon::now()->format('my') . substr(strval($model->id / 100000), 2, -1);
+        $message->id = Carbon::now()->format('my') . str_pad($model->id, 5, 0, STR_PAD_LEFT);
 
         $message->setImages(explode(',', $model->images));
         $message->price = $model->price;
