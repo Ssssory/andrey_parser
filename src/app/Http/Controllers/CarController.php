@@ -20,8 +20,18 @@ class CarController extends Controller
         if (!$model) {
             throw new Exception("Error Processing Request");
         }
+
         $source = Sources::from($model);
-        $list = DirtyCarData::where('source', $source->name)->limit(100)->orderByDesc('id')->paginate(15);
+        if ($model == Sources::Polovniautomobili->value) {
+            $list = DirtyCarParametersData::join('dirty_car_data', 'dirty_car_data.id', '=', 'dirty_car_parameters_data.car_id')
+                ->where('dirty_car_data.source', $source->name)
+                ->where('dirty_car_parameters_data.property', 'Broj oglasa:')
+                ->orderByDesc('dirty_car_parameters_data.value')
+                ->select('dirty_car_data.*')
+                ->paginate(15);
+        }else{
+            $list = DirtyCarData::where('source', $source->name)->orderByDesc('id')->paginate(15);
+        }
         $count = DirtyCarData::where('source', $source->name)->count();
 
         $engineTypes = DirtyCarParametersData::where('property', 'Gorivo')->distinct()->get(['value']);
@@ -38,7 +48,6 @@ class CarController extends Controller
 
     function form(Request $request, DirtyCarData $model)
     {
-        //dd($model);
         $message = new MessageCar();
         $message->id = Carbon::now()->format('my') . str_pad($model->id, 5, 0, STR_PAD_LEFT);
 
