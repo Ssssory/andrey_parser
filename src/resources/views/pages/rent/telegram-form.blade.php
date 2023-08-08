@@ -1,4 +1,4 @@
-@extends('page'['h1' => 'Send to telegramm'])
+@extends('page',['h1' => 'Send to telegramm'])
 
 @section('title', 'Send to telegramm')
 
@@ -9,9 +9,11 @@
     <div class="row">
         <div class="col-sm-6">
             <!-- select -->
-            <div class="form-group">
-                <label>url</label>
+            <div class="input-group input-group-sm">
                 <input type="input" class="form-control" id="url" name="url" placeholder="url" value="{{$model->url}}">
+                <span class="input-group-append">
+                    <button type="button" onckick="window.open('{{$model->url}}', '_blank');" class="btn btn-info btn-flat">🔍</button>
+                </span>
             </div>
         </div>
         <div class="col-sm-6">
@@ -92,5 +94,4 @@
     </div>
 
 </form>
-
 @endsection
