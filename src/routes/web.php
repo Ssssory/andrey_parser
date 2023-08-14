@@ -46,13 +46,24 @@ Route::group(['middleware' => 'auth'], function(){
 
     Route::match(array('GET', 'POST'), '/temp', [TestController::class, 'index']);
 
-    Route::get('/rent/{model}', [RentController::class, 'list'])->name('rent.list');
-    Route::get('/rent/form/{model}', [RentController::class, 'form']);
-    Route::post('/rent/form/{model}/send', [RentController::class, 'send']);
+    Route::prefix('/rent')->group(function(){
+        Route::get('/{model}', [RentController::class, 'list'])->name('rent.list');
+        Route::get('/form/{model}', [RentController::class, 'form']);
+        Route::post('/form/{model}/send', [RentController::class, 'send']);
+    });
 
-    Route::get('/car/{model}', [CarController::class, 'list'])->name('car.list');
-    Route::get('/car/form/{model}', [CarController::class, 'form']);
-    Route::post('/car/form/{model}/send', [CarController::class, 'send']);
+
+
+    Route::prefix('/car')->group(function () {
+        Route::get('/{model}', [CarController::class, 'list'])->name('car.list');
+        Route::get('/form/{model}', [CarController::class, 'form']);
+        Route::post('/form/{model}/send', [CarController::class, 'send']);
+        Route::get('/dictionary/list/property', [CarController::class, 'editDictionary'])->name('car.dictionary');
+        Route::post('/dictionary/list/property/{property}', [CarController::class, 'saveDictionaryProperty'])->name('car.dictionary.property');
+        Route::get('/dictionary/list/values/{property}', [CarController::class, 'listDictionaryValues'])->name('car.dictionary.values');
+        Route::post('/dictionary/list/values/{name}/save', [CarController::class, 'listDictionaryValuesSave'])->name('car.dictionary.values.save');
+    });
+
 
     Route::prefix('admin')->group(function (){
         Route::get('/users', [AdminUserController::class, 'users']);
