@@ -16,6 +16,7 @@ services:
     user: '1000:1000'
     volumes:
       - ./src/:/var/www
+      - ./docker/supervisor/supervisord.conf:/etc/supervisor/conf.d/supervisord.conf:ro
     networks:
       - app-network
 

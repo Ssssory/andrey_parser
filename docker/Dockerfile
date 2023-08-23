@@ -27,7 +27,7 @@ WORKDIR /var/www
 # RUN docker-php-ext-configure gd --with-gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ --with-png-dir=/usr/include/
 # RUN docker-php-ext-install gd
 
-RUN apt-get update -y && apt-get install -y openssl zip unzip git libonig-dev mc vim
+RUN apt-get update -y && apt-get install -y openssl zip unzip git libonig-dev mc vim htop supervisor
 RUN docker-php-ext-install pdo pdo_mysql mbstring
 
 # Install composer
