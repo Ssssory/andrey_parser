@@ -10,6 +10,8 @@ use App\Models\DirtyCarData;
 use App\Models\DirtyCarParametersData;
 use App\Models\PropertyDictionary;
 use App\Models\PropertyValueDictionary;
+use App\Services\MessageService;
+use App\Services\ParametersService;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Contracts\View\View;
@@ -22,6 +24,13 @@ use Illuminate\Support\Str;
 
 class CarController extends Controller
 {
+
+    function __construct(
+        private ParametersService $parametersService,
+        private MessageService    $messageService 
+    )
+    {}
+
     public function list(string $model)
     {
         if (!$model) {
@@ -64,6 +73,9 @@ class CarController extends Controller
 
 
         $model->load('dirtyCarParametersData');
+
+        $cleanParams = $this->parametersService->getCleanValues($model->dirtyCarParametersData->pluck('value', 'property'));
+        $message = $this->messageService->updateMessageDto($message,$cleanParams);
 
         return view('pages.car.telegram-form', [
             'title' => 'Send to telegramm',
