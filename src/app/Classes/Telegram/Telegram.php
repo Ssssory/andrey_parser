@@ -32,11 +32,11 @@ final class Telegram
         );
     }
 
-    function sendMediaMessage(MessageInterface $message): void
+    function sendMediaMessage(MessageInterface $message, string $chatId=null): void
     {
         $this->client->sendMediaGroup(
             $message->getMessage(),
-            self::TEST_CHAT_ID
+            $chatId ?? self::TEST_CHAT_ID
         );
     }
 }

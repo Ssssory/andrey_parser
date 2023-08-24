@@ -4,6 +4,13 @@
 
 @section('content')
 
+@if ($is_published)
+    <div class="row">
+        <div class="col-sm-6">
+            <h3 style="color: blueviolet;">Уже опубликовано</h3>
+        </div>
+    </div>
+@endif
 <form action="/car/form/{{$model->id}}/send" method="POST">
     @csrf
     <div class="row">

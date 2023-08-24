@@ -6,12 +6,14 @@ use App\Classes\Telegram\MessageCar;
 use App\Classes\Telegram\Telegram;
 use App\Enums\Sources;
 use App\Enums\SourceType;
+use App\Models\CompleteMessage;
 use App\Models\DirtyCarData;
 use App\Models\DirtyCarParametersData;
 use App\Models\PropertyDictionary;
 use App\Models\PropertyValueDictionary;
 use App\Services\MessageService;
 use App\Services\ParametersService;
+use App\Services\SenderService;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Contracts\View\View;
@@ -27,7 +29,8 @@ class CarController extends Controller
 
     function __construct(
         private ParametersService $parametersService,
-        private MessageService    $messageService 
+        private MessageService    $messageService,
+        private SenderService     $senderService,
     )
     {}
 
@@ -65,7 +68,7 @@ class CarController extends Controller
     function form(Request $request, DirtyCarData $model)
     {
         $message = new MessageCar();
-        $message->id = Carbon::now()->format('my') . str_pad($model->id, 5, 0, STR_PAD_LEFT);
+        $message->id = $this->messageService->getMessageCarId($model);
 
         $message->setImages(explode(',', $model->images));
         $message->price = $model->price;
@@ -77,32 +80,25 @@ class CarController extends Controller
         $cleanParams = $this->parametersService->getCleanValues($model->dirtyCarParametersData->pluck('value', 'property'));
         $message = $this->messageService->updateMessageDto($message,$cleanParams);
 
+        $isPublished = CompleteMessage::where('model', $model::class)->where('model_id', $model->id)->exists();
+
         return view('pages.car.telegram-form', [
             'title' => 'Send to telegramm',
             'model' => $model,
             'message' => $message,
+            'is_published' => $isPublished,
+            'chats' => []
         ]);
     }
 
-    function send(Request $request, DirtyCarData $model, Telegram $telegram)
+    function send(Request $request, DirtyCarData $model)
     {
-        $message = new MessageCar();
-        $message->id = $request->input('id');
-        $message->tags = explode(' ', $request->input('tags', ''));
-        $message->price = $request->input('price');
-        $message->setImages(explode(',', $model->images));
-        $message->name = $request->input('name');
-        $message->model = $request->input('model');
-        $message->year = $request->input('year');
-        $message->mileage = $request->input('mileage');
-        $message->engineType = $request->input('engineType');
-        $message->engineVolume = $request->input('engineVolume');
-        $message->transmission = $request->input('transmission');
-        // dd($message->getMessage());
-
-        $telegram->sendMediaMessage($message);
-
         try {
+            $chatId = $request->input('chatId');
+
+            $message = $this->messageService->getCarMessage($request, $model);
+    
+            $this->senderService->sendTelegram($message,$chatId,SenderService::HANDLE);
             return redirect()->route('car.list', ['model' => $model->source])->with('message', 'success');
         } catch (\Throwable $th) {
             Log::error($th->getMessage());

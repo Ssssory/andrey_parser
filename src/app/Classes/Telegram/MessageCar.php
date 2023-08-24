@@ -3,6 +3,7 @@
 namespace App\Classes\Telegram;
 
 use Exception;
+use Illuminate\Database\Eloquent\Model;
 use SergiX44\Nutgram\Telegram\Types\Input\InputMediaPhoto;
 
 /**
@@ -25,6 +26,7 @@ use SergiX44\Nutgram\Telegram\Types\Input\InputMediaPhoto;
 final class MessageCar implements MessageInterface
 {
     public ?string $id = null;
+    public ?Model $original = null;
     public array $tags = [];
     private array $images = [];
     public string $name = '';

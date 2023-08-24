@@ -3,10 +3,18 @@
 namespace App\Services;
 
 use App\Classes\Telegram\MessageCar;
+use App\Models\DirtyCarData;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
 
 final class MessageService
 {
-    function updateMessageDto(MessageCar $message, array $data): MessageCar {
+    /**
+     * @param MessageCar $message
+     * @param array $data
+     * @return MessageCar
+     */
+    public function updateMessageDto(MessageCar $message, array $data): MessageCar {
         foreach ($data as $oneParameter) {
             if ($oneParameter['valid']) {
                 if ($oneParameter['name'] == 'engin_type') {
@@ -30,5 +38,38 @@ final class MessageService
             }
         }
         return $message;
+    }
+
+    /**
+     * @param Request $request
+     * @param DirtyCarData $model
+     * @return MessageCar
+     */
+    public function getCarMessage(Request $request, DirtyCarData $model) : MessageCar 
+    {
+        $message = new MessageCar();
+        $message->id = $request->input('id');
+        $message->original = $model;
+        $message->tags = explode(' ', $request->input('tags', ''));
+        $message->price = $request->input('price');
+        $message->setImages(explode(',', $model->images));
+        $message->name = $request->input('name');
+        $message->model = $request->input('model');
+        $message->year = $request->input('year');
+        $message->mileage = $request->input('mileage');
+        $message->engineType = $request->input('engineType');
+        $message->engineVolume = $request->input('engineVolume');
+        $message->transmission = $request->input('transmission');
+
+        return $message;
+    }
+
+    /**
+     * @param DirtyCarData $model
+     * @return string
+     */
+    public function getMessageCarId(DirtyCarData $model): string
+    {
+        return Carbon::now()->format('my') . str_pad($model->id, 5, 0, STR_PAD_LEFT);
     }
 }
