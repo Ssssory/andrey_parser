@@ -11,6 +11,8 @@ class PropertyDictionary extends Model
     use Uuid;
     use HasFactory;
 
+    protected $primaryKey = 'uuid';
+
     protected $guarded = [];
 
     public $timestamps = false;
