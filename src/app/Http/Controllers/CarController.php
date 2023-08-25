@@ -190,7 +190,6 @@ class CarController extends Controller
                 $existDictionaty->save();
             }else{
                 $newDictionary = new PropertyDictionary();
-                $newDictionary->uuid = Str::Uuid();
                 $newDictionary->name = $name;
                 $newDictionary->group = SourceType::Car->value;
                 $newDictionary->ru = $value_ru;
@@ -220,7 +219,6 @@ class CarController extends Controller
         ->first();
         if (empty($existDictionaryValue)) {
             $newDictionaryValue =  new PropertyValueDictionary();
-            $newDictionaryValue->uuid = Str::Uuid();
             $newDictionaryValue->property_dictionaries_uuid = $dictionary->uuid;
             $newDictionaryValue->name = $originalValue;
             $newDictionaryValue->group = $dictionary->group;
