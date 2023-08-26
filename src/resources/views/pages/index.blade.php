@@ -1,4 +1,4 @@
-@extends('page')
+@extends('page'['h1' => 'empty page'])
 
 @section('title', 'first')
 

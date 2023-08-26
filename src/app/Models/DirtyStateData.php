@@ -24,4 +24,9 @@ class DirtyStateData extends Model
         'shape',
         'owner',
     ];
+
+    function dirtyStateParametersData()
+    {
+        return $this->hasMany(DirtyStateParametersData::class, 'state_id', 'id');
+    }
 }

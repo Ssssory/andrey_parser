@@ -2,13 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Classes\Clutch;
-use App\Classes\Forzida;
-use App\Classes\Poslovnabazasrbije;
 use App\Enums\Sources;
+use App\Models\DirtyCarData;
 use App\Models\DirtyData;
 use App\Models\DirtyStateData;
-use App\Models\DirtyStateParametersData;
 use App\Models\Url;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -18,7 +15,6 @@ use DiDom\Document;
 use Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
-use PhpParser\Node\Scalar\MagicConst\Dir;
 
 class Controller extends BaseController
 {
@@ -28,11 +24,19 @@ class Controller extends BaseController
     {
         $countSources = Url::select(DB::raw('count(distinct(source)) as total'))->firstOrFail();
 
-        $links = Url::select(DB::raw('source, count(source) as total'))->groupBy('source')->get();
+        $links = Url::select(DB::raw('lower(source) as source, count(source) as total'))->groupBy('source')->get();
         $totalLinks = $this->prepareCounts($links);
 
-        $dirtyData = DirtyData::select(DB::raw('source, count(source) as total'))->groupBy('source')->get();
+        $dirtyData = DirtyData::select(DB::raw('lower(source) as source, count(source) as total'))->groupBy('source')->get();
         $totalData = $this->prepareCounts($dirtyData);
+
+        $dirtyRentData = DirtyStateData::select(DB::raw('source, count(source) as total'))->groupBy('source')->get();
+        $totalRentData = $this->prepareCounts($dirtyRentData);
+
+        $dirtyCarData = DirtyCarData::select(DB::raw('source, count(source) as total'))->groupBy('source')->get();
+        $totalCarData = $this->prepareCounts($dirtyCarData);
+
+        // dd($dirtyRentData);
 
         $activeLinks = Url::select(DB::raw('source, count(source) as total'))->where('status', 'in progress')->groupBy('source')->get();
         $activeLinksData = $this->prepareCounts($activeLinks);
@@ -42,7 +46,7 @@ class Controller extends BaseController
             'sources' => $countSources->total,
             'totalLinksCount' => Url::count(),
             'totalLinks' => $totalLinks,
-            'totalData' => $totalData,
+            'totalData' => $totalCarData + $totalRentData + $totalData,
             'activeLinksData' => $activeLinksData,
         ]);
     }
@@ -63,31 +67,16 @@ class Controller extends BaseController
         }
 
         $source = Sources::from($model);
-        $list = DirtyData::where('source', $source->name)->limit(10)->get();
+        $list = DirtyData::where('source', $source->name)->paginate(15);
         $count = DirtyData::where('source', $source->name)->count();
 
-        return view('pages.table', [
+        return view('pages.poslovna.table', [
             'title' => $model,
             'list' => $list,
             'count' => $count,
         ]);
     }
 
-    function rentList(Request $request, string $model)
-    {
-        if (!$model) {
-            throw new Exception("Error Processing Request");
-        }
-        $source = Sources::from($model);
-        $list = DirtyStateData::where('source', $source->name)->limit(100)->orderByDesc('id')->get();
-        $count = DirtyStateData::where('source', $source->name)->count();
-
-        return view('pages.rent-table', [
-            'title' => $model,
-            'list' => $list,
-            'count' => $count,
-        ]);
-    }
     public function startPage(Request $request)
     {
         $url = $request->input('url', null);
@@ -116,26 +105,6 @@ class Controller extends BaseController
             'select' => Sources::cases(),
             'urls' => $urls,
         ]);
-    }
-
-    public function test(Request $request)
-    {
-        // $path = 'web-developers';
-        // $clutch = new Clutch();
-
-        // $html = $clutch->getHtml($path);
-        // $document = new Document($html);
-        // // $result = $clutch->getCompaniesFromPage($document);
-        // $pagination = $clutch->getPagination($document);
-        // dump($pagination);
-        // // return view('pages.index');
-        $forzida = new Forzida();
-        // $html = $forzida->getHtml('https://www.4zida.rs/izdavanje-stanova/hram-svetog-save-neimar-vracar-beograd/trosoban-stan/6478a25545b87ac9e402fe95');
-        // $document = new Document($html);
-        // $result = $forzida->getStateFromPage($document);
-        // dd($result);
-
-        $forzida->getUrlsFromSitemap();
     }
 
     public function saveCsv()

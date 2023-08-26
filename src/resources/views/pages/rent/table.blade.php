@@ -1,4 +1,4 @@
-@extends('page')
+@extends('page',['h1' => 'Rent Table'])
 
 @section('title', 'first')
 
@@ -15,10 +15,10 @@
                     <th>id</th>
                     <th>name</th>
                     <th>description</th>
-                    <th>images</th>
+                    <th>price</th>
                     <th>address</th>
-                    <th>phone</th>
-                    <th>url</th>  
+                    <th>url</th>
+                    <th>action</th>
                 </tr>
             </thead>
             <tbody>
@@ -27,14 +27,17 @@
                     <td>{{$loop->index}}</td>
                     <td>{{$model->name}}</td>
                     <td>{{$model->description}}</td>
-                    <td>
-                    @foreach(explode(',',$model->images) as $image)
-                        <img src="{{$image}}" width="100px">
-                    @endforeach
-                    </td>
+                    <td>{{$model->price}}</td>
                     <td>{{$model->address}}</td>
-                    <td>{{$model->phone}}</td>
                     <td>{{$model->url}}</td>
+                    <td><a href="/rent/form/{{$model->id}}" target="_blank" rel="noopener noreferrer">✍️✉️</a></td>
+                </tr>
+                <tr>
+                    <td colspan="7">
+                        @foreach(explode(',',$model->images) as $image)
+                        <img src="{{$image}}" width="200px">
+                        @endforeach
+                    </td>
                 </tr>
                 @endforeach
             </tbody>
@@ -45,8 +48,15 @@
                     <th></th>
                     <th></th>
                     <th></th>
-                    <th></th>
-                    <th></th>
+                    <th colspan="2">
+                        @if ($list->currentPage() > 1)
+                            <a href="{{$list->previousPageUrl()}}">prev</a>
+                        @endif
+                        {{$list->currentPage()}} of {{$list->lastPage()}}
+                        @if ($list->hasMorePages())
+                            <a href="{{$list->nextPageUrl()}}">next</a>
+                        @endif
+                    </th>
                 </tr>
             </tfoot>
         </table>

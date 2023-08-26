@@ -3,15 +3,12 @@
 namespace App\Classes;
 
 use App\Enums\Sources;
-use App\Models\DirtyData;
 use App\Models\DirtyStateData;
 use App\Models\DirtyStateParametersData;
 use App\Models\Url;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Support\Facades\Storage;
-
-use Orchestra\Parser\Xml\Facade as XmlParser;
 
 final class Forzida extends ParserAbstract
 {
@@ -28,7 +25,11 @@ final class Forzida extends ParserAbstract
 
     public function getStateFromPage($html)
     {
-        $name = $html->find('h1')[0]->text();
+        $name_raw = $html->find('h1');
+        if (empty($name_raw)) {
+            return;
+        }
+        $name = $name_raw[0]->text();
         $images = $html->find('.gallery-image');
         $gallery = [];
         foreach ($images as $image) {
@@ -42,15 +43,33 @@ final class Forzida extends ParserAbstract
             $arrtValue = $attr->nextSibling()->text();
             $property[] = ['label' => $label, 'value' => $arrtValue];
         }
-        $description = $html->find('.ed-description')[0]->text();
+        $description_row = $html->find('.ed-description');
+        if (!empty($description_row)) {
+            $description = $description_row[0]?->text();
+        }else{
+            $description = '';
+        }
 
-        $address = $html->find('app-place-info')[0]->text();
+        $price_raw = $html->find('body > app-root > app-ad-details > div > div.main-container > main > div:nth-child(7) > app-apartment-details > div:nth-child(1) > div > div > div.flex.flex-1.flex-col.justify-between.gap-4 > div.prices > div > strong');
+        if (!empty($price_raw)) {
+            $price = $price_raw[0]->text();
+        } else {
+            $price = '';
+        }
+
+        $address_raw = $html->find('app-place-info');
+        if (!empty($address_raw)) {
+            $address = $address_raw[0]->text();
+        }else {
+            $address = '';
+        }
 
         if (!DirtyStateData::where('hash', $this->hash)->exists()) {
             $data = new DirtyStateData();
             $data->source = Sources::Forzida->value;
             $data->hash = $this->hash;
             $data->url = $this->uri;
+            $data->price = $price;
             $data->name = $name;
             $data->images = implode(',', $gallery);
             $data->description = $description;
@@ -58,7 +77,7 @@ final class Forzida extends ParserAbstract
             $data->save();
 
             foreach ($property as $item) {
-                new DirtyStateParametersData([
+                DirtyStateParametersData::create([
                     'state_id' => $data->id,
                     'property' => $item['label'],
                     'value' => $item['value'],
@@ -72,6 +91,12 @@ final class Forzida extends ParserAbstract
         $hash = md5($path);
         $this->hash = $hash;
         $this->uri = $path;
+
+        if (!config('app.debug')) {
+            $response = $this->sendRequest($path);
+            return $response->getBody()->getContents();
+        }
+        
         $hash = $this->getCachePath($hash);
         if (Storage::disk('local')->exists($hash)) {
             return Storage::disk('local')->get($hash);
@@ -118,7 +143,7 @@ final class Forzida extends ParserAbstract
             $this->savePageUrl($item[0]);
         }
 
-        dd($urls);
+        // dd($urls);
     }
 
     private function savePageUrl(string $xmlUrl) 

@@ -3,7 +3,6 @@
 namespace App\Jobs;
 
 use App\Classes\Forzida;
-use App\Classes\Poslovnabazasrbije;
 use App\Models\Url;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
