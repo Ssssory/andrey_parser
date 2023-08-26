@@ -53,4 +53,20 @@ final class ParametersService
     function getParameter(string $property): Null|DirtyCarParametersData {
         return DirtyCarParametersData::where('property', $property)->where('is_appruved', true)->first();
     }
+
+    function getPrimaryParametersList(): array 
+    {
+        $parametersKeyList = ['brend'];
+        $result = [];
+        foreach ($parametersKeyList as $one) {
+            $result[] = PropertyDictionary::where('name', $one)->where('group', SourceType::Car)->first();
+        }
+        return $result;
+    }
+
+    function getBrendDirtyParametersKeys(): array 
+    {
+        $parameters = DirtyCarParametersData::where('name','brend')->get();
+        return $parameters->pluck('property')->toArray();
+    }
 }
