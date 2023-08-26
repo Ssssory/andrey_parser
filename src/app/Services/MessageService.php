@@ -9,6 +9,18 @@ use Illuminate\Http\Request;
 
 final class MessageService
 {
+
+    function createMessageDto($model): MessageCar
+    {
+        $message = new MessageCar();
+        $message->id = $this->getMessageCarId($model);
+        $message->original = $model;
+        $message->setImages(explode(',', $model->images));
+        $message->price = $model->price;
+        $message->name = $model->name;
+        return $message;
+    }
+
     /**
      * @param MessageCar $message
      * @param array $data
