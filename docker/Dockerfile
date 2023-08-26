@@ -27,7 +27,7 @@ WORKDIR /var/www
 # RUN docker-php-ext-configure gd --with-gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ --with-png-dir=/usr/include/
 # RUN docker-php-ext-install gd
 
-RUN apt-get update -y && apt-get install -y openssl zip unzip git libonig-dev mc vim htop supervisor
+RUN apt-get update -y && apt-get install -y openssl zip unzip git libonig-dev mc vim htop supervisor cron
 RUN docker-php-ext-install pdo pdo_mysql mbstring
 
 # Install composer
@@ -42,6 +42,11 @@ COPY . /var/www
 
 # Copy existing application directory permissions
 COPY --chown=www:www . /var/www
+
+RUN echo "4 * * * * www php /var/www/artisan app:hourly-car-command >> /var/log/cron.log 2>&1" >> /etc/crontab
+
+# Create the log file to be able to run tail
+RUN touch /var/log/cron.log
 
 # Change current user to www
 USER www
