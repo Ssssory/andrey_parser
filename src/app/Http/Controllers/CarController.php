@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Classes\Messages\MessageCar;
-use App\Classes\Telegram\Telegram;
 use App\Enums\Sources;
 use App\Enums\SourceType;
 use App\Models\CompleteMessage;
@@ -14,7 +13,6 @@ use App\Models\PropertyValueDictionary;
 use App\Services\MessageService;
 use App\Services\ParametersService;
 use App\Services\SenderService;
-use Carbon\Carbon;
 use Exception;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Collection;
@@ -22,7 +20,6 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Str;
 
 class CarController extends Controller
 {
