@@ -15,13 +15,19 @@
                     <pre>{
 	"botname": {
 		"token": "xxx",
-		"groups": [{
-			"name": "xxx",
-			"id": "-xxx"
-		}, {
-			"name": "yyy",
-			"id": "-yyy"
-		}]
+		"groups": {
+			"groupName": {
+				"type": "group/channel/forum",
+				"id": "-xxxxxxxxxxxxx",      
+				"topics": [{
+					"name": "BMW",
+					"id": 4
+				}, {
+					"name": "Audi",
+					"id": 3
+				}]
+			}
+		}
 	}
 }</pre>
                 </span>
