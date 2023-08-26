@@ -24,4 +24,11 @@ final class Client
         }
         return $this->client;
     }
+
+    public function getNewClient(): Nutgram {
+        $config = new Configuration(
+            clientTimeout: 20,
+        );
+        return new Nutgram(env('TELEGRAM_TOKEN'), $config);
+    }
 }
