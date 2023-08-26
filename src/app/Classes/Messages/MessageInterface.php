@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Classes\Telegram;
+namespace App\Classes\Messages;
 
 interface MessageInterface
 {

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Classes\Telegram\MessageRent;
+use App\Classes\Messages\MessageRent;
 use App\Classes\Telegram\Telegram;
 use App\Enums\Sources;
 use App\Models\DirtyStateData;

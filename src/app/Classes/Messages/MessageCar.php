@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Classes\Telegram;
+namespace App\Classes\Messages;
 
 use Exception;
 use Illuminate\Database\Eloquent\Model;
@@ -8,7 +8,7 @@ use SergiX44\Nutgram\Telegram\Types\Input\InputMediaPhoto;
 
 /**
  * Class MessageCar
- * @package App\Classes\Telegram
+ * @package App\Classes\Messages
  * @property string $id
  * @property array $tags
  * @property array $images set by setImages()

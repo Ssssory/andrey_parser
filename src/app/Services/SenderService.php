@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use App\Classes\Telegram\MessageCar;
+use App\Classes\Messages\MessageCar;
 use App\Classes\Telegram\Telegram;
 use App\Models\CompleteMessage;
 

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Classes\Telegram\MessageCar;
+use App\Classes\Messages\MessageCar;
 use App\Classes\Telegram\Telegram;
 use App\Enums\Sources;
 use App\Enums\SourceType;

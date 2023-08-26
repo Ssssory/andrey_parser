@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use App\Classes\Telegram\MessageCar;
+use App\Classes\Messages\MessageCar;
 use App\Models\DirtyCarData;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
