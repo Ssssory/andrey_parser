@@ -18,6 +18,7 @@ final class MessageService
         $message->setImages(explode(',', $model->images));
         $message->price = $model->price;
         $message->name = $model->name;
+        $message->url = $model->url;
         return $message;
     }
 
@@ -62,6 +63,7 @@ final class MessageService
         $message = new MessageCar();
         $message->id = $request->input('id');
         $message->original = $model;
+        $message->url = $model->url;
         $message->tags = explode(' ', $request->input('tags', ''));
         $message->price = $request->input('price');
         $message->setImages(explode(',', $model->images));

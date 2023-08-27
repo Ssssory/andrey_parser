@@ -30,6 +30,7 @@ final class MessageCar implements MessageInterface
     public array $tags = [];
     private array $images = [];
     public string $name = '';
+    public string $url = '';
     public ?string $description = '';
     public ?string $model = '';
     public ?string $year = '';
@@ -87,6 +88,9 @@ final class MessageCar implements MessageInterface
         }
         if ($this->transmission) {
             $description .= 'Тип коробки: ' . $this->transmission . PHP_EOL;
+        }
+        if ($this->url) {
+            $description .= 'Ссылка на объявление: ' . $this->url . PHP_EOL;
         }
         if ($this->price) {
             $description .= PHP_EOL . '💰 Цена: ' . $this->price . PHP_EOL;

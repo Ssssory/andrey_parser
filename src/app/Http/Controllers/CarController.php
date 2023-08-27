@@ -70,6 +70,7 @@ class CarController extends Controller
         $message->setImages(explode(',', $model->images));
         $message->price = $model->price;
         $message->name = $model->name;
+        $message->url = $model->url;
 
 
         $model->load('dirtyCarParametersData');
