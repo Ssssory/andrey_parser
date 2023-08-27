@@ -74,7 +74,7 @@ class HourlyCarCommand extends Command
 
         // $all = DirtyCarData::with('dirtyCarParametersData')->leftJoin('complete_messages', function ($join) {
         $all = DirtyCarData::with('dirtyCarParametersData')
-            ->whereDate('created_at', '>', now()
+            ->whereDate('dirty_car_data.created_at', '>', now()
             ->subDays(1))->leftJoin('complete_messages', function ($join) {
                 $join->on('dirty_car_data.id', '=', 'complete_messages.model_id')
                     ->where('complete_messages.model', DirtyCarData::class);
