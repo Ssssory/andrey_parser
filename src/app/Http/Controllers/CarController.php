@@ -107,7 +107,7 @@ class CarController extends Controller
     function editDictionary() : View 
     {
         /** @var Collection $dirtyCarParametersData */
-        $dirtyCarParametersData = DirtyCarParametersData::distinct('property')->groupBy('property')->select(['property'])->paginate(50);
+        $dirtyCarParametersData = DirtyCarParametersData::distinct('property')->groupBy('property')->select(['property'])->paginate(15);
 
         foreach ($dirtyCarParametersData as &$parameter) {
             /** @var Collection $exist */
@@ -140,7 +140,7 @@ class CarController extends Controller
         $list = DirtyCarParametersData::where('property', $property)
         ->distinct('value')
         ->select(['property', 'value'])
-        ->paginate(50);
+        ->paginate(15);
 
         $list->each(function($item) use ($propertyData){
             $existDictionaryValue = PropertyValueDictionary::where('property_dictionaries_uuid', $propertyData->uuid)
