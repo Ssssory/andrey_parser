@@ -118,7 +118,7 @@ class HourlyCarCommand extends Command
 
                 unset($arrBrands[$topic['name']]);
                 unset($message);
-                sleep(15);
+                sleep(31);
             }
         }
         $autoGroup = $this->telegramSettingsService->getCarGroup();
@@ -133,7 +133,7 @@ class HourlyCarCommand extends Command
 
                 $this->senderService->sendTelegram($message, $chatId, SenderService::AUTO);
                 unset($message);
-                sleep(15);
+                sleep(31);
             }
         }        
 
