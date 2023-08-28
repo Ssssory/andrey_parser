@@ -66,7 +66,7 @@ final class ParametersService
 
     function getBrendDirtyParametersKeys(): array 
     {
-        $parameters = DirtyCarParametersData::where('name','brend')->get();
+        $parameters = DirtyCarParametersData::where('name','brand')->get();
         return $parameters->pluck('property')->toArray();
     }
 }

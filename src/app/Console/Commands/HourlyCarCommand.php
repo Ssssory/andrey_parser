@@ -81,6 +81,7 @@ class HourlyCarCommand extends Command
             })
             ->whereNull('complete_messages.model_id')->get([
                 'dirty_car_data.id', 
+                'dirty_car_data.url', 
                 'dirty_car_data.name', 
                 'dirty_car_data.brand',
                 'dirty_car_data.price', 
@@ -94,11 +95,11 @@ class HourlyCarCommand extends Command
             $model->brand = $current->first()->value;
         }
 
-        // dd($all->groupBy(function($item){
-        //     return $item->brand;
-        // })->map(function($item){
-        //     return $item->count();
-        // })->sortDesc());
+        /*dd($all->groupBy(function($item){
+            return $item->brand;
+        })->map(function($item){
+            return $item->count();
+        })->sortDesc());*/
 
         $arrBrands = $all->groupBy(function($item){
             return $item->brand;
@@ -117,7 +118,7 @@ class HourlyCarCommand extends Command
 
                 unset($arrBrands[$topic['name']]);
                 unset($message);
-                sleep(31);
+                sleep(15);
             }
         }
         $autoGroup = $this->telegramSettingsService->getCarGroup();
@@ -132,7 +133,7 @@ class HourlyCarCommand extends Command
 
                 $this->senderService->sendTelegram($message, $chatId, SenderService::AUTO);
                 unset($message);
-                sleep(31);
+                sleep(15);
             }
         }        
 
