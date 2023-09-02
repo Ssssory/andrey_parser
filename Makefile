@@ -1,3 +1,6 @@
+#!make
+include .env
+
 up:
 	docker-compose up -d
 local-up:
@@ -5,8 +8,8 @@ local-up:
 stop:
 	docker-compose stop
 bash:
-	docker exec -it app bash
+	docker exec -it ${PROJECT_NAME}_app bash
 bash-root:
-	docker exec -it -u root app bash
+	docker exec -it -u root ${PROJECT_NAME}_app bash
 bash-js:
-	docker exec -it -u node parser_consumer_1 bash
+	docker exec -it -u node ${PROJECT_NAME}_consumer bash
