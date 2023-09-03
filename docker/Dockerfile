@@ -43,7 +43,7 @@ COPY . /var/www
 # Copy existing application directory permissions
 COPY --chown=www:www . /var/www
 
-RUN echo "4 * * * * www php /var/www/artisan app:hourly-car-command >> /var/log/cron.log 2>&1" >> /etc/crontab
+COPY crontab/www-crontab /etc/cron.d/www-crontab
 
 # Create the log file to be able to run tail
 RUN touch /var/log/cron.log
