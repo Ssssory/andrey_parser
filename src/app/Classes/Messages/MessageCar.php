@@ -72,7 +72,7 @@ final class MessageCar implements MessageInterface
 
     private function getDescription() : string 
     {
-        $description = '🚘 ' . $this->name . PHP_EOL;
+        $description = '[🚘 ' . $this->name . '](' . $this->url . ')' . PHP_EOL;
         $description .=  PHP_EOL . 'Модель: ' . $this->model . PHP_EOL;
         if ($this->year) {
             $description .= 'Год выпуска: ' . $this->year . PHP_EOL;
@@ -88,9 +88,6 @@ final class MessageCar implements MessageInterface
         }
         if ($this->transmission) {
             $description .= 'Тип коробки: ' . $this->transmission . PHP_EOL;
-        }
-        if ($this->url) {
-            $description .= 'Ссылка на объявление: ' . $this->url . PHP_EOL;
         }
         if ($this->price) {
             $description .= PHP_EOL . '💰 Цена: ' . $this->price . PHP_EOL;
