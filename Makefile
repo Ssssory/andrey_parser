@@ -19,3 +19,9 @@ stop-cron:
 	docker exec -u root ${PROJECT_NAME}_app service cron stop
 restart-cron:
 	docker exec -u root ${PROJECT_NAME}_app /etc/init.d/cron reload
+log-cron:
+	docker exec -u root ${PROJECT_NAME}_app tail -f /var/log/cron.log
+start-all:
+	docker exec ${PROJECT_NAME}_app /usr/bin/crontab /var/www/crontab
+	docker exec -u root ${PROJECT_NAME}_app service supervisor start
+	

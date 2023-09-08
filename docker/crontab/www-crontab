@@ -1,1 +1,1 @@
-4 * * * * www /usr/local/bin/php /var/www/artisan app:hourly-car-command >> /var/log/cron.log 2>&1
+*/6 * * * * www /usr/local/bin/php /var/www/artisan app:parsing:polovniautomobili >> /var/log/cron.log 2>&1

@@ -3,32 +3,11 @@ FROM php:8.2-fpm
 # Set working directory
 WORKDIR /var/www
 
-# Install dependencies
-# RUN apt-get update && apt-get install -y \
-#     build-essential \
-#     libpng-dev \
-#     libonig-dev \
-#     libjpeg62-turbo-dev \
-#     libfreetype6-dev \
-#     locales \
-#     zip \
-#     jpegoptim optipng pngquant gifsicle \
-#     vim \
-#     unzip \
-#     git \
-#     curl \
-#     libzip-dev
-
-# # Clear cache
-# RUN apt-get clean && rm -rf /var/lib/apt/lists/*
-
-# # Install extensions
-# RUN docker-php-ext-install pdo_mysql mbstring zip exif pcntl
-# RUN docker-php-ext-configure gd --with-gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ --with-png-dir=/usr/include/
-# RUN docker-php-ext-install gd
-
-RUN apt-get update -y && apt-get install -y openssl zip unzip git libonig-dev mc vim htop supervisor cron
+RUN apt-get update -y && apt-get install -y openssl zip unzip git curl libonig-dev mc vim htop supervisor cron
 RUN docker-php-ext-install pdo pdo_mysql mbstring
+
+# Clear cache
+RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Install composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
@@ -45,8 +24,11 @@ COPY --chown=www:www . /var/www
 
 COPY crontab/www-crontab /etc/cron.d/www-crontab
 
+RUN touch /var/log/supervisor/supervisord.log
+RUN chmod 0766 /var/log/supervisor/supervisord.log
 # Create the log file to be able to run tail
 RUN touch /var/log/cron.log
+RUN chmod 0766 /var/log/cron.log
 
 # Change current user to www
 USER www
