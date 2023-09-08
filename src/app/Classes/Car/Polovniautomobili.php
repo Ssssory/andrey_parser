@@ -52,7 +52,7 @@ final class Polovniautomobili extends ParserAbstract
 
     public function getDataFromPage($html)
     {
-        $h1 = $html->first('body > div.details.js-ad-details-page > div.uk-container.uk-container-center.body > div.table.js-tutorial-all > div > h1')?->text();
+        $h1 = $html->first('body > div.details.js-ad-details-page > div.uk-container.uk-container-center.body > div.table.js-tutorial-all > div > h1')?->firstChild()->text();
         if (empty($h1)) {
             return;
         }
@@ -110,59 +110,72 @@ final class Polovniautomobili extends ParserAbstract
     {
         $brands = [
             "audi",
-            "bmw",
-            "chevrolet",
-            "citroen",
-            "dacia",
-            "dodge",
-            "fiat",
-            "ford",
-            "honda",
-            "hyundai",
-            "infinity",
-            "jeep",
-            "kia",
-            "lancia",
-            "mazda",
-            "mINI",
-            "mitsubishi",
-            "nissan",
-            "opel",
-            "peugeot",
-            "porsche",
-            "renault",
-            "seat",
-            "smart",
-            "subaru",
-            "suzuki",
-            "toyota",
-            "volkswagen",
-            "volvo",
-            "alfa-romeo",
-            "land-rover",
-            "mercedes-benz",
-            "skoda",
+            // "bmw",
+            // "chevrolet",
+            // "citroen",
+            // "dacia",
+            // "dodge",
+            // "fiat",
+            // "ford",
+            // "honda",
+            // "hyundai",
+            // "infinity",
+            // "jeep",
+            // "kia",
+            // "lancia",
+            // "mazda",
+            // "mINI",
+            // "mitsubishi",
+            // "nissan",
+            // "opel",
+            // "peugeot",
+            // "porsche",
+            // "renault",
+            // "seat",
+            // "smart",
+            // "subaru",
+            // "suzuki",
+            // "toyota",
+            // "volkswagen",
+            // "volvo",
+            // "alfa-romeo",
+            // "land-rover",
+            // "mercedes-benz",
+            // "skoda",
 
         ];
 
-        foreach ($brands as $brand) {
-            $url = $this->urlConstructor($brand);
-            $carList = $this->getHtml(Sources::getUrl(Sources::Polovniautomobili) . $url);
-
-            $html = new Document($carList);
-         
-            $links = $html->first('#search-results')->find('h2 > a');
-
-            if (empty($links)) {
-                continue;
-            }
-            $this->savePageUrl($links);
+        foreach ($brands as $brand) {            
+            $this->parseFiltredUrl($brand);
         }
-
         // dd($urls);
     }
 
-    private function urlConstructor(string $brand) : string 
+    private function parseFiltredUrl(string $brand, int $page = 1)
+    {
+        $url = $this->urlConstructor($brand, $page);
+        // echo $url . PHP_EOL;
+        $carList = $this->getHtml(Sources::getUrl(Sources::Polovniautomobili) . $url);
+
+        $html = new Document($carList);
+
+        $links = $html->first('#search-results')->find('h2 > a');
+
+        if (empty($links)) {
+            return;
+        }
+        $this->savePageUrl($links);
+
+        $page++;
+        // echo $page . PHP_EOL;
+        if ($html->first('#search-results')->find('.js-pagination-next')) {
+            unset($html);
+            $this->parseFiltredUrl($brand, $page);
+        }
+        unset($html,$page);
+    }
+
+    private function urlConstructor(string $brand, int $page=0 ) : string 
     {
         $parts = [
             'price' => '&price_from=2000&price_to=30000',
@@ -170,10 +183,15 @@ final class Polovniautomobili extends ParserAbstract
             'date_limit' => '&date_limit=1',
 
         ];
+        if ($page > 1) {
+            $parts['page'] = '&page=' . $page;
+        }else{
+            $parts['page'] = '';
+        }
 
         $brand = '?brand=' . $brand;
 
-        return 'auto-oglasi/pretraga' . $brand . $parts['price'] . $parts['year'] . $parts['date_limit'];
+        return 'auto-oglasi/pretraga' . $brand . $parts['page'] . $parts['price'] . $parts['year'] . $parts['date_limit'];
     }
 
     private function savePageUrl($urls)
@@ -183,7 +201,7 @@ final class Polovniautomobili extends ParserAbstract
             if (!Url::where('url', $uri)->exists()) {
                 $url = new Url();
                 $url->source = Sources::Polovniautomobili->name;
-                $url->url = $uri ;
+                $url->url = $uri;
                 $url->category = "car";
                 $url->save();
             }
