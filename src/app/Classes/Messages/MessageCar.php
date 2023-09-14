@@ -5,6 +5,7 @@ namespace App\Classes\Messages;
 use Exception;
 use Illuminate\Database\Eloquent\Model;
 use SergiX44\Nutgram\Telegram\Types\Input\InputMediaPhoto;
+use App\Classes\Contracts\MessageInterface;
 
 /**
  * Class MessageCar

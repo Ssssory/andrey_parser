@@ -2,6 +2,7 @@
 
 namespace App\Classes\Messages;
 
+use App\Classes\Contracts\MessageInterface;
 use Exception;
 use SergiX44\Nutgram\Telegram\Types\Input\InputMediaPhoto;
 
