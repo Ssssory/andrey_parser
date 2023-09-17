@@ -12,6 +12,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use App\Enums\SendType;
 
 class SendCarToTelegramJob implements ShouldQueue
 {
@@ -46,6 +47,6 @@ class SendCarToTelegramJob implements ShouldQueue
         $cleanParams = $this->parametersService->getCleanValues($this->model->dirtyCarParametersData->pluck('value', 'property'));
         $message = $this->messageService->updateMessageDto($message, $cleanParams);
 
-        $this->senderService->sendTelegram($message, $this->chatId, SenderService::AUTO, $this->topicId);
+        $this->senderService->sendTelegram($message, $this->chatId, SendType::Auto->value, $this->topicId);
     }
 }
