@@ -74,6 +74,14 @@ Route::group(['middleware' => 'auth'], function(){
         // Route::post('/users/{id}/edit', [AdminUserController::class, 'updateUser']);
         // Route::get('/users/{id}/delete', [AdminUserController::class, 'deleteUser']);
         Route::match(array('GET', 'POST'), '/settings/telegram', [AdminController::class, 'settingsTelegram']);
+        Route::get( '/settings/bots', [AdminController::class, 'botSettings'])->name('admin.settings.bots');
+        Route::get( '/settings/groups', [AdminController::class, 'groupSettings'])->name('admin.settings.groups');
+        Route::post( '/settings/bot/save', [AdminController::class, 'saveBotSettings'])->name('admin.settings.bots.save');
+        Route::post( '/settings/group/save', [AdminController::class, 'saveGroupSettings'])->name('admin.settings.groups.save');
+        Route::get('/settings/bot/active/{bot}', [AdminController::class, 'activeBotSettings'])->name('admin.settings.bot.active');
+        Route::get('/settings/group/active/{group}', [AdminController::class, 'activeGroupSettings'])->name('admin.settings.group.active');
+        Route::get('/settings/bot/delete/{bot}', [AdminController::class, 'deleteBotSettings'])->name('admin.settings.bot.delete');
+        Route::get('/settings/group/delete/{group}', [AdminController::class, 'deleteGroupSettings'])->name('admin.settings.group.delete');
     });
 });
 
