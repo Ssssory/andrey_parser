@@ -2,26 +2,27 @@
 
 namespace App\Classes\Telegram;
 
-use App\Classes\Messages\MessageInterface;
-use SergiX44\Nutgram\Nutgram;
+use App\Classes\Contracts\MessageInterface;
+use App\Classes\Contracts\TransportInterface;
+use App\Classes\Storages\TelegramStorage;
+use App\Enums\SourceType;
+use Illuminate\Support\Collection;
 use SergiX44\Nutgram\Telegram\Types\Internal\InputFile;
 
-final class Telegram
+final class Telegram implements TransportInterface
 {
-    // const TEST_CHAT_ID = -925022442;
     const TEST_CHAT_ID = -1001592144637;
 
-    private Nutgram $client;
-    private Client  $proxyClient;
+    private Client $client;
 
-    public function __construct(Client $client) {
-        $this->client = $client->getClient();
-        $this->proxyClient = $client;
+    public function __construct(string $token)
+    {
+        $this->client = new Client($token);
     }
 
     public function sendTextMesage(string $text,string $chatId,int $thread): void
     {
-        $this->client->sendMessage(
+        $this->client->getClient()->sendMessage(
             $text,
             $chatId ?? self::TEST_CHAT_ID,
             $thread
@@ -30,12 +31,12 @@ final class Telegram
 
     function getChat(string $chatId) 
     {
-        return $this->client->getChat($chatId);
+        return $this->client->getClient()->getChat($chatId);
     }
 
     function sendOnePhotoMesage(string $urlPhoto): void
     {
-        $this->client->sendPhoto(
+        $this->client->getClient()->sendPhoto(
             photo: InputFile::make($urlPhoto),
             chat_id: self::TEST_CHAT_ID
         );
@@ -43,7 +44,7 @@ final class Telegram
 
     function sendMediaMessage(MessageInterface $message, string $chatId=null, int $topic=null): void
     {
-        $this->proxyClient->getNewClient()->sendMediaGroup(
+        $this->client->getClient()->sendMediaGroup(
             $message->getMessage(),
             $chatId ?? self::TEST_CHAT_ID,
             $topic
