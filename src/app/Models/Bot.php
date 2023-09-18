@@ -15,4 +15,9 @@ class Bot extends Model
         'type',
         'transport',
     ];
+
+    function groups() 
+    {
+        return $this->belongsToMany(Group::class);
+    }
 }
