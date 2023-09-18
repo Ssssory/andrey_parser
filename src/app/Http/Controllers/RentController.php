@@ -56,26 +56,26 @@ final class RentController extends Controller
         ]);
     }
 
-    function send(Request $request, DirtyStateData $model, Telegram $telegram)
+    function send(Request $request, DirtyStateData $model)
     {
-        $message = new MessageRent();
-        $message->id = $request->input('id');
-        $message->tags = explode(' ', $request->input('tags',''));
-        $message->price = $request->input('price');
-        $message->square = $request->input('square');
-        $message->rooms = $request->input('rooms');
-        $message->location = $request->input('location');
-        $message->setImages(explode(',', $model->images));
-        // dd($message->getMessage());
+        // $message = new MessageRent();
+        // $message->id = $request->input('id');
+        // $message->tags = explode(' ', $request->input('tags',''));
+        // $message->price = $request->input('price');
+        // $message->square = $request->input('square');
+        // $message->rooms = $request->input('rooms');
+        // $message->location = $request->input('location');
+        // $message->setImages(explode(',', $model->images));
+        // // dd($message->getMessage());
 
-        $telegram->sendMediaMessage($message);
+        // $telegram->sendMediaMessage($message);
 
-        try {
-            return redirect()->route('rent.list',['model' => $model->source])->with('message', 'success');
-        } catch (\Throwable $th) {
-            Log::error($th->getMessage());
-            return redirect()->back()->with('message', 'error');
-        }
+        // try {
+        //     return redirect()->route('rent.list',['model' => $model->source])->with('message', 'success');
+        // } catch (\Throwable $th) {
+        //     Log::error($th->getMessage());
+        //     return redirect()->back()->with('message', 'error');
+        // }
 
 
         // 
