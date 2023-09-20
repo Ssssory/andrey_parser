@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Classes\Messages\MessageCar;
+use App\Enums\SendType;
 use App\Enums\Sources;
 use App\Enums\SourceType;
 use App\Models\CompleteMessage;
@@ -96,7 +97,7 @@ class CarController extends Controller
 
             $message = $this->messageService->getCarMessage($request, $model);
     
-            $this->senderService->sendTelegram($message,$chatId,SenderService::HANDLE);
+            $this->senderService->sendTelegram($message,$chatId, SendType::Handle->value);
             return redirect()->route('car.list', ['model' => $model->source])->with('message', 'success');
         } catch (\Throwable $th) {
             Log::error($th->getMessage());
