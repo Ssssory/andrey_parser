@@ -3,15 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Classes\Messages\MessageRent;
-use App\Classes\Telegram\Telegram;
 use App\Enums\Sources;
 use App\Models\DirtyStateData;
-use App\Models\DirtyStateParametersData;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Illuminate\Support\Facades\Log;
 
 final class RentController extends Controller
 {
