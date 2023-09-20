@@ -6,6 +6,7 @@ use Exception;
 use Illuminate\Database\Eloquent\Model;
 use SergiX44\Nutgram\Telegram\Types\Input\InputMediaPhoto;
 use App\Classes\Contracts\MessageInterface;
+use SergiX44\Nutgram\Telegram\Properties\ParseMode;
 
 /**
  * Class MessageCar
@@ -112,6 +113,7 @@ final class MessageCar implements MessageInterface
             throw new Exception("so match lenth of capture", 500);
         }
         $last->caption = $this->getDescription();
+        $last->parse_mode = ParseMode::MARKDOWN_LEGACY;
 
         return array_merge($answer, [$last]);
     }
