@@ -2,8 +2,13 @@
 
 namespace App\Console\Commands;
 
-use App\Jobs\SendCarToTelegramJob;
+use App\Classes\Dto\Message;
+use App\Classes\Storages\TelegramStorage;
+use App\Enums\SendType;
+use App\Enums\SourceType;
+use App\Enums\Transport;
 use App\Models\DirtyCarData;
+use App\Models\Group;
 use App\Services\MessageService;
 use App\Services\ParametersService;
 use App\Services\SenderService;
@@ -26,13 +31,17 @@ class CarSenderCommand extends Command
      */
     protected $description = 'Publish cars in groups';
 
+    private SourceType $type;
+
     function __construct(
         private ParametersService $parametersService,
         private MessageService $messageService,
         private SenderService $senderService,
-        private TelegramSettingsService $telegramSettingsService
+        private TelegramSettingsService $telegramSettingsService,
+        private TelegramStorage $telegramStorage
     ) {
         parent::__construct();
+        $this->type = SourceType::Car;
     }
 
     /**
@@ -45,13 +54,22 @@ class CarSenderCommand extends Command
             return;
         }
 
+        $groups = Group::where('is_active', true)->where('type', $this->type)->get();
+        $topicesNames = $groups->filter(function ($group) {
+            if (!empty($group->topic_name)) {
+                return $group;
+            }
+        })->map(function ($group) {
+            return $group->topic_name;
+        });
+
         // get all keys for dictionary name brand
         $properties = $this->parametersService->getBrendDirtyParametersKeys();
 
         // exclude aready senden models
         $all = DirtyCarData::with('dirtyCarParametersData')
-            ->whereDate('dirty_car_data.created_at', '>', now()
-                ->subHour(1))->leftJoin('complete_messages', function ($join) {
+            // ->whereDate('dirty_car_data.created_at', '>', now()->subHour(1))
+            ->leftJoin('complete_messages', function ($join) {
                 $join->on('dirty_car_data.id', '=', 'complete_messages.model_id')
                     ->where('complete_messages.model', DirtyCarData::class);
             })
@@ -65,12 +83,18 @@ class CarSenderCommand extends Command
             ]);
 
         // set brand key from relation to property
-        foreach ($all as $model) {
-            $current = $model->dirtyCarParametersData->filter(function ($item) use ($properties) {
+        $arrBrands = $all->filter(function ($item) use ($topicesNames, $properties) {
+            $current = $item->dirtyCarParametersData->filter(function ($item) use ($properties) {
                 return in_array($item->property, $properties);
             });
-            $model->brand = $current->first()->value;
-        }
+            $brand = $current->first()->value;
+            if (in_array($brand,$topicesNames->toArray())) {
+                $item->brand = $current->first()->value;
+                return $item;
+            }
+        })->groupBy(function ($item) {
+            return $item->brand;
+        });
 
         /*dd($all->groupBy(function($item){
             return $item->brand;
@@ -78,35 +102,21 @@ class CarSenderCommand extends Command
             return $item->count();
         })->sortDesc());*/
 
-        // map models to array with key brand
-        $arrBrands = $all->groupBy(function ($item) {
-            return $item->brand;
-        });
 
+        // dd($arrBrands);        
+        $this->senderService->init(SendType::Auto, Transport::Telegram, $this->type);
         // send to telegram
-        $groupForum = $this->telegramSettingsService->getCarForumGroup();
+        foreach ($groups as $topic) {
+            if (isset($arrBrands[$topic['topic_name']])) {
+                $model = $arrBrands[$topic['topic_name']]->pop();
 
-        foreach ($groupForum['topics'] as $topic) {
-            if (isset($arrBrands[$topic['name']])) {
-                $model = $arrBrands[$topic['name']]->pop();
+                $message = $this->messageService->createMessageDto($model);
+                $cleanParams = $this->parametersService->getCleanValues($model->dirtyCarParametersData->pluck('value', 'property'));
+                $message = $this->messageService->updateMessageDto($message, $cleanParams);
 
-                SendCarToTelegramJob::dispatch($model, $groupForum['id'], $topic['id']);
+                $dto = new Message(SendType::Auto, [$topic->group_id, $topic->topic], Transport::Telegram, $message);
 
-                unset($arrBrands[$topic['name']]);
-                unset($message);
-                sleep(31);
-            }
-        }
-        $autoGroup = $this->telegramSettingsService->getCarGroup();
-        $chatId = $autoGroup['id'];
-
-        if (!$arrBrands->isEmpty()) {
-            foreach ($arrBrands as $collection) {
-                $model = $collection->pop();
-
-                SendCarToTelegramJob::dispatch($model, $chatId);
-                unset($message);
-                sleep(31);
+                $this->senderService->sendMessage($dto);
             }
         }
 
