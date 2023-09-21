@@ -171,10 +171,10 @@ final class Polovniautomobili extends ParserAbstract
 
         $page++;
         // echo $page . PHP_EOL;
-        if ($html->first('#search-results')->find('.js-pagination-next')) {
-            unset($html);
-            $this->parseFiltredUrl($brand, $page);
-        }
+        // if ($html->first('#search-results')->find('.js-pagination-next')) {
+        //     unset($html);
+        //     $this->parseFiltredUrl($brand, $page);
+        // }
         unset($html,$page);
     }
 
