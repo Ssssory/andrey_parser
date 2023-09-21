@@ -68,7 +68,7 @@ class CarSenderCommand extends Command
 
         // exclude aready senden models
         $all = DirtyCarData::with('dirtyCarParametersData')
-            // ->whereDate('dirty_car_data.created_at', '>', now()->subHour(1))
+            ->whereDate('dirty_car_data.created_at', '>', now()->subHour(1))
             ->leftJoin('complete_messages', function ($join) {
                 $join->on('dirty_car_data.id', '=', 'complete_messages.model_id')
                     ->where('complete_messages.model', DirtyCarData::class);
