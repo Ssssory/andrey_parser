@@ -110,38 +110,38 @@ final class Polovniautomobili extends ParserAbstract
     {
         $brands = [
             "audi",
-            // "bmw",
-            // "chevrolet",
-            // "citroen",
-            // "dacia",
-            // "dodge",
-            // "fiat",
-            // "ford",
-            // "honda",
-            // "hyundai",
-            // "infinity",
-            // "jeep",
-            // "kia",
-            // "lancia",
-            // "mazda",
-            // "mINI",
-            // "mitsubishi",
-            // "nissan",
-            // "opel",
-            // "peugeot",
-            // "porsche",
-            // "renault",
-            // "seat",
-            // "smart",
-            // "subaru",
-            // "suzuki",
-            // "toyota",
-            // "volkswagen",
-            // "volvo",
-            // "alfa-romeo",
-            // "land-rover",
-            // "mercedes-benz",
-            // "skoda",
+            "bmw",
+            "chevrolet",
+            "citroen",
+            "dacia",
+            "dodge",
+            "fiat",
+            "ford",
+            "honda",
+            "hyundai",
+            "infinity",
+            "jeep",
+            "kia",
+            "lancia",
+            "mazda",
+            "mINI",
+            "mitsubishi",
+            "nissan",
+            "opel",
+            "peugeot",
+            "porsche",
+            "renault",
+            "seat",
+            "smart",
+            "subaru",
+            "suzuki",
+            "toyota",
+            "volkswagen",
+            "volvo",
+            "alfa-romeo",
+            "land-rover",
+            "mercedes-benz",
+            "skoda",
 
         ];
 
@@ -153,6 +153,9 @@ final class Polovniautomobili extends ParserAbstract
 
     private function parseFiltredUrl(string $brand, int $page = 1)
     {
+        if ($page > 3) {
+            return;
+        }
         $url = $this->urlConstructor($brand, $page);
         // echo $url . PHP_EOL;
         $carList = $this->getHtml(Sources::getUrl(Sources::Polovniautomobili) . $url);
