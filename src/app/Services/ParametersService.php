@@ -33,6 +33,7 @@ final class ParametersService
                     if ($dictionary->is_dictionary == false) {
                         $propertyArray['valid'] = true;
                         $propertyArray['value'] = $this->removeSimvols($value);
+                        $propertyArray['name'] = $param->name;
                     }else{
                         $dictionaryValue = PropertyValueDictionary::where('property_dictionaries_uuid', $dictionary->uuid)
                             ->where('name', $value)
