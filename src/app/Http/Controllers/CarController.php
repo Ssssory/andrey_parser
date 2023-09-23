@@ -198,7 +198,7 @@ class CarController extends Controller
             }
         });
         
-        return redirect()->back();
+        return redirect()->back()->with('message', 'success');
     }
 
     function listDictionaryValuesSave(Request $request, string $name)
@@ -236,6 +236,13 @@ class CarController extends Controller
         }
         $existDictionaryValue->save();
 
+        return redirect()->back()->with('message', 'success');
+    }
+
+    function switchDictionaryProperty(Request $request, string $uuid)
+    {
+        $isChecked = $request->get('is_dictionary');
+        PropertyDictionary::where('uuid', $uuid)->update(['is_dictionary' => (bool)$isChecked]);
         return redirect()->back()->with('message', 'success');
     }
 }

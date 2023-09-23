@@ -60,6 +60,7 @@ Route::group(['middleware' => 'auth'], function(){
         Route::post('/form/{model}/send', [CarController::class, 'send']);
         Route::get('/dictionary/list/property', [CarController::class, 'editDictionary'])->name('car.dictionary');
         Route::post('/dictionary/list/property/{property}', [CarController::class, 'saveDictionaryProperty'])->name('car.dictionary.property');
+        Route::post('/dictionary/list/property/{uuid}/switch', [CarController::class, 'switchDictionaryProperty'])->name('car.dictionary.property.switch');
         Route::get('/dictionary/list/values/{property}', [CarController::class, 'listDictionaryValues'])->name('car.dictionary.values');
         Route::post('/dictionary/list/values/{name}/save', [CarController::class, 'listDictionaryValuesSave'])->name('car.dictionary.values.save');
     });
