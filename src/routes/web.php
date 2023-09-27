@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RentController;
 use App\Http\Controllers\TestController;
+use App\Http\Controllers\WebController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -30,7 +31,7 @@ Route::post('/login', [LoginController::class, 'authenticate']);
 //     return view('auth.registration');
 // });
 
-Route::get('/', function(){
+Route::get('/landing', function(){
     return view('landing');
 });
 
@@ -86,3 +87,4 @@ Route::group(['middleware' => 'auth'], function(){
     });
 });
 
+Route::get('/',[WebController::class, 'home'])->name('home');
