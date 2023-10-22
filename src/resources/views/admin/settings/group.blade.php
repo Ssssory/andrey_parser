@@ -48,6 +48,15 @@
                     </select>
                 </div>
                 <div class="form-group">
+                    <label>Scop</label>
+                    <select class="form-control" name="type">
+                        <option value="">Select scop</option>
+                        @foreach ($scop as $one)
+                        <option>{{$one->value}}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="form-group">
                     <label>Transport</label>
                     <select class="form-control" name="transport">
                         <option value="">Select messenger</option>
@@ -70,6 +79,7 @@
                 <th>id</th>
                 <th>name</th>
                 <th>type</th>
+                <th>scop</th>
                 <th>topic name</th>
                 <th>topic id</th>
                 <th>active</th>
@@ -82,6 +92,7 @@
                 <td>{{$group->id}}</td>
                 <td>{{$group->name}}</td>
                 <td>{{$group->type}}</td>
+                <td>{{$group->scop}}</td>
                 <td>{{$group->topic_name}}</td>
                 <td>{{$group->topic}}</td>
                 <td>@if($group->is_active)✅@else❌@endif</td>
@@ -90,12 +101,14 @@
                         @if($group->is_active) Disable @else Enable @endif
                     </a>
                     <a href="{{route('admin.settings.group.delete',['group'=> $group->id])}}" class="btn btn-danger">Delete</a>
+                    <a href="{{route('admin.settings.group.edit',['group'=> $group->id])}}" class="btn btn-success">Edit</a>
                 </td>
             </tr>
             @endforeach
         </tbody>
         <tfoot>
             <tr>
+                <th></th>
                 <th></th>
                 <th></th>
                 <th></th>

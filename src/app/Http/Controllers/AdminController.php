@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\SendScop;
 use App\Enums\Transport;
 use App\Enums\SourceType;
 use App\Models\Bot;
 use App\Models\Group;
 use App\Services\TelegramSettingsService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
-use PHPUnit\TextUI\Configuration\Source;
 
 final class AdminController extends Controller
 {
@@ -74,6 +75,7 @@ final class AdminController extends Controller
         return view('admin.settings.group', [
             'title' => 'Manage bots',
             'groups' => Group::all(),
+            'scop' => SendScop::cases(),
             'transport' => Transport::cases(),
             'types' => SourceType::cases(),
         ]);
@@ -81,7 +83,6 @@ final class AdminController extends Controller
 
     function saveGroupSettings(Request $request)
     {
-        // dd($request->all());
         $request->validate([
             'name' => 'required',
             'group_id' => 'required',
@@ -89,8 +90,13 @@ final class AdminController extends Controller
             'transport' => 'required|in :' . implode(',', [Transport::Telegram->value]),
         ]);
 
-        Group::create(array_merge($request->all()));
-        return redirect()->back()->with('success', 'Bot created');
+        if (isset($request->id)) {
+            Group::where('id', $request->get('id'))->update(Arr::except($request->all(), '_token'));
+            return redirect()->back()->with('success', 'Group updated');
+        }else{
+            Group::create(array_merge($request->all()));
+            return redirect()->back()->with('success', 'Group created');
+        }
     }
 
     function activeGroupSettings(Request $request, Group $group)
@@ -104,5 +110,17 @@ final class AdminController extends Controller
     {
         $group->delete();
         return redirect()->back()->with('success', 'Group deleted');
+    }
+
+    function editGroupSettings(Request $request, Group $group) 
+    {
+        return view('admin.settings.group-edit', [
+            'title' => 'Edit group',
+            'group' => $group,
+            'scop' => SendScop::cases(),
+            'transport' => Transport::cases(),
+            'types' => SourceType::cases(),
+        ]);
+        
     }
 }

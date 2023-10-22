@@ -83,6 +83,7 @@ Route::group(['middleware' => 'auth'], function(){
         Route::get('/settings/group/active/{group}', [AdminController::class, 'activeGroupSettings'])->name('admin.settings.group.active');
         Route::get('/settings/bot/delete/{bot}', [AdminController::class, 'deleteBotSettings'])->name('admin.settings.bot.delete');
         Route::get('/settings/group/delete/{group}', [AdminController::class, 'deleteGroupSettings'])->name('admin.settings.group.delete');
+        Route::get('/settings/group/edit/{group}', [AdminController::class, 'editGroupSettings'])->name('admin.settings.group.edit');
     });
 });
 
