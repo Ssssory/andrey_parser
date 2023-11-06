@@ -119,7 +119,7 @@ final class Polovniautomobili extends ParserAbstract
             "ford",
             "honda",
             "hyundai",
-            "infinity",
+            "infiniti", 
             "jeep",
             "kia",
             "lancia",
