@@ -13,6 +13,7 @@ class Bot extends Model
         'name',
         'token',
         'type',
+        'scop',
         'transport',
     ];
 

@@ -15,6 +15,7 @@ class Group extends Model
         'topic_name',
         'topic',
         'type',
+        'scop',
         'transport',
     ];
 

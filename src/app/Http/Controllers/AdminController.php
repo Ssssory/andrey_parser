@@ -37,6 +37,7 @@ final class AdminController extends Controller
         return view('admin.settings.bot', [
             'title' => 'Manage bots',
             'bots' => Bot::all(),
+            'scop' => SendScop::cases(),
             'transport' => Transport::cases(),
             'types' => SourceType::cases(),
         ]);
@@ -44,17 +45,40 @@ final class AdminController extends Controller
 
     function saveBotSettings(Request $request)
     {
-        $request->validate([
-            'name' => 'required',
-            'token' => 'required|unique:bots',
-            'type' => 'required|in:'.implode(',', SourceType::getValues()),
-            'transport' => 'required|in :'.implode(',', [Transport::Telegram->value]),
-        ]);
+        if (isset($request->id)) {
+            $request->validate([
+                'name' => 'required',
+                'token' => 'required',
+                'type' => 'required|in:' . implode(',', SourceType::getValues()),
+                'transport' => 'required|in :' . implode(',', [Transport::Telegram->value]),
+            ]);
+            Bot::where('id', $request->get('id'))->update(Arr::except($request->all(), '_token'));
+            return redirect()->back()->with('success', 'Bot updated');
+        }else{
+            $request->validate([
+                'name' => 'required',
+                'token' => 'required|unique:bots',
+                'type' => 'required|in:'.implode(',', SourceType::getValues()),
+                'transport' => 'required|in :'.implode(',', [Transport::Telegram->value]),
+            ]);
+            $bot = Bot::create(array_merge($request->all(), [
+                'owner' => Auth::user()->name,
+            ]));
+        }
 
-        $bot = Bot::create(array_merge($request->all(), [
-            'owner' => Auth::user()->name,
-        ]));
+        
         return redirect()->back()->with('success', 'Bot created');
+    }
+
+    function editBotSettings(Request $request, Bot $bot)
+    {
+        return view('admin.settings.bot-edit', [
+            'title' => 'Edit bot',
+            'bot' => $bot,
+            'scop' => SendScop::cases(),
+            'transport' => Transport::cases(),
+            'types' => SourceType::cases(),
+        ]);
     }
 
     function activeBotSettings(Request $request, Bot $bot) 
@@ -87,6 +111,7 @@ final class AdminController extends Controller
             'name' => 'required',
             'group_id' => 'required',
             'type' => 'required|in:' . implode(',', SourceType::getValues()),
+            'scop' => 'required|in:' . implode(',', SendScop::getValues()),
             'transport' => 'required|in :' . implode(',', [Transport::Telegram->value]),
         ]);
 

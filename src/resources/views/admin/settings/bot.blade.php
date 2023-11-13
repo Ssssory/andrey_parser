@@ -39,6 +39,15 @@
                     </select>
                 </div>
                 <div class="form-group">
+                    <label>Scop</label>
+                    <select class="form-control" name="scop">
+                        <option value="">Select scop</option>
+                        @foreach ($scop as $one)
+                        <option>{{$one->value}}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="form-group">
                     <label>Transport</label>
                     <select class="form-control" name="transport">
                         <option value="">Select messenger</option>
@@ -61,6 +70,7 @@
                 <th>id</th>
                 <th>name</th>
                 <th>type</th>
+                <th>scop</th>
                 <th>active</th>
                 <th>action</th>
             </tr>
@@ -71,18 +81,21 @@
                 <td>{{$bot->id}}</td>
                 <td>{{$bot->name}}</td>
                 <td>{{$bot->type}}</td>
+                <td>{{$bot->scop}}</td>
                 <td>@if($bot->is_active)✅@else❌@endif</td>
                 <td>
                     <a href="{{route('admin.settings.bot.active',['bot'=> $bot->id])}}" class="btn btn-primary">
                         @if($bot->is_active) Disable @else Enable @endif
                     </a>
                     <a href="{{route('admin.settings.bot.delete',['bot'=> $bot->id])}}" class="btn btn-danger">Delete</a>
+                    <a href="{{route('admin.settings.bot.edit',['bot'=> $bot->id])}}" class="btn btn-success">Edit</a>
                 </td>
             </tr>
             @endforeach
         </tbody>
         <tfoot>
             <tr>
+                <th></th>
                 <th></th>
                 <th></th>
                 <th></th>

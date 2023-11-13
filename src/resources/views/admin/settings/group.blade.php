@@ -49,7 +49,7 @@
                 </div>
                 <div class="form-group">
                     <label>Scop</label>
-                    <select class="form-control" name="type">
+                    <select class="form-control" name="scop">
                         <option value="">Select scop</option>
                         @foreach ($scop as $one)
                         <option>{{$one->value}}</option>
