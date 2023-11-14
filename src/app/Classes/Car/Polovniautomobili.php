@@ -148,7 +148,6 @@ final class Polovniautomobili extends ParserAbstract
         foreach ($brands as $brand) {            
             $this->parseFiltredUrl($brand);
         }
-        // dd($urls);
     }
 
     private function parseFiltredUrl(string $brand, int $page = 1)
@@ -181,7 +180,7 @@ final class Polovniautomobili extends ParserAbstract
     private function urlConstructor(string $brand, int $page=0 ) : string 
     {
         $parts = [
-            'price' => '&price_from=2000&price_to=30000',
+            'price' => '&price_from=1000&price_to=30000',
             'year' => '&year_from=2001&year_to=2021', // -1 от текущего
             'date_limit' => '&date_limit=1',
 
