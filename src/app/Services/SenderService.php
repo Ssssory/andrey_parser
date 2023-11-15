@@ -10,6 +10,8 @@ use App\Enums\SendType;
 use App\Enums\SourceType;
 use App\Enums\Transport;
 use App\Models\CompleteMessage;
+use App\Models\DirtyCarData;
+use App\Models\Group;
 use Carbon\CarbonImmutable;
 
 class SenderService
@@ -21,15 +23,16 @@ class SenderService
     function __construct(
         private MessageService $messageService,
         private TelegramStorage $telegramStorage,
+        private ParametersService $parametersService,
     )
     {
     }
 
-    function init(SendType $sendType, Transport $transport, SourceType $sourceType): void
+    public function init(SendType $sendType, Transport $transport, SourceType $sourceType): void
     {
         $this->sendType = $sendType??SendType::Auto;
-        $this->sourceType = $sourceType??SourceType::Car;
         $this->transport = $transport??Transport::Telegram;
+        $this->sourceType = $sourceType??SourceType::Car;
         if ($transport->value == Transport::Telegram->value) {
             $this->telegramStorage->make($this->sourceType);
         }
@@ -38,11 +41,12 @@ class SenderService
 
     public function sendMessage(Message $config): void
     {
-        $transportStorage = $this->getTransport($config->transport);
+        
+        $transportStorage = $this->getTransport($config);
         if ($transportStorage == null) {
             return;
         }
-        if (!$transport = $transportStorage->getReady()) {
+        if (!$transport = $transportStorage->getReady($config->target->scop)) {
             return;
         }
 
@@ -57,7 +61,7 @@ class SenderService
         $transport->sendMediaMessage($config->message, $config->target[0], $config->target[1]);
     }
 
-    function sendTelegram(MessageCar $messageCar, string $chatId=null, string $type= SendType::Auto, ?int $topic= null): void
+    public function sendTelegram(MessageCar $messageCar, string $chatId=null, string $type= SendType::Auto, ?int $topic= null): void
     {
         CompleteMessage::create([
             'model' => $messageCar->original::class,
@@ -69,7 +73,7 @@ class SenderService
         $this->telegramStorage->getReady()->sendMediaMessage($messageCar, $chatId, $topic);
     }
 
-    function isTimeToSend(): bool
+    public function isTimeToSend(): bool
     {
         $morning = CarbonImmutable::createFromTime(9, 03, 00, 'Europe/Belgrade');
         $evening = CarbonImmutable::createFromTime(20, 03, 00, 'Europe/Belgrade');
@@ -80,9 +84,19 @@ class SenderService
         return false;
     }
 
-    private function getTransport(Transport $transport)
+    public function prepareInexpensive(DirtyCarData $model, Group $group): void
     {
-        switch ($transport->value) {
+        $message = $this->messageService->createMessageDto($model);
+        $cleanParams = $this->parametersService->getCleanValues($model->dirtyCarParametersData->pluck('value', 'property'));
+        $message = $this->messageService->updateMessageDto($message, $cleanParams);
+
+        $dto = new Message(SendType::Auto, $group, Transport::Telegram, $message);
+        $this->sendMessage($dto);
+    }
+
+    private function getTransport(Message $config)
+    {
+        switch ($config->transport->value) {
             case Transport::Telegram->value:
                 return $this->telegramStorage;
             default:
