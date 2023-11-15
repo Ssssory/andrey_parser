@@ -3,17 +3,17 @@
 namespace App\Console\Commands;
 
 use App\Classes\Dto\Message;
-use App\Classes\Storages\TelegramStorage;
+use App\Enums\SendScop;
 use App\Enums\SendType;
 use App\Enums\SourceType;
 use App\Enums\Transport;
-use App\Models\DirtyCarData;
 use App\Models\Group;
+use App\Services\CarService;
 use App\Services\MessageService;
 use App\Services\ParametersService;
 use App\Services\SenderService;
-use App\Services\TelegramSettingsService;
 use Illuminate\Console\Command;
+use Illuminate\Support\Collection;
 
 class CarSenderCommand extends Command
 {
@@ -37,8 +37,7 @@ class CarSenderCommand extends Command
         private ParametersService $parametersService,
         private MessageService $messageService,
         private SenderService $senderService,
-        private TelegramSettingsService $telegramSettingsService,
-        private TelegramStorage $telegramStorage
+        private CarService $carService,
     ) {
         parent::__construct();
         $this->type = SourceType::Car;
@@ -49,72 +48,80 @@ class CarSenderCommand extends Command
      */
     public function handle()
     {
-        if (!$this->senderService->isTimeToSend()) {
+        if (!$this->senderService->isTimeToSend()) { 
             $this->info('sleep');
             return;
         }
 
         $groups = Group::where('is_active', true)->where('type', $this->type)->get();
         $topicesNames = $groups->filter(function ($group) {
-            if (!empty($group->topic_name)) {
+            if ($group->scop === SendScop::Forum->value && !empty($group->topic_name)) {
                 return $group;
             }
         })->map(function ($group) {
             return $group->topic_name;
         });
 
-        // get all keys for dictionary name brand
-        $properties = $this->parametersService->getBrendDirtyParametersKeys();
-
+        /** @var Collection $inexpensiveGroups */
+        $inexpensiveGroups = $groups->filter(function ($group) {
+            if ($group->scop === SendScop::Inexpensive->value) {
+                return $group;
+            }
+        });
+        
+        $isDebug = config('app.debug');
         // exclude aready senden models
-        $all = DirtyCarData::with('dirtyCarParametersData')
-            ->whereDate('dirty_car_data.created_at', '>=', now()->subMinutes(15))
-            ->leftJoin('complete_messages', function ($join) {
-                $join->on('dirty_car_data.id', '=', 'complete_messages.model_id')
-                    ->where('complete_messages.model', DirtyCarData::class);
-            })
-            ->whereNull('complete_messages.model_id')->get([
-                'dirty_car_data.id',
-                'dirty_car_data.url',
-                'dirty_car_data.name',
-                'dirty_car_data.brand',
-                'dirty_car_data.price',
-                'dirty_car_data.images'
-            ]);
+        $all = $this->carService->getFreshCars($isDebug);
 
         // set brand key from relation to property
-        $arrBrands = $all->filter(function ($item) use ($topicesNames, $properties) {
-            $current = $item->dirtyCarParametersData->filter(function ($item) use ($properties) {
-                return in_array($item->property, $properties);
-            });
-            $brand = $current->first()->value;
-            if (in_array($brand,$topicesNames->toArray())) {
-                $item->brand = $current->first()->value;
-                return $item;
-            }
-        })->groupBy(function ($item) {
-            return $item->brand;
-        });
+        $arrBrands = $this->carService->fillterByBrand($all, $topicesNames);
 
-        /*dd($all->groupBy(function($item){
-            return $item->brand;
-        })->map(function($item){
-            return $item->count();
-        })->sortDesc());*/
+        // dd($this->carService->calculateBrands($all));
 
+        $arrInexpensive = $this->carService->fillterByInexpensive($all);
+        $arrInexpensiveFrom3to5 = $this->carService->fillterByInexpensive($all, 3000, 5000);
+        $arrInexpensiveFrom5to10 = $this->carService->fillterByInexpensive($all, 5000, 10000);
 
-        // dd($arrBrands);        
         $this->senderService->init(SendType::Auto, Transport::Telegram, $this->type);
+
+        try {
+            $minGroup = $inexpensiveGroups->where('topic_name', '€0 - €3’000');
+            $minGroup->each(function ($group) use ($arrInexpensive) {
+                $this->senderService->prepareInexpensive($arrInexpensive->first(), $group);
+            });
+            unset($minGroup);
+        } catch (\Throwable $th) {
+            info($th->getMessage());
+        }
+        try {
+            $minGroup = $inexpensiveGroups->where('topic_name', '€3’000 - €5’000');
+            $minGroup->each(function ($group) use ($arrInexpensiveFrom3to5) {
+                $this->senderService->prepareInexpensive($arrInexpensiveFrom3to5->first(), $group);
+            });
+            unset($minGroup);
+        } catch (\Throwable $th) {
+            info($th->getMessage());
+        }
+        try {
+            $minGroup = $inexpensiveGroups->where('topic_name', '€5’000 - €10’000');
+            $minGroup->each(function ($group) use ($arrInexpensiveFrom5to10) {
+                $this->senderService->prepareInexpensive($arrInexpensiveFrom5to10->first(), $group);
+            });
+            unset($minGroup);
+        } catch (\Throwable $th) {
+            info($th->getMessage());
+        }
+
         // send to telegram
-        foreach ($groups as $topic) {
-            if (isset($arrBrands[$topic['topic_name']])) {
-                $model = $arrBrands[$topic['topic_name']]->pop();
+        foreach ($groups as $group) {
+            if (isset($arrBrands[$group->topic_name])) {
+                $model = $arrBrands[$group->topic_name]->pop();
 
                 $message = $this->messageService->createMessageDto($model);
                 $cleanParams = $this->parametersService->getCleanValues($model->dirtyCarParametersData->pluck('value', 'property'));
                 $message = $this->messageService->updateMessageDto($message, $cleanParams);
 
-                $dto = new Message(SendType::Auto, [$topic->group_id, $topic->topic], Transport::Telegram, $message);
+                $dto = new Message(SendType::Auto, $group, Transport::Telegram, $message);
 
                 $this->senderService->sendMessage($dto);
             }
