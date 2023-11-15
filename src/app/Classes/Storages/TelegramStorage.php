@@ -56,7 +56,7 @@ final class TelegramStorage
     {
         foreach ($this->clients as $client) {
             if (
-                $client->getScop() == $scop
+                $client->getScop()?->value == $scop
                 && $client->getLastUsed() < now()->subSeconds($this->period)
                 ) {
                 return $client;
