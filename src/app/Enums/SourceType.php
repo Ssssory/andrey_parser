@@ -3,6 +3,7 @@
 namespace App\Enums;
 
 use Exception;
+use Illuminate\Support\Arr;
 
 enum SourceType: string
 {
@@ -18,5 +19,9 @@ enum SourceType: string
             Sources::Polovniautomobili => SourceType::Car,
             default => throw new Exception("Error new source type"),
         };
+    }
+
+    public static function getValues() : array {
+        return Arr::map(self::cases(), fn($value) => $value->value);
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Classes\Messages;
+namespace App\Classes\Contracts;
 
 interface MessageInterface
 {

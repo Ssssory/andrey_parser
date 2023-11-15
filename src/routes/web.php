@@ -60,6 +60,7 @@ Route::group(['middleware' => 'auth'], function(){
         Route::post('/form/{model}/send', [CarController::class, 'send']);
         Route::get('/dictionary/list/property', [CarController::class, 'editDictionary'])->name('car.dictionary');
         Route::post('/dictionary/list/property/{property}', [CarController::class, 'saveDictionaryProperty'])->name('car.dictionary.property');
+        Route::post('/dictionary/list/property/{uuid}/switch', [CarController::class, 'switchDictionaryProperty'])->name('car.dictionary.property.switch');
         Route::get('/dictionary/list/values/{property}', [CarController::class, 'listDictionaryValues'])->name('car.dictionary.values');
         Route::post('/dictionary/list/values/{name}/save', [CarController::class, 'listDictionaryValuesSave'])->name('car.dictionary.values.save');
     });
@@ -74,6 +75,16 @@ Route::group(['middleware' => 'auth'], function(){
         // Route::post('/users/{id}/edit', [AdminUserController::class, 'updateUser']);
         // Route::get('/users/{id}/delete', [AdminUserController::class, 'deleteUser']);
         Route::match(array('GET', 'POST'), '/settings/telegram', [AdminController::class, 'settingsTelegram']);
+        Route::get( '/settings/bots', [AdminController::class, 'botSettings'])->name('admin.settings.bots');
+        Route::get( '/settings/groups', [AdminController::class, 'groupSettings'])->name('admin.settings.groups');
+        Route::post( '/settings/bot/save', [AdminController::class, 'saveBotSettings'])->name('admin.settings.bots.save');
+        Route::post( '/settings/group/save', [AdminController::class, 'saveGroupSettings'])->name('admin.settings.groups.save');
+        Route::get('/settings/bot/active/{bot}', [AdminController::class, 'activeBotSettings'])->name('admin.settings.bot.active');
+        Route::get('/settings/group/active/{group}', [AdminController::class, 'activeGroupSettings'])->name('admin.settings.group.active');
+        Route::get('/settings/bot/delete/{bot}', [AdminController::class, 'deleteBotSettings'])->name('admin.settings.bot.delete');
+        Route::get('/settings/group/delete/{group}', [AdminController::class, 'deleteGroupSettings'])->name('admin.settings.group.delete');
+        Route::get('/settings/bot/edit/{bot}', [AdminController::class, 'editBotSettings'])->name('admin.settings.bot.edit');
+        Route::get('/settings/group/edit/{group}', [AdminController::class, 'editGroupSettings'])->name('admin.settings.group.edit');
     });
 });
 

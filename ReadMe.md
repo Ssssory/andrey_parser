@@ -1,4 +1,12 @@
-# Parser
+# detpars
+
+#### cron
+
+start cron
+
+```
+make start-cron
+```
 
 #### ssl
 
@@ -10,4 +18,5 @@ docker-compose run --rm  certbot certonly --webroot --webroot-path /var/www/cert
 update ssl
 ```
 docker-compose run --rm certbot renew
+docker restart detpars_nginx
 ```

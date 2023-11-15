@@ -30,16 +30,22 @@ final class ParametersService
             if ($param) {
                 $dictionary = PropertyDictionary::where('name',$param->name)->where('group', SourceType::Car)->first();
                 if ($dictionary) {
-                    $dictionaryValue = PropertyValueDictionary::where('property_dictionaries_uuid', $dictionary->uuid)
-                        ->where('name', $value)
-                        ->where('group', SourceType::Car)
-                        ->first();
-                    if ($dictionaryValue) {
+                    if ($dictionary->is_dictionary == false) {
                         $propertyArray['valid'] = true;
-                        if ($lang == 'ru') {
-                            $propertyArray['property'] = $dictionary->ru;
-                            $propertyArray['name'] = $param->name;
-                            $propertyArray['value'] = $dictionaryValue->ru;
+                        $propertyArray['value'] = $this->removeSimvols($value);
+                        $propertyArray['name'] = $param->name;
+                    }else{
+                        $dictionaryValue = PropertyValueDictionary::where('property_dictionaries_uuid', $dictionary->uuid)
+                            ->where('name', $value)
+                            ->where('group', SourceType::Car)
+                            ->first();
+                        if ($dictionaryValue) {
+                            $propertyArray['valid'] = true;
+                            if ($lang == 'ru') {
+                                $propertyArray['property'] = $dictionary->ru;
+                                $propertyArray['name'] = $param->name;
+                                $propertyArray['value'] = $dictionaryValue->ru;
+                            }
                         }
                     }
                 }
@@ -66,7 +72,11 @@ final class ParametersService
 
     function getBrendDirtyParametersKeys(): array 
     {
-        $parameters = DirtyCarParametersData::where('name','brend')->get();
+        $parameters = DirtyCarParametersData::where('name','brand')->get();
         return $parameters->pluck('property')->toArray();
+    }
+
+    private function removeSimvols(string $value) : string {
+        return preg_replace('/[^a-zA-Zа-яА-Я0-9]/ui', '', $value);
     }
 }

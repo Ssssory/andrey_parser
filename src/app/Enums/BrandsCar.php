@@ -14,7 +14,7 @@ enum BrandsCar: string
     case Ford = "ford";
     case Honda = "honda";
     case Hyundai = "hyundai";
-    case Infinity = "infinity";
+    case Infiniti = "infiniti";
     case Jeep = "jeep";
     case kia = "kia";
     case Lancia = "lancia";

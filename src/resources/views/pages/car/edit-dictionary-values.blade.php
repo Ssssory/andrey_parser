@@ -5,9 +5,24 @@
 @section('content')
 
 <div class="card">
-    <div class="card-header">
-        <h3 class="card-title">Edit names to ru</h3>
+    <div class="col-12">
+        <form action="{{route('car.dictionary.property.switch',$property->uuid)}}" method="post">
+            @csrf
+            <div class="form-check">
+                <input class="form-check-input" name="is_dictionary" type="checkbox" @if ($property->is_dictionary) checked @endif>
+                <label for="is_dictionary" class="form-check-label">Dictionary</label>
+                <input class="btn btn-sm btn-info right" type="submit" value="save">
+            </div>
+            <div class="form-group">
+            </div>
+        </form>
     </div>
+</div>
+
+<div class="card">
+    <!-- <div class="card-header">
+        <h3 class="card-title">Edit names to ru</h3>
+    </div> -->
     <!-- /.card-header -->
     <div class="card-body">
         <div class="row">
@@ -32,7 +47,8 @@
                                 @csrf
                                 <input type="hidden" name="original_value" value="{{$model->value}}">
                                 <input type="text" name="value_ru" value="{{$model->value_ru}}" placeholder="translate ru">
-                                <input type="submit" value="📦">
+                                @if ($property->is_dictionary) <input type="submit" value="📦"> @endif
+
                             </form>
                         </td>
                         <td>
@@ -40,7 +56,7 @@
                                 @csrf
                                 <input type="hidden" name="original_value" value="{{$model->value}}">
                                 <input type="text" name="value_en" value="{{$model->value_en}}" placeholder="translate en">
-                                <input type="submit" value="📦">
+                                @if ($property->is_dictionary) <input type="submit" value="📦"> @endif
                             </form>
                         </td>
                         <td>
@@ -48,7 +64,7 @@
                                 @csrf
                                 <input type="hidden" name="original_value" value="{{$model->value}}">
                                 <input type="text" name="value_rs" value="{{$model->value_rs}}" placeholder="translate rs">
-                                <input type="submit" value="📦">
+                                @if ($property->is_dictionary) <input type="submit" value="📦"> @endif
                             </form>
                         </td>
                         <td><button>link</button></td>

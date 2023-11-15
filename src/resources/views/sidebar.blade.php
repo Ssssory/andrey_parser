@@ -106,6 +106,18 @@
                             </a>
                         </li>
                         <li class="nav-item">
+                            <a href="{{route('admin.settings.bots')}}" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p> &nbsp; bots</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{route('admin.settings.groups')}}" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p> &nbsp; groups</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
                             <a href="{{route('car.dictionary')}}" class="nav-link">
                                 <i class="nav-icon fas fa-tachometer-alt"></i>
                                 <p>

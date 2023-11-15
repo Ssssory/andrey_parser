@@ -5,6 +5,8 @@ namespace App\Classes\Messages;
 use Exception;
 use Illuminate\Database\Eloquent\Model;
 use SergiX44\Nutgram\Telegram\Types\Input\InputMediaPhoto;
+use App\Classes\Contracts\MessageInterface;
+use SergiX44\Nutgram\Telegram\Properties\ParseMode;
 
 /**
  * Class MessageCar
@@ -30,6 +32,7 @@ final class MessageCar implements MessageInterface
     public array $tags = [];
     private array $images = [];
     public string $name = '';
+    public string $url = '';
     public ?string $description = '';
     public ?string $model = '';
     public ?string $year = '';
@@ -71,7 +74,7 @@ final class MessageCar implements MessageInterface
 
     private function getDescription() : string 
     {
-        $description = '🚘 ' . $this->name . PHP_EOL;
+        $description = '[🚘 ' . $this->name . '](' . $this->url . ')' . PHP_EOL;
         $description .=  PHP_EOL . 'Модель: ' . $this->model . PHP_EOL;
         if ($this->year) {
             $description .= 'Год выпуска: ' . $this->year . PHP_EOL;
@@ -110,6 +113,7 @@ final class MessageCar implements MessageInterface
             throw new Exception("so match lenth of capture", 500);
         }
         $last->caption = $this->getDescription();
+        $last->parse_mode = ParseMode::MARKDOWN_LEGACY;
 
         return array_merge($answer, [$last]);
     }

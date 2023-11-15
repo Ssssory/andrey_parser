@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Classes\Messages\MessageCar;
+use App\Enums\SendType;
 use App\Enums\Sources;
 use App\Enums\SourceType;
 use App\Models\CompleteMessage;
@@ -70,6 +71,7 @@ class CarController extends Controller
         $message->setImages(explode(',', $model->images));
         $message->price = $model->price;
         $message->name = $model->name;
+        $message->url = $model->url;
 
 
         $model->load('dirtyCarParametersData');
@@ -95,7 +97,7 @@ class CarController extends Controller
 
             $message = $this->messageService->getCarMessage($request, $model);
     
-            $this->senderService->sendTelegram($message,$chatId,SenderService::HANDLE);
+            $this->senderService->sendTelegram($message,$chatId, SendType::Handle->value);
             return redirect()->route('car.list', ['model' => $model->source])->with('message', 'success');
         } catch (\Throwable $th) {
             Log::error($th->getMessage());
@@ -106,7 +108,7 @@ class CarController extends Controller
     function editDictionary() : View 
     {
         /** @var Collection $dirtyCarParametersData */
-        $dirtyCarParametersData = DirtyCarParametersData::distinct('property')->groupBy('property')->select(['property'])->paginate(50);
+        $dirtyCarParametersData = DirtyCarParametersData::distinct('property')->groupBy('property')->select(['property'])->paginate(15);
 
         foreach ($dirtyCarParametersData as &$parameter) {
             /** @var Collection $exist */
@@ -139,7 +141,7 @@ class CarController extends Controller
         $list = DirtyCarParametersData::where('property', $property)
         ->distinct('value')
         ->select(['property', 'value'])
-        ->paginate(50);
+        ->paginate(15);
 
         $list->each(function($item) use ($propertyData){
             $existDictionaryValue = PropertyValueDictionary::where('property_dictionaries_uuid', $propertyData->uuid)
@@ -196,7 +198,7 @@ class CarController extends Controller
             }
         });
         
-        return redirect()->back();
+        return redirect()->back()->with('message', 'success');
     }
 
     function listDictionaryValuesSave(Request $request, string $name)
@@ -234,6 +236,13 @@ class CarController extends Controller
         }
         $existDictionaryValue->save();
 
+        return redirect()->back()->with('message', 'success');
+    }
+
+    function switchDictionaryProperty(Request $request, string $uuid)
+    {
+        $isChecked = $request->get('is_dictionary');
+        PropertyDictionary::where('uuid', $uuid)->update(['is_dictionary' => (bool)$isChecked]);
         return redirect()->back()->with('message', 'success');
     }
 }

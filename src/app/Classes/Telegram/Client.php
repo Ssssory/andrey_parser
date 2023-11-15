@@ -8,27 +8,29 @@ use SergiX44\Nutgram\Nutgram;
 final class Client
 {
     private ?Nutgram $client = null;
+    private ?string $token = null;
 
-
-    function __invoke()
+    function __construct(string $token)
     {
-        return $this->getClient();
+        $this->token = $token;
+        $config = $this->getConfig();
+        $this->client = new Nutgram($this->token, $config);
     }
 
     public function getClient(): Nutgram {
-        if (!$this->client) {
-            $config = new Configuration(
-                clientTimeout: 20,
-            );
-            $this->client = new Nutgram(env('TELEGRAM_TOKEN'), $config);
-        }
         return $this->client;
     }
 
-    public function getNewClient(): Nutgram {
-        $config = new Configuration(
+    public function reconnect()
+    {
+        $config = $this->getConfig();
+        $this->client = new Nutgram($this->token, $config);
+        return $this->client;
+    }
+
+    private function getConfig() : Configuration {
+        return new Configuration(
             clientTimeout: 20,
         );
-        return new Nutgram(env('TELEGRAM_TOKEN'), $config);
     }
 }
