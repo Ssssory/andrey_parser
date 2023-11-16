@@ -54,11 +54,11 @@ class SenderService
             'model' => $config->message->original::class,
             'model_id' => $config->message->original->id,
             'message' => $config->message::class,
-            'chat' => $config->target[0],
+            'chat' => $config->target->group_id,
             'type' => $this->sendType,
         ]);
 
-        $transport->sendMediaMessage($config->message, $config->target[0], $config->target[1]);
+        $transport->sendMediaMessage($config->message, $config->target->group_id, $config->target->topic);
     }
 
     public function sendTelegram(MessageCar $messageCar, string $chatId=null, string $type= SendType::Auto, ?int $topic= null): void
