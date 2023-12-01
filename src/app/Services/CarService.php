@@ -34,7 +34,10 @@ final class CarService
                 $join->on('dirty_car_data.id', '=', 'complete_messages.model_id')
                     ->where('complete_messages.model', DirtyCarData::class);
             })
-            ->whereNull('complete_messages.model_id')->get($this->selectForSend);
+            ->whereNull('complete_messages.model_id')
+            ->limit(100)
+            ->orderBy('dirty_car_data.created_at', 'desc')
+            ->get($this->selectForSend);
     }
 
 
