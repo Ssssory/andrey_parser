@@ -14,6 +14,7 @@ use App\Services\ParametersService;
 use App\Services\SenderService;
 use Illuminate\Console\Command;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Cache;
 
 class CarSenderCommand extends Command
 {
@@ -52,6 +53,14 @@ class CarSenderCommand extends Command
             $this->info('sleep');
             return;
         }
+
+        $lock = Cache::get($this->signature);
+        if ($lock) {
+            $this->info('lock');
+            return;
+        }
+
+        Cache::put($this->signature, true, 600);
 
         $groups = Group::where('is_active', true)->where('type', $this->type)->get();
         $topicesNames = $groups->filter(function ($group) {
@@ -126,6 +135,8 @@ class CarSenderCommand extends Command
                 $this->senderService->sendMessage($dto);
             }
         }
+
+        Cache::forget($this->signature);
 
         $this->info('Finish');
     }
