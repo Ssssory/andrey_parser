@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 final class MessageService
 {
 
-    function createMessageDto($model): MessageCar
+    function createMessageDto(DirtyCarData $model): MessageCar
     {
         $message = new MessageCar();
         $message->id = $this->getMessageCarId($model);
@@ -84,6 +84,6 @@ final class MessageService
      */
     public function getMessageCarId(DirtyCarData $model): string
     {
-        return Carbon::now()->format('my') . str_pad($model->id, 5, 0, STR_PAD_LEFT);
+        return Carbon::now()->format('my') . str_pad($model->id, 5, "0", STR_PAD_LEFT);
     }
 }

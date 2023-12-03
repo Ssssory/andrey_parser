@@ -3,15 +3,16 @@
 namespace App\Classes\Messages;
 
 use Exception;
-use Illuminate\Database\Eloquent\Model;
 use SergiX44\Nutgram\Telegram\Types\Input\InputMediaPhoto;
 use App\Classes\Contracts\MessageInterface;
+use App\Models\DirtyCarData;
 use SergiX44\Nutgram\Telegram\Properties\ParseMode;
 
 /**
  * Class MessageCar
  * @package App\Classes\Messages
  * @property string $id
+ * @property DirtyCarData $original
  * @property array $tags
  * @property array $images set by setImages()
  * @property string $name
@@ -28,7 +29,7 @@ use SergiX44\Nutgram\Telegram\Properties\ParseMode;
 final class MessageCar implements MessageInterface
 {
     public ?string $id = null;
-    public ?Model $original = null;
+    public ?DirtyCarData $original = null;
     public array $tags = [];
     private array $images = [];
     public string $name = '';

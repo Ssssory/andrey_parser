@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class DirtyCarData extends Model
 {
@@ -11,7 +12,7 @@ class DirtyCarData extends Model
 
     protected $guarded = [];
 
-    function dirtyCarParametersData()
+    function dirtyCarParametersData(): HasMany
     {
         return $this->hasMany(DirtyCarParametersData::class, 'car_id', 'id');
     }

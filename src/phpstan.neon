@@ -29,4 +29,3 @@ parameters:
         - '#Call to static method apiResources\(\) on an unknown class Route.*#'
         - '#Call to static method fallback\(\) on an unknown class Route.*#'
         - '#Access to an undefined property Illuminate\\Database\\Eloquent\\Model::\$state.*#'
-        - '#Call to an undefined static method MasterRO\\LaravelXSSFilter\\XSSCleanerFacade::clean\(\).*#'

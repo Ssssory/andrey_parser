@@ -27,7 +27,7 @@ class ParsingPolovniautomobili extends Command
     /**
      * Execute the console command.
      */
-    public function handle()
+    public function handle(): void
     {
         echo 'parce urls fillter' . PHP_EOL;
         $polovniautomobili = new Polovniautomobili();

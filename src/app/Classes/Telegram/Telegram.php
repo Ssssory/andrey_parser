@@ -4,6 +4,7 @@ namespace App\Classes\Telegram;
 
 use App\Classes\Contracts\MessageInterface;
 use App\Classes\Contracts\TransportInterface;
+use SergiX44\Nutgram\Telegram\Types\Chat\Chat;
 use SergiX44\Nutgram\Telegram\Types\Internal\InputFile;
 
 final class Telegram implements TransportInterface
@@ -17,16 +18,16 @@ final class Telegram implements TransportInterface
         $this->client = new Client($token);
     }
 
-    public function sendTextMesage(string $text,string $chatId,int $thread): void
+    public function sendTextMesage(string $text, string $chatId, int $thread): void
     {
         $this->client->getClient()->sendMessage(
             $text,
-            $chatId ?? self::TEST_CHAT_ID,
+            $chatId,
             $thread
         );
     }
 
-    function getChat(string $chatId) 
+    function getChat(string $chatId): Chat|null 
     {
         return $this->client->getClient()->getChat($chatId);
     }

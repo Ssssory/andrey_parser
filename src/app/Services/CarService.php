@@ -8,9 +8,9 @@ use Illuminate\Support\Collection as SupportCollection;
 
 final class CarService
 {
-    private $minPriceForBrand = 3000;
+    private int $minPriceForBrand = 3000;
 
-    private $selectForSend = [
+    private array $selectForSend = [
         'dirty_car_data.id',
         'dirty_car_data.url',
         'dirty_car_data.name',
@@ -24,6 +24,10 @@ final class CarService
     ) {
     }
 
+    /**
+     * @param boolean $isDebug
+     * @return Collection<DirtyCarData>
+     */
     public function getFreshCars(bool $isDebug): Collection
     {
         return DirtyCarData::with('dirtyCarParametersData')

@@ -15,6 +15,8 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
 use Exception;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\DB;
 
 class Controller extends BaseController
@@ -27,7 +29,7 @@ class Controller extends BaseController
     {       
     }
 
-    public function index(Request $request)
+    public function index(Request $request): View|Factory
     {
         $countSources = Url::select(DB::raw('count(distinct(source)) as total'))->firstOrFail();
 
@@ -58,7 +60,7 @@ class Controller extends BaseController
         ]);
     }
 
-    public function list(Request $request, string $model)
+    public function list(Request $request, string $model): View|Factory
     {
         if (!$model) {
             throw new Exception("Error Processing Request");
@@ -75,7 +77,7 @@ class Controller extends BaseController
         ]);
     }
 
-    public function startPage(Request $request)
+    public function startPage(Request $request): View|Factory
     {
         $url = $request->input('url', null);
         $site = $request->input('site', null);

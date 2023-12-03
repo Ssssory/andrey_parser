@@ -9,6 +9,7 @@ use App\Models\Url;
 use Exception;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Eloquent\Model;
 
 final class DashboardService
 {
@@ -18,6 +19,10 @@ final class DashboardService
         return $links->sum('total');
     }
 
+    /**
+     * @param string $model
+     * @return Collection<string, Model>
+     */
     public function getCountBySource(string $model) : Collection 
     {
         

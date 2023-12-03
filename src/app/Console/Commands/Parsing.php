@@ -26,7 +26,7 @@ class Parsing extends Command
     /**
      * Execute the console command.
      */
-    public function handle()
+    public function handle(): void
     {
         $urls = Url::where('status', 'new')->where('source', Sources::Poslovnabazasrbije->name)->get();
         // $urls = Url::where('status', 'in progress')->where('source', Sources::Poslovnabazasrbije->name)->get();

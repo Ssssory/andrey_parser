@@ -9,11 +9,12 @@ use App\Models\Url;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Support\Facades\Storage;
+use DiDom\Document;
 
 final class Forzida extends ParserAbstract
 {
     const FRESH_DAYS = 7;
-    protected $prefixStorage = 'forzida';
+    protected string $prefixStorage = 'forzida';
     private string $hash;
     private string $uri;
 
@@ -23,7 +24,7 @@ final class Forzida extends ParserAbstract
         parent::__construct();
     }
 
-    public function getStateFromPage($html)
+    public function getStateFromPage(Document $html): void
     {
         $name_raw = $html->find('h1');
         if (empty($name_raw)) {
@@ -86,7 +87,7 @@ final class Forzida extends ParserAbstract
         }
     }
 
-    public function getHtml($path): string
+    public function getHtml(string $path): string
     {
         $hash = md5($path);
         $this->hash = $hash;
@@ -113,7 +114,7 @@ final class Forzida extends ParserAbstract
         return $this->prefixStorage . '/' . $hash;
     }
 
-    function getUrlsFromSitemap()
+    function getUrlsFromSitemap(): void
     {
         $robots = $this->sendRequest(Sources::getUrl(Sources::Forzida) . 'robots.txt');
         $robotsText = $robots->getBody()->getContents();
@@ -146,7 +147,7 @@ final class Forzida extends ParserAbstract
         // dd($urls);
     }
 
-    private function savePageUrl(string $xmlUrl) 
+    private function savePageUrl(string $xmlUrl): void
     {
         $siteXmlRequest = $this->sendRequest($xmlUrl);
         $siteXmlRequestBody = $siteXmlRequest->getBody()->getContents();

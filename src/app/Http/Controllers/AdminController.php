@@ -8,6 +8,8 @@ use App\Enums\SourceType;
 use App\Models\Bot;
 use App\Models\Group;
 use App\Services\TelegramSettingsService;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
@@ -32,7 +34,7 @@ final class AdminController extends Controller
         ]);  
     }
 
-    function botSettings(Request $request)
+    function botSettings(Request $request): View|Factory
     {
         return view('admin.settings.bot', [
             'title' => 'Manage bots',
@@ -70,7 +72,7 @@ final class AdminController extends Controller
         return redirect()->back()->with('success', 'Bot created');
     }
 
-    function editBotSettings(Request $request, Bot $bot)
+    function editBotSettings(Request $request, Bot $bot): View|Factory
     {
         return view('admin.settings.bot-edit', [
             'title' => 'Edit bot',
@@ -94,7 +96,7 @@ final class AdminController extends Controller
         return redirect()->back()->with('success', 'Bot deleted');
     }
 
-    function groupSettings(Request $request)
+    function groupSettings(Request $request): View|Factory
     {
         return view('admin.settings.group', [
             'title' => 'Manage bots',
@@ -137,7 +139,7 @@ final class AdminController extends Controller
         return redirect()->back()->with('success', 'Group deleted');
     }
 
-    function editGroupSettings(Request $request, Group $group) 
+    function editGroupSettings(Request $request, Group $group): View|Factory
     {
         return view('admin.settings.group-edit', [
             'title' => 'Edit group',

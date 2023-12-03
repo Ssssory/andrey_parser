@@ -21,6 +21,7 @@ class SendCarToTelegramJob implements ShouldQueue
     protected DirtyCarData $model;
     private $chatId;
     private $topicId;
+    
     /**
      * Create a new job instance.
      */

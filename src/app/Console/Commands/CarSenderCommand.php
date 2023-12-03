@@ -47,7 +47,7 @@ class CarSenderCommand extends Command
     /**
      * Execute the console command.
      */
-    public function handle()
+    public function handle(): void
     {
         if (!$this->senderService->isTimeToSend()) { 
             $this->info('sleep');
@@ -71,12 +71,10 @@ class CarSenderCommand extends Command
             return $group->topic_name;
         });
 
-        /** @var Collection $inexpensiveGroups */
-        $inexpensiveGroups = $groups->filter(function ($group) {
-            if ($group->scop === SendScop::Inexpensive->value) {
-                return $group;
-            }
-        });
+        /** @var Collection<Group> $inexpensiveGroups */
+        $inexpensiveGroups = $groups->filter(function (Group $group) {
+            return $group->scop === SendScop::Inexpensive->value;
+        })->values();
         
         $isDebug = config('app.debug');
         // exclude aready senden models

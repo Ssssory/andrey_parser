@@ -8,12 +8,14 @@ use App\Models\DirtyCarData;
 use App\Models\DirtyCarParametersData;
 use App\Models\Url;
 use DiDom\Document;
+use DiDom\Element;
+use DiDom\Node;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
 
 final class Polovniautomobili extends ParserAbstract
 {
-    protected $prefixStorage = 'polovniautomobili';
+    protected string $prefixStorage = 'polovniautomobili';
     private string $hash;
     private string $uri;
     
@@ -23,7 +25,7 @@ final class Polovniautomobili extends ParserAbstract
         parent::__construct();
     }
 
-    public function getHtml($path): string
+    public function getHtml(string $path): string
     {
         $hash = md5($path);
         $this->hash = $hash;
@@ -45,21 +47,25 @@ final class Polovniautomobili extends ParserAbstract
         return $html;
     }
 
-    private function getCachePath($hash): string
+    private function getCachePath(string  $hash): string
     {
         return $this->prefixStorage . '/' . $hash;
     }
 
-    public function getDataFromPage($html)
+    public function getDataFromPage(Document $html): void
     {
-        $h1 = $html->first('body > div.details.js-ad-details-page > div.uk-container.uk-container-center.body > div.table.js-tutorial-all > div > h1')?->firstChild()->text();
-        if (empty($h1)) {
+        /** @var Node $node */
+        $node = $html->first('body > div.details.js-ad-details-page > div.uk-container.uk-container-center.body > div.table.js-tutorial-all > div > h1');
+        if ($node != null){
+            $h1 = $node->firstChild()->text();
+        }else{
             return;
         }
         $h1 = preg_replace('/[\t,\n]*/', '', $h1);
         $photos = $html->find('.cS-hidden > li');
         $photosCollection = new Collection($photos);
         $photos = $photosCollection->map(static function ($item) {
+            /** @var Element $item */
             return $item->attr('data-src');
         });
         $gallery = $photos->toArray();
@@ -67,23 +73,36 @@ final class Polovniautomobili extends ParserAbstract
         $listProperty = $html->find('.divider');
         $dividerCollection = new Collection($listProperty);
         $property = $dividerCollection->mapWithKeys(static function ($item) {
+            /** @var Element $item */
             $list = $item->child(1)->find('.uk-width-1-2');
             $current = [];
             foreach ($list as $property) {
+                /** @var Element $property */
                 $current[] = $property->text();
             }
             return [$current[0] => $current[1]];
         });
 
-        $description = $html->first('.description-wrapper')?->text();
-        if (!empty($description)) {
-            $description = preg_replace('/[\t,\n]*/', '', $description);
-        } else {
+        $descriptionNode = $html->first('.description-wrapper');
+        if ($descriptionNode != null) {
+            /** @var Element $descriptionNode */
+            $description = $descriptionNode->text();
+        }else{
             $description = '';
         }
+        
+        if (!empty($description)) {
+            $description = preg_replace('/[\t,\n]*/', '', $description);
+        }
 
-        $price = $html->first('body > div.details.js-ad-details-page > div.uk-container.uk-container-center.body > div.table.js-tutorial-all > aside > div.uk-grid > div > div > div > div > span')?->text();
-        $price = empty($price) ? '' : $price;
+        $priceNode = $html->first('body > div.details.js-ad-details-page > div.uk-container.uk-container-center.body > div.table.js-tutorial-all > aside > div.uk-grid > div > div > div > div > span');
+        if ($priceNode != null) {
+            /** @var Element $priceNode */
+            $price = $priceNode->text();
+            $price = empty($price) ? '' : $price;
+        }else{
+            $price = '';
+        }
 
         if (!DirtyCarData::where('hash', $this->hash)->exists()) {
             $data = new DirtyCarData();
@@ -106,7 +125,7 @@ final class Polovniautomobili extends ParserAbstract
         }
     }
 
-    function getUrlsFromFillter()
+    function getUrlsFromFillter(): void
     {
         $brands = [
             "audi",
@@ -150,7 +169,7 @@ final class Polovniautomobili extends ParserAbstract
         }
     }
 
-    private function parseFiltredUrl(string $brand, int $page = 1)
+    private function parseFiltredUrl(string $brand, int $page = 1): void
     {
         if ($page > 3) {
             return;
@@ -161,7 +180,9 @@ final class Polovniautomobili extends ParserAbstract
 
         $html = new Document($carList);
 
-        $links = $html->first('#search-results')->find('h2 > a');
+        /** @var Element $node */
+        $node = $html->first('#search-results');
+        $links = $node->find('h2 > a');
 
         if (empty($links)) {
             return;
@@ -196,7 +217,7 @@ final class Polovniautomobili extends ParserAbstract
         return 'auto-oglasi/pretraga' . $brand . $parts['page'] . $parts['price'] . $parts['year'] . $parts['date_limit'];
     }
 
-    private function savePageUrl($urls)
+    private function savePageUrl(array $urls): void
     {
         foreach ($urls as $item) {
             $uri = substr(Sources::getUrl(Sources::Polovniautomobili),0,-1) . $item->getAttribute('href');

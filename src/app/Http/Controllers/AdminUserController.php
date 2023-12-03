@@ -3,12 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
 final class AdminUserController extends Controller{
 
-    function users(Request $request) {
+    function users(Request $request): View|Factory
+    {
 
         $list = User::paginate(10);
 
@@ -24,7 +27,8 @@ final class AdminUserController extends Controller{
             'title' => 'User',
         ]);
     }
-    function createUser(Request $request) {
+    function createUser(Request $request): View|Factory
+    {
 
         /* 
         Validation
@@ -54,5 +58,4 @@ final class AdminUserController extends Controller{
     // editUser
     // updateUser
     // deleteUser
-
 }

@@ -30,10 +30,10 @@ class SenderService
 
     public function init(SendType $sendType, Transport $transport, SourceType $sourceType): void
     {
-        $this->sendType = $sendType??SendType::Auto;
-        $this->transport = $transport??Transport::Telegram;
-        $this->sourceType = $sourceType??SourceType::Car;
-        if ($transport->value == Transport::Telegram->value) {
+        $this->sendType = $sendType;
+        $this->transport = $transport;
+        $this->sourceType = $sourceType;
+        if ($this->transport->value == Transport::Telegram->value) {
             $this->telegramStorage->make($this->sourceType);
         }
 
@@ -61,7 +61,7 @@ class SenderService
         $transport->sendMediaMessage($config->message, $config->target->group_id, $config->target->topic);
     }
 
-    public function sendTelegram(MessageCar $messageCar, string $chatId=null, string $type= SendType::Auto, ?int $topic= null): void
+    public function sendTelegram(MessageCar $messageCar, string $chatId=null, string $type= SendType::Auto->value, ?int $topic= null): void
     {
         CompleteMessage::create([
             'model' => $messageCar->original::class,
@@ -94,7 +94,7 @@ class SenderService
         $this->sendMessage($dto);
     }
 
-    private function getTransport(Message $config)
+    private function getTransport(Message $config): ?TelegramStorage
     {
         switch ($config->transport->value) {
             case Transport::Telegram->value:

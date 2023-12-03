@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class DirtyStateData extends Model
 {
@@ -25,7 +26,7 @@ class DirtyStateData extends Model
         'owner',
     ];
 
-    function dirtyStateParametersData()
+    function dirtyStateParametersData(): HasMany
     {
         return $this->hasMany(DirtyStateParametersData::class, 'state_id', 'id');
     }

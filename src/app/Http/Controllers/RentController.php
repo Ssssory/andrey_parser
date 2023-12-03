@@ -7,12 +7,14 @@ use App\Enums\Sources;
 use App\Models\DirtyStateData;
 use Carbon\Carbon;
 use Exception;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 
 final class RentController extends Controller
 {
-    function list(Request $request, string $model)
+    function list(Request $request, string $model): View|Factory
     {
         if (!$model) {
             throw new Exception("Error Processing Request");
@@ -28,11 +30,11 @@ final class RentController extends Controller
         ]);
     }
 
-    function form(Request $request, DirtyStateData $model) 
+    function form(Request $request, DirtyStateData $model): View|Factory
     {
         //dd($model);
         $message = new MessageRent();
-        $message->id = Carbon::now()->format('my') . str_pad($model->id, 5, 0, STR_PAD_LEFT);
+        $message->id = Carbon::now()->format('my') . str_pad($model->id, 5, "0", STR_PAD_LEFT);
         // $message->tags = $model->tags;
         $message->setImages(explode(',',$model->images));
         // $message->deposit = $model->deposit;
@@ -53,7 +55,7 @@ final class RentController extends Controller
         ]);
     }
 
-    function send(Request $request, DirtyStateData $model)
+    function send(Request $request, DirtyStateData $model): void
     {
         // $message = new MessageRent();
         // $message->id = $request->input('id');

@@ -22,22 +22,22 @@ class CompleteMessage extends Model
         "comment"
     ];
 
-    public function scopeLastDay(Builder $query)
+    public function scopeLastDay(Builder $query): void
     {
         $query->whereDate('created_at', '>=', now()->subDays(1));
     }
 
-    public function scopeLastWeek(Builder $query)
+    public function scopeLastWeek(Builder $query): void
     {
         $query->whereDate('created_at', '>=', now()->subWeeks(1));
     }
 
-    public function scopeLastMonth(Builder $query)
+    public function scopeLastMonth(Builder $query): void
     {
         $query->whereDate('created_at', '>=', now()->subMonths(1));
     }
 
-    public function scopeCountTelegramCar(Builder $query)
+    public function scopeCountTelegramCar(Builder $query): void
     {
         $query->select(DB::raw('count("id") as count'))
             ->where('messenger', Transport::Telegram)

@@ -2,6 +2,7 @@
 
 namespace App\Classes\Items;
 
+use App\Classes\Contracts\MessageInterface;
 use App\Classes\Telegram\Telegram;
 use App\Enums\SendScop;
 use App\Enums\SourceType;
@@ -22,6 +23,10 @@ class TelegramStorageItem
         $this->client = new Telegram($token);
     }
 
+    public function getToken(): string {
+        return $this->token;
+    }
+
     public function getType(): SourceType {
         return $this->type;
     }
@@ -30,26 +35,20 @@ class TelegramStorageItem
         return $this->scop;
     }
 
-    function sendTextMesage($text, $chatId, $topic) 
+    function sendTextMesage(string $text, string $chatId, int $topic): void
     {
         $this->lastUsed = Carbon::now();
         $this->client->sendTextMesage($text,$chatId, $topic);
     }
 
-    function sendMediaMessage($message, $chatId, $topic) 
+    function sendMediaMessage(MessageInterface $message, string $chatId, int $topic): void
     {
         $this->lastUsed = Carbon::now();
         $this->client->sendMediaMessage($message, $chatId, $topic);
     }
 
-    function getLastUsed()
+    function getLastUsed(): Carbon
     {
         return $this->lastUsed??Carbon::now()->subSeconds(100);
     }
-
-    function __toString()
-    {
-        return sprintf('s% s% s%', $this->token, $this->type->value, $this->lastUsed);
-    }
-
 }

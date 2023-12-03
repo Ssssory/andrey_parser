@@ -10,13 +10,18 @@ use Illuminate\Support\Collection;
 
 final class ParametersService
 {
-    function getAllApprouvedParameters()
+    function getAllApprouvedParameters(): array
     {
         $dictionary = PropertyDictionary::get();
 
         return $dictionary->toArray();
     }
 
+    /**
+     * @param Collection<string, PropertyValueDictionary> $propertyValues
+     * @param string $lang
+     * @return array
+     */
     function getCleanValues(Collection $propertyValues, string $lang = 'ru'): array
     {
         $answer = [];

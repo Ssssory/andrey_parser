@@ -21,7 +21,7 @@ final class Client
         return $this->client;
     }
 
-    public function reconnect()
+    public function reconnect(): Nutgram
     {
         $config = $this->getConfig();
         $this->client = new Nutgram($this->token, $config);

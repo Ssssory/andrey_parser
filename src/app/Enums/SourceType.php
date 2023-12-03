@@ -11,10 +11,10 @@ enum SourceType: string
     case Rent = 'rent';
     case Car = 'car';
 
-    public static function getGroup(Sources $source)
+    public static function getGroup(Sources $source): SourceType
     {
         return match ($source) {
-            Sources::Poslovnabazasrbije, Sources::Companywall, Sources::Navidiku, Sources::Clutch, Sources::Yell => SourceType::Poslovna,
+            Sources::Poslovnabazasrbije, Sources::Companywall, Sources::Navidiku, Sources::Clutch => SourceType::Poslovna,
             Sources::Forzida, Sources::Halooglasi => SourceType::Rent,
             Sources::Polovniautomobili => SourceType::Car,
             default => throw new Exception("Error new source type"),

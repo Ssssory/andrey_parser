@@ -34,7 +34,7 @@ class TempForzidaJob implements ShouldQueue
         $forzida = new Forzida();
         $html = $forzida->getHtml($this->url->url);
         $document = new Document($html);
-        $result = $forzida->getStateFromPage($document);
+        $forzida->getStateFromPage($document);
 
         $this->url->status = 'done';
         $this->url->complete = true;

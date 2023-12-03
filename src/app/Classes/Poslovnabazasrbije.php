@@ -6,10 +6,11 @@ use App\Enums\Sources;
 use App\Models\DirtyData;
 use App\Models\Url;
 use Illuminate\Support\Facades\Storage;
+use DiDom\Document;
 
 final class Poslovnabazasrbije extends ParserAbstract
 {
-    protected $prefixStorage = 'poslovnabazasrbije';
+    protected string $prefixStorage = 'poslovnabazasrbije';
     private string $hash;
     private string $category = '2';
 
@@ -19,7 +20,7 @@ final class Poslovnabazasrbije extends ParserAbstract
         parent::__construct();
     }
 
-    public function getCompaniesFromPage($html)
+    public function getCompaniesFromPage(Document $html): array
     {
         $blocks = $html->find('.box-info');
         $result = [];

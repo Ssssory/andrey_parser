@@ -15,9 +15,12 @@ use App\Services\MessageService;
 use App\Services\ParametersService;
 use App\Services\SenderService;
 use Exception;
+use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -32,7 +35,7 @@ class CarController extends Controller
     )
     {}
 
-    public function list(string $model)
+    public function list(string $model): View|Factory
     {
         if (!$model) {
             throw new Exception("Error Processing Request");
@@ -63,7 +66,7 @@ class CarController extends Controller
         ]);
     }
 
-    function form(Request $request, DirtyCarData $model)
+    function form(Request $request, DirtyCarData $model): View|Factory
     {
         $message = new MessageCar();
         $message->id = $this->messageService->getMessageCarId($model);
@@ -90,7 +93,7 @@ class CarController extends Controller
         ]);
     }
 
-    function send(Request $request, DirtyCarData $model)
+    function send(Request $request, DirtyCarData $model): RedirectResponse
     {
         try {
             $chatId = $request->input('chatId');
@@ -105,13 +108,13 @@ class CarController extends Controller
         }
     }
 
-    function editDictionary() : View 
+    function editDictionary(): View|Factory
     {
-        /** @var Collection $dirtyCarParametersData */
+        /** @var LengthAwarePaginator|DirtyCarParametersData[] $dirtyCarParametersData */
         $dirtyCarParametersData = DirtyCarParametersData::distinct('property')->groupBy('property')->select(['property'])->paginate(15);
 
         foreach ($dirtyCarParametersData as &$parameter) {
-            /** @var Collection $exist */
+            /** @use  Collection<DirtyCarParametersData> $exist */
             $exist = DirtyCarParametersData::where('is_appruved', true)->where('property', $parameter->property)->get();
             if ($exist->isNotEmpty()) {
                 $value_ru = PropertyDictionary::where('name', $exist->first()->name)->first(['ru'])->toArray()['ru'];
@@ -127,7 +130,7 @@ class CarController extends Controller
         ]);
     }
 
-    function listDictionaryValues(Request $request) 
+    function listDictionaryValues(Request $request): View|Factory|RedirectResponse
     {
         $property = request()->route('property');
         $propertyData = DB::table('dirty_car_parameters_data as data')
@@ -143,7 +146,7 @@ class CarController extends Controller
         ->select(['property', 'value'])
         ->paginate(15);
 
-        $list->each(function($item) use ($propertyData){
+        $list->each(function(DirtyCarParametersData $item) use ($propertyData){
             $existDictionaryValue = PropertyValueDictionary::where('property_dictionaries_uuid', $propertyData->uuid)
             ->where('name', $item->value)
             ->first();
@@ -161,7 +164,7 @@ class CarController extends Controller
         ]);
     }
 
-    function saveDictionaryProperty(Request $request, string $property)
+    function saveDictionaryProperty(Request $request, string $property): RedirectResponse
     {
         $request->validate([
             'name' => 'required|string',
@@ -201,7 +204,7 @@ class CarController extends Controller
         return redirect()->back()->with('message', 'success');
     }
 
-    function listDictionaryValuesSave(Request $request, string $name)
+    function listDictionaryValuesSave(Request $request, string $name): RedirectResponse
     {
         $request->validate([
             'original_value' => 'required|string',
@@ -239,7 +242,7 @@ class CarController extends Controller
         return redirect()->back()->with('message', 'success');
     }
 
-    function switchDictionaryProperty(Request $request, string $uuid)
+    function switchDictionaryProperty(Request $request, string $uuid): RedirectResponse
     {
         $isChecked = $request->get('is_dictionary');
         PropertyDictionary::where('uuid', $uuid)->update(['is_dictionary' => (bool)$isChecked]);

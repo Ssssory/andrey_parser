@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Enums\SendScop;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Bot extends Model
 {
@@ -18,12 +19,12 @@ class Bot extends Model
         'transport',
     ];
 
-    function groups() 
+    function groups(): BelongsToMany
     {
         return $this->belongsToMany(Group::class);
     }
 
-    function getScopAttribute($value)
+    function getScopAttribute(string $value): SendScop|null
     {
         if ($value) {
             return SendScop::from($value);

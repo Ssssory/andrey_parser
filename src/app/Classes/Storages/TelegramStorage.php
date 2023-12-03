@@ -6,13 +6,15 @@ use App\Classes\Items\TelegramStorageItem;
 use App\Enums\SendScop;
 use App\Enums\SourceType;
 use App\Models\Bot;
+use Carbon\Carbon;
 use Illuminate\Support\Collection;
 
 final class TelegramStorage
 {
+    /** @var Collection<TelegramStorageItem> */
     private Collection $clients;
     private ?SourceType $type = null;
-    private $period = 60;
+    private int $period = 60;
 
     public function __construct() 
     {
@@ -47,12 +49,12 @@ final class TelegramStorage
         return $this->clients->count();
     }   
 
-    function getAll()
+    function getAll(): Collection
     {
         return $this->clients;    
     }
 
-    function getReady($scop = null) : ?TelegramStorageItem
+    function getReady(SendScop $scop = null) : ?TelegramStorageItem
     {
         foreach ($this->clients as $client) {
             if (
@@ -65,13 +67,13 @@ final class TelegramStorage
         return null;
     }
 
-    private function getMinimumTimer() 
-    {
-        $client = $this->clients->min(function($client) {
-            return $client->getLastUsed();
-        });
-        if ($client->getLastUsed > now()->subMinute()) {
-            return $client->getLastUsed();
-        }
-    }
+    // private function getMinimumTimer(): ?Carbon
+    // {
+    //     $client = $this->clients->min(function($client) {
+    //         return $client->getLastUsed();
+    //     });
+    //     if ($client->getLastUsed > now()->subMinute()) {
+    //         return $client->getLastUsed();
+    //     }
+    // }
 }

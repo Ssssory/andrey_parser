@@ -7,12 +7,14 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use DiDom\Document;
+use Illuminate\Contracts\View\View;
+use Illuminate\Contracts\View\Factory;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
 
 class TestController extends Controller
 {
-    public function index(Request $request)
+    public function index(Request $request): View|Factory
     {
         // $html = file_get_contents('https://www.polovniautomobili.com/auto-oglasi/22036024/audi-q5-20tdi-s-line-90hk-m?attp=p3_pv0_pc1_pl1_plv0');
         // Storage::disk('public')->put('test.html', $html);

@@ -3,10 +3,11 @@
 namespace App\Classes;
 
 use GuzzleHttp\Client;
+use Psr\Http\Message\ResponseInterface;
 
 abstract class ParserAbstract
 {
-    protected $baseUrl;
+    protected string $baseUrl;
     const AGENT = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.127 Safari/537.36';
     private ?Client $client = null;
 
@@ -23,7 +24,7 @@ abstract class ParserAbstract
         return $this->client;
     }
 
-    public function sendRequest($path)
+    public function sendRequest(string $path): ResponseInterface
     {
         return $this->client->request(
             'GET',
