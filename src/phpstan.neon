@@ -1,0 +1,32 @@
+parameters:
+    paths:
+        - app
+        - tests
+    level: 7
+    inferPrivatePropertyTypeFromConstructor: true
+    checkMissingIterableValueType: false
+    excludePaths:
+        - %currentWorkingDirectory%/app/Providers/*
+        - %currentWorkingDirectory%/database/*
+    ignoreErrors:
+        - '#Access to an undefined property App\\Http\\Requests\\(.*)::.*#'
+        - '#Call to an undefined method ArrayAccess::paginate\(\)\.*#'
+        - '#(.*)should return Illuminate\\Http\\RedirectResponse but returns Illuminate\\Http\\RedirectResponse|Illuminate\\Routing\\Redirector#'
+        - '#Access to an undefined property App\\Models(.*)::.*#'
+        - '#Call to an undefined method App\\Models(.*)::.*#'
+        - '#Call to an undefined static method App\\Models(.*)::.*#'
+        - '#Call to an undefined method Illuminate\\(.*)::.*#'
+        - '#Call to an undefined static method Illuminate\\(.*)::.*#'
+        - '#Attribute class JetBrains\\PhpStorm\\ArrayShape does not exist.*#'
+        - '#Method (.*)::scope(.*)\(\) has parameter (.*) with no type specified.*#'
+        - '#Access to an undefined property Illuminate\\Database\\Eloquent\\Collection|Illuminate\\Database\\Eloquent\\Model::\$id.*#'
+        - '#Call to static method post\(\) on an unknown class Route.*#'
+        - '#Call to static method prefix\(\) on an unknown class Route.*#'
+        - '#Call to static method get\(\) on an unknown class Route.*#'
+        - '#Call to static method delete\(\) on an unknown class Route.*#'
+        - '#Call to static method group\(\) on an unknown class Route.*#'
+        - '#Call to static method apiResource\(\) on an unknown class Route.*#'
+        - '#Call to static method apiResources\(\) on an unknown class Route.*#'
+        - '#Call to static method fallback\(\) on an unknown class Route.*#'
+        - '#Access to an undefined property Illuminate\\Database\\Eloquent\\Model::\$state.*#'
+        - '#Call to an undefined static method MasterRO\\LaravelXSSFilter\\XSSCleanerFacade::clean\(\).*#'
