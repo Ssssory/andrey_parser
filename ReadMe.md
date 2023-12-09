@@ -7,6 +7,8 @@ start cron
 ```
 make start-cron
 ```
+vim /etc/cron.d/www-crontab
+vim /var/log/cron.log
 
 #### ssl
 
