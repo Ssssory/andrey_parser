@@ -62,15 +62,37 @@
                             </a>
                         </li> --}}
                 </li>
-                <!--li class="nav-item">
+                @if (Auth::user()->name == 'admin')
+                <li class="nav-item">
+                    <a href="#" class="nav-link" onclick="elementMenuToggler(this)">
+                        <i class="nav-icon fas fa-circle"></i>
+                        <p>
+                            Poslovnabazasrbije &darr;
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview" style="display: none;">
+                        <li class="nav-item">
                             <a href="/list/poslovnabazasrbije" class="nav-link">
-                                <i class="nav-icon fas fa-tachometer-alt"></i>
-                                <p>
-                                    Poslovnabazasrbije
-                                    <i class="right fas fa-angle-left"></i>
-                                </p>
+                                <i class="far fa-circle nav-icon"></i>
+                                <p> &nbsp; list</p>
                             </a>
-                        </li-->
+                        </li>
+                        <li class="nav-item">
+                            <a href="/poslovnabazasrbije/category" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p> &nbsp; category</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/poslovnabazasrbije/one" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p> &nbsp; one page</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                @endif
                 <li class="nav-item">
                     <a href="/rent/forzida" class="nav-link">
                         <i class="nav-icon fas fa-tachometer-alt"></i>

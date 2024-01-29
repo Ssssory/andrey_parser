@@ -2,7 +2,7 @@
 
 namespace App\Jobs;
 
-use App\Classes\Poslovnabazasrbije;
+use App\Classes\Poslovna\Poslovnabazasrbije;
 use App\Models\Url;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;

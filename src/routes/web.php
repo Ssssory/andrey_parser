@@ -5,6 +5,7 @@ use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\CarController;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\PoslovnaController;
 use App\Http\Controllers\RentController;
 use App\Http\Controllers\TestController;
 use Illuminate\Support\Facades\Route;
@@ -51,6 +52,9 @@ Route::group(['middleware' => 'auth'], function(){
         Route::get('/form/{model}', [RentController::class, 'form']);
         Route::post('/form/{model}/send', [RentController::class, 'send']);
     });
+
+    Route::get('poslovnabazasrbije/category', [PoslovnaController::class, 'category'])->name('poslovnabazasrbije.category');
+    Route::get('poslovnabazasrbije/one', [PoslovnaController::class, 'one']);
 
 
 
