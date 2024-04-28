@@ -9,7 +9,7 @@ use DiDom\Document;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Http\Request;
 use Exception;
-
+use Illuminate\Support\Facades\Storage;
 
 class PoslovnaController extends BaseController
 {
@@ -57,5 +57,29 @@ class PoslovnaController extends BaseController
             // 'list' => $list,
             // 'pagination' => $pagination,
         ]);
+    }
+
+    public function saveCsv()
+    {
+        // ini_set('max_execution_time', 180);
+        Storage::disk('public')->put('data.csv', '');
+
+        DirtyData::where('source', Sources::Poslovnabazasrbije->name)->chunk(100, function ($data){
+            $str = '';
+            foreach ($data as $key => $value) {
+                $codeName = explode(' - ', $value->industry);
+                $fullAddress = explode(',', $value->address);
+                $city = array_shift($fullAddress);
+                $str .= $value->name . ';';
+                $str .= $codeName[0]  . ';';
+                $str .= $codeName[1]  . ';';
+                $str .= $city  . ';';
+                $str .= implode($fullAddress)  . ';';
+                // $str .= $value->address . ';';
+                $str .= str_replace('-', '', $value->email) . PHP_EOL;
+            }
+            Storage::disk('public')->append('data.csv', $str);
+        });
+        
     }
 }

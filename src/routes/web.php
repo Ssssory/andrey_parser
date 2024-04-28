@@ -43,7 +43,6 @@ Route::group(['middleware' => 'auth'], function(){
 
     Route::get('/list/{model}', [Controller::class, 'list']);
     Route::get('/new', [Controller::class, 'startPage']);
-    Route::get('/save', [Controller::class, 'saveCsv']);
 
     Route::match(array('GET', 'POST'), '/temp', [TestController::class, 'index']);
 
@@ -55,6 +54,7 @@ Route::group(['middleware' => 'auth'], function(){
 
     Route::get('poslovnabazasrbije/category', [PoslovnaController::class, 'category'])->name('poslovnabazasrbije.category');
     Route::get('poslovnabazasrbije/one', [PoslovnaController::class, 'one']);
+    Route::get('poslovnabazasrbije/save', [PoslovnaController::class, 'saveCsv']);
 
 
 
