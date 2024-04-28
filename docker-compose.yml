@@ -63,30 +63,32 @@ services:
   rabbitmq:
     image: rabbitmq:3.8-management-alpine
     container_name: ${PROJECT_NAME}_rabbitmq
+    restart: unless-stopped
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: "admin"
+      RABBITMQ_DEFAULT_PASS: "pass"
     volumes:
         - ./rabbitmq/data/:/var/lib/rabbitmq/
         - ./rabbitmq/log/:/var/log/rabbitmq
     networks:
         - mq_rabbit
 
-  consumer:
+  parser:
     build:
       context: ./docker/
-      dockerfile: Dokerfile_node
-    container_name: ${PROJECT_NAME}_consumer
+      dockerfile: Dockerfile_python
+    container_name: ${PROJECT_NAME}_parser
+    restart: unless-stopped
     volumes:
-      - ./consumer:/srv/app
-    security_opt:
-      - seccomp:unconfined
+      - ./parser:/srv/parser
     depends_on:
       - "rabbitmq"
-    command: sh -c '/bin/wait-for-it.sh rabbitmq:5672 --timeout=30 -- node consumer.js'
-    environment:
-      NODE_ENV: production
-      AMQP_URL: amqp://guest:guest@rabbitmq:5672
-      DOCKER_BUILDKIT: 1
     networks:
       - mq_rabbit
+      - app-network
 
 networks:
   app-network:
