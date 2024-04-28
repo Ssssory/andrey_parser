@@ -1,0 +1,14 @@
+[
+    {
+        "ip": "31.43.179.114",
+        "port": "80",
+        "username": "user1",
+        "password": "password1"
+    },
+    {
+        "ip": "45.14.174.230",
+        "port": "80",
+        "username": "user2",
+        "password": "password2"
+    }
+]
