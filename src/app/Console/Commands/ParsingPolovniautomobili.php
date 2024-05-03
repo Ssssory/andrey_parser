@@ -7,6 +7,7 @@ use App\Enums\Sources;
 use App\Jobs\TempPolovniautomobiliJob;
 use App\Models\Url;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Cache;
 
 class ParsingPolovniautomobili extends Command
 {
@@ -29,6 +30,14 @@ class ParsingPolovniautomobili extends Command
      */
     public function handle()
     {
+        $lock = Cache::get($this->signature);
+        if ($lock) {
+            $this->info('lock');
+            return;
+        }
+
+        Cache::put($this->signature, true, 3600);
+
         echo 'parce urls fillter' . PHP_EOL;
         $polovniautomobili = new Polovniautomobili();
 
@@ -47,6 +56,8 @@ class ParsingPolovniautomobili extends Command
             TempPolovniautomobiliJob::dispatch($url);
             sleep(5);
         }
+
+        Cache::forget($this->signature);
 
         $this->info('Finish');
 
