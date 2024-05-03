@@ -22,8 +22,6 @@
                     <th>city</th>
                     <th>delatnost</th>
                     <th>phone</th>
-                    <th>vlasnik</th>
-                    <th>zastupnik</th>
                     <th>category</th>
                     <th>subcategory</th>
                     <th>site</th>
@@ -47,8 +45,6 @@
                     <td>{{$model->city}}</td>
                     <td>{{$model->delatnost}}</td>
                     <td>{{$model->phone}}</td>
-                    <td>{{$model->vlasnik}}</td>
-                    <td>{{$model->zastupnik}}</td>
                     <td>{{$model->category}}</td>
                     <td>{{$model->subcategory}}</td>
                     <td>{{$model->site}}</td>
@@ -65,8 +61,6 @@
                     <th>Count all</th>
                     <th>{{$count}}</th>
                     <!--th></th-->
-                    <th></th>
-                    <th></th>
                     <th></th>
                     <th></th>
                     <th></th>
