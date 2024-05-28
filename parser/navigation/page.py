@@ -12,6 +12,11 @@ class Page:
         driver.get(source)
         self._source = driver.current_url 
 
+    @inject_driver()
+    def get_content(self, driver = None):
+        return driver.page_source
+
+
 class PageElement:
     def __init__(self, source, wait = None):
         self._wait = wait

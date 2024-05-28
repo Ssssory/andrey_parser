@@ -3,44 +3,6 @@ from selenium.webdriver.chrome.options import Options
 from functools import wraps
 
 
-def set_debug(on):
-    mode = DebugMode()
-    mode.register_observer(Driver())
-    if on:
-        mode.set_on()
-    else:
-        mode.set_off()
-
-
-class DebugMode():
-    _on = False
-    _observers = []
-
-    def __new__(cls):
-        if not hasattr(cls, 'instance'):
-            cls.instance = super(DebugMode, cls).__new__(cls)
-
-        return cls.instance
-
-    def register_observer(self, observer):
-        self._observers.append(observer)
-
-    def _notify(self):
-        for observer in self._observers:
-            observer.update(self._on)
-
-    def set_on(self):
-        self._on = True
-        self._notify()
-
-    def set_off(self):
-        self._on = False
-        self._notify()
-    
-    def is_on(self):
-        return self._on
-
-
 class Driver():
     _driver = None
     _debug_is_on = None
@@ -67,9 +29,9 @@ class Driver():
             self._driver = webdriver.Chrome(options)
 
         return self._driver
-        
 
     
+#here the interface should be used not the implementation
 def inject_driver(driver = Driver):
     def inner(func):
         def wrapper(*args):
@@ -80,11 +42,6 @@ def inject_driver(driver = Driver):
 
     return inner
 
-def inject_debug(debug = DebugMode):
-    def inner(func):
-        def wrapper(*args):
-            return func(*args, debug=DebugMode())
-            
-        return wrapper
 
-    return inner
+def get():
+    return Driver()

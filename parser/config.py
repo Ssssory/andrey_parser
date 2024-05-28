@@ -1,5 +1,6 @@
 import yaml
-from driver import set_debug
+import debug
+import driver
 
 
 def _read_config():
@@ -9,4 +10,8 @@ def _read_config():
 
 def initialize():
     config = _read_config()
-    set_debug(config['debug'])
+    drv = driver.get()
+    debug.initialize([drv])
+    if config['debug']:
+        debug.get().set_on()
+
