@@ -2,3 +2,5 @@ db/
 rabbitmq/
 certbot/
 .env
+venv/
+__pycache__/
