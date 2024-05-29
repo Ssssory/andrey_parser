@@ -1,7 +1,4 @@
-from enum import StrEnum, auto
 from driver import inject_driver
-from selenium.webdriver.common.by import By
-from selenium.common.exceptions import NoSuchElementException
 import navigation.source as src
 
 
