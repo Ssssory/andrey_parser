@@ -6,7 +6,7 @@ from driver import inject_driver
 
 
 #TODO: change print to logging
-class LocatableSourceWait:
+class LocatableSourceWait():
     @inject_driver()
     def until(self, source, driver = None):
         try:
@@ -16,7 +16,7 @@ class LocatableSourceWait:
         except TimeoutException:
             print(f'error in locatable wait: {source}')
 
-class ClickableSourceWait:
+class ClickableSourceWait():
     @inject_driver()
     def until(self, source, driver = None):
         try:

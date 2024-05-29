@@ -2,9 +2,9 @@ from enum import StrEnum
 
 
 class Urls(StrEnum):
-    HOME = 'https://www.4zida.rs'
+    RENTS_LIST = 'https://www.4zida.rs/izdavanje-stanova'
 
-class PageXPaths(StrEnum):
+class ElementXPath(StrEnum):
     RENT_FILTER = '//form//button[text()=\'Izdavanje\']'
     SEARCH_BUTTON = '//form//button[@type=\'submit\']'
     SORT_MENU = '//button[span[text()=\'Sortiraj\']]'
