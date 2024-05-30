@@ -2,11 +2,9 @@ from enum import StrEnum
 
 
 class Urls(StrEnum):
-    RENTS_LIST = 'https://www.4zida.rs/izdavanje-stanova'
+    RENTS_LIST = 'https://www.4zida.rs/izdavanje-stanova?strana={0}'
 
 class ElementXPath(StrEnum):
-    RENT_FILTER = '//form//button[text()=\'Izdavanje\']'
-    SEARCH_BUTTON = '//form//button[@type=\'submit\']'
     SORT_MENU = '//button[span[text()=\'Sortiraj\']]'
 
 class PopupXPaths(StrEnum):

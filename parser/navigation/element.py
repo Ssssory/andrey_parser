@@ -44,6 +44,9 @@ class PageElement:
             print(e)
 
 class Popup(PageElement):
+    def update(self):
+        self.close()
+
     @inject_driver()
     def close(self, driver = None):
         self.until_on_page()
