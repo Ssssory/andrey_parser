@@ -1,5 +1,5 @@
 from driver import inject_driver
-import navigation.wait as wait
+from navigation import wait
 import navigation.source as src
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.by import By
@@ -10,19 +10,19 @@ class PageElementFactory:
     def create_element(self, source):
         elements = {
             src.ElementXPath.SORT_MENU: (
-                Anchor, 
+                Anchor,
                 [src.ElementXPath.SORT_MENU, wait.LocatableSourceWait()]
             ),
             src.PopupXPaths.COOKIE_AGREEMENT: (
-                Popup, 
+                Popup,
                 [src.PopupXPaths.COOKIE_AGREEMENT, wait.LocatableSourceWait()]
             ),
             src.PopupXPaths.PERSONAL_DATA: (
-                Popup, 
+                Popup,
                 [src.PopupXPaths.PERSONAL_DATA, wait.LocatableSourceWait()]
             )
         }
-        cls_params_pair = elements[source] 
+        cls_params_pair = elements[source]
         cls = cls_params_pair[0]
         params = cls_params_pair[1]
         return cls(*params)

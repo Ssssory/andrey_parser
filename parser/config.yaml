@@ -1,2 +1,3 @@
 debug: True
+max_page_to_iterate: 2
 
