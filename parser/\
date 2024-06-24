@@ -5,6 +5,7 @@ from selenium.webdriver.chrome.options import Options
 class Driver():
     _driver = None
     _debug_is_on = None
+    _unused = None
 
     def __new__(cls):
         if not hasattr(cls, 'instance'):

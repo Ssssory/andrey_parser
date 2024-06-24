@@ -1,6 +1,5 @@
 import yaml
-import debug
-import driver
+from debug import inject_mode
 
 
 def _read_config():
@@ -8,10 +7,9 @@ def _read_config():
         return yaml.safe_load(file)
 
 
-def initialize():
+@inject_mode()
+def initialize(driver, debug_mode=None):
     config = _read_config()
-    drv = driver.get()
-    debug.initialize([drv])
+    debug_mode.register_observer(driver)
     if config['debug']:
-        debug.get().set_on()
-
+        debug_mode.set_on()

@@ -1,12 +1,3 @@
-def get():
-    return DebugMode()
-
-
-def initialize(observers):
-    mode = DebugMode()
-    for observer in observers:
-        mode.register_observer(observer)
-
 
 class DebugMode():
     _on = False
@@ -32,6 +23,15 @@ class DebugMode():
     def set_off(self):
         self._on = False
         self._notify()
-    
+
     def is_on(self):
         return self._on
+
+
+def inject_mode(debug_mode = DebugMode):
+    def inner(func):
+        def wrapper(*args, **kwargs):
+            return func(*args, **kwargs, debug_mode=debug_mode())
+
+        return wrapper
+    return inner

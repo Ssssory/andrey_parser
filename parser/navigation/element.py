@@ -5,6 +5,7 @@ from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.by import By
 
 
+#hm... refactor m.b.?
 class PageElementFactory:
     def create_element(self, source):
         elements = {
@@ -30,6 +31,7 @@ class PageElement:
     def __init__(self, source, wait):
         self._wait = wait
         self._source = source
+        self._element = None
 
     def until_on_page(self):
         if self._wait:
@@ -38,10 +40,11 @@ class PageElement:
     #add logging in except handler
     @inject_driver()
     def locate(self, driver = None):
-        try:    
+        try:
             self._element = driver.find_element(By.XPATH, self._source)
         except NoSuchElementException as e:
-            print(e)
+            self._element = None
+            print(e.msg)
 
 class Popup(PageElement):
     def update(self):
@@ -61,7 +64,8 @@ class Button(PageElement):
         self.locate()
         if self._element:
             self._element.click()
-        
+
+
 class Anchor(PageElement):
     def wait(self):
         self.until_on_page()
