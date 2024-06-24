@@ -1,7 +1,7 @@
 """Parsable pages of a target"""
 import navigation.source as src
 from navigation.element import PageElementFactory
-from driver import inject_driver
+from common.driver import inject_driver
 
 
 class Page:

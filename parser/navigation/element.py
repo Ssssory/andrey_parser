@@ -1,4 +1,4 @@
-from driver import inject_driver
+from common.driver import inject_driver
 from navigation import wait
 import navigation.source as src
 from selenium.common.exceptions import NoSuchElementException
@@ -28,8 +28,8 @@ class PageElementFactory:
         return cls(*params)
 
 class PageElement:
-    def __init__(self, source, wait):
-        self._wait = wait
+    def __init__(self, source, waitable):
+        self._wait = waitable
         self._source = source
         self._element = None
 

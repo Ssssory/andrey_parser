@@ -1,5 +1,5 @@
 import yaml
-from debug import inject_mode
+from common.debug import inject_mode
 
 class Config:
     def __new__(cls):
