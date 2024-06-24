@@ -4,6 +4,7 @@ from enum import StrEnum
 
 class Urls(StrEnum):
     """Url sources"""
+    DOMAIN = 'https://www.4zida.rs'
     RENTS_LIST = 'https://www.4zida.rs/izdavanje-stanova?strana={0}'
 
 class ElementXPath(StrEnum):
