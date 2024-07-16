@@ -1,31 +1,7 @@
 from common.driver import inject_driver
-from navigation import wait
-import navigation.source as src
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.by import By
 
-
-#hm... refactor m.b.?
-class PageElementFactory:
-    def create_element(self, source):
-        elements = {
-            src.ElementXPath.SORT_MENU: (
-                Anchor,
-                [src.ElementXPath.SORT_MENU, wait.LocatableSourceWait()]
-            ),
-            src.PopupXPaths.COOKIE_AGREEMENT: (
-                Popup,
-                [src.PopupXPaths.COOKIE_AGREEMENT, wait.LocatableSourceWait()]
-            ),
-            src.PopupXPaths.PERSONAL_DATA: (
-                Popup,
-                [src.PopupXPaths.PERSONAL_DATA, wait.LocatableSourceWait()]
-            )
-        }
-        cls_params_pair = elements[source]
-        cls = cls_params_pair[0]
-        params = cls_params_pair[1]
-        return cls(*params)
 
 class PageElement:
     def __init__(self, source, waitable):

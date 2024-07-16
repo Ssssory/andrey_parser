@@ -1,28 +1,34 @@
 """Applicatinon entry point"""
-import navigation.source as src
-from navigation.element import PageElementFactory
+from navigation.factories import (
+        PageElementFactory,
+        AdsListPageFactory,
+        AdPageFactory)
 from navigation import page
-from parsing.scrappers import AdsListScrapper
+from parsing.scrappers import AdsListScrapper, AdScrapper
 from common.driver import Driver
+from data.records import AdLink
 from config import Config
 
 
 if __name__ == '__main__':
     config = Config()
     config.set_debug_mode(Driver())
-    ads_list_scrapper = AdsListScrapper(tag_name='img', css_class='object-cover')
+    ads_list_scrapper = AdsListScrapper()
+    ad_scrapper = AdScrapper()
     max_page_to_iterate = config.get_max_page_to_iterate()
-    page_factory = page.RentsListPageFactory(
-            PageElementFactory(),
-            src.PopupXPaths,
-            page.RentsListPage)
-    page_iter = page.PageIterator(max_page_to_iterate, page_factory)
-    links = None
+    element_factory = PageElementFactory()
+    ads_list_page_factory = AdsListPageFactory(element_factory)
+    ad_page_factory = AdPageFactory(element_factory)
+    page_iter = page.PageIterator(max_page_to_iterate, ads_list_page_factory)
+    ad_link = AdLink()
+
     for page in page_iter:
         page.load()
-        links = ads_list_scrapper.get_ad_links()
+        for link in ads_list_scrapper.get_ad_links(page):
+            ad_link.create(link)
 
-    print(links)
-    #temporary for testing
-    while True:
-        pass
+    for link in ad_link.all():
+        page = ad_page_factory.create_page(link.url)
+        page.load()
+        print(ad_scrapper.scrap_info(page))
+        break

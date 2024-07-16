@@ -4,3 +4,4 @@ certbot/
 .env
 venv/
 __pycache__/
+*.db
