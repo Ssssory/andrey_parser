@@ -51,7 +51,7 @@ class AdScrapper(Scrapper):
         short_description, district = self._scrap_header(soup)
         images = self._scrap_images(soup)
         details = self._scrap_details(soup)
-        description = self._scrap_descriptiion(soup)
+        description = self._scrap_description(soup)
         return AdInfo(short_description, district, details, description, images)
 
     def _scrap_header(self, soup) -> tuple:
@@ -94,7 +94,7 @@ class AdScrapper(Scrapper):
 
         return details
 
-    def _scrap_descriptiion(self, soup):
+    def _scrap_description(self, soup):
         tag = soup.find(src.Tags.DESCRIPTION_HEADER, class_=src.Css.DESCRIPTION_HEADER)
         if not tag:
             raise Exception('Description header hasn\'t been found')
