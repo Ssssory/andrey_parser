@@ -32,3 +32,4 @@ if __name__ == '__main__':
         page.load()
         print(ad_scrapper.scrap_info(page))
         break
+

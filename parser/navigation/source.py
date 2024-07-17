@@ -18,16 +18,13 @@ class Tags(StrEnum):
     HEADER = 'h1'
     DETAILS = 'section'
     DESCRIPTION = 'p'
+    DESCRIPTION_HEADER = 'section'
     SEARCH_START = 'img'
     AD_IMAGE = 'img'
     AD_LINK = 'a'
 
 class Css(StrEnum):
     DETAILS = 'flex flex-col gap-1'
+    DESCRIPTION_HEADER = 'mt-4 flex flex-col gap-1'
     DESCRIPTION = 'mb-4'
     SEARCH_START = 'object-cover'
-
-class Attr(StrEnum):
-    AD_LINK = 'href'
-    SEARCH_START = 'class'
-    AD_IMAGE = 'alt'
