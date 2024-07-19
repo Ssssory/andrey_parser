@@ -33,15 +33,6 @@ class Popup(PageElement):
         if self._element:
             driver.execute_script('arguments[0].click()', self._element)
 
-#Don't need it yet but who knows...
-class Button(PageElement):
-    def click(self):
-        self.until_on_page()
-        self.locate()
-        if self._element:
-            self._element.click()
-
-
 class Anchor(PageElement):
     def wait(self):
         self.until_on_page()

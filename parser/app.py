@@ -1,4 +1,5 @@
 """Applicatinon entry point"""
+import json
 from navigation.factories import (
         PageElementFactory,
         AdsListPageFactory,
@@ -30,6 +31,9 @@ if __name__ == '__main__':
     for link in ad_link.all():
         page = ad_page_factory.create_page(link.url)
         page.load()
-        print(ad_scrapper.scrap_info(page))
+        ad_info = ad_scrapper.scrap_info(page)
+        ad_info_json = json.dumps(ad_info.__dict__, indent=4)
+        #temporary for tests
+        with open('temp_results.json', 'w') as f:
+            f.write(ad_info_json)
         break
-

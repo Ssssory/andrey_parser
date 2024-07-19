@@ -15,6 +15,7 @@ class ElementXPath(StrEnum):
     PRINT_BUTTON = '//span[text()=\'Štampaj\']'
 
 class Tags(StrEnum):
+    """Tags for BeautifullSoup search"""
     HEADER = 'h1'
     DETAILS = 'section'
     DESCRIPTION = 'p'
@@ -24,6 +25,7 @@ class Tags(StrEnum):
     AD_LINK = 'a'
 
 class Css(StrEnum):
+    """Css classes for BeautifullSoup search"""
     DETAILS = 'flex flex-col gap-1'
     DESCRIPTION_HEADER = 'mt-4 flex flex-col gap-1'
     DESCRIPTION = 'mb-4'
