@@ -2,11 +2,11 @@
 include .env
 
 up:
-	docker-compose up -d
+	docker compose up -d
 local-up:
-	docker-compose up
+	docker compose up
 stop:
-	docker-compose stop
+	docker compose stop
 bash:
 	docker exec -it ${PROJECT_NAME}_app bash
 bash-root:
