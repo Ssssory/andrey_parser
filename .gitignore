@@ -5,4 +5,4 @@ certbot/
 venv/
 __pycache__/
 *.db
-andrey_parser/parser/temp_results.json
+parser/temp_results.json
