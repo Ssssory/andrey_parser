@@ -1,5 +1,6 @@
 import navigation.source as src 
-import navigation.element as element
+from navigation import element
+#import navigation.element as element
 from navigation.protocols import ElementFactory
 from navigation import wait
 from navigation.page import AdsListPage, Page

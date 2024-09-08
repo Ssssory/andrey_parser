@@ -30,3 +30,7 @@ class Css(StrEnum):
     DESCRIPTION_HEADER = 'mt-4 flex flex-col gap-1'
     DESCRIPTION = 'mb-4'
     SEARCH_START = 'object-cover'
+
+class RegEx(StrEnum):
+    """Regular expressions for searching by tag text"""
+    AD_IMAGE = r'(?i)(\w+\s*)*\|\s*4zida'

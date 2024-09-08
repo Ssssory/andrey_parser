@@ -43,7 +43,6 @@ class AdsListScrapper(Scrapper):
 class AdScrapper(Scrapper):
     def __init__(self):
         super().__init__()
-        self._image_name = ''
 
     def scrap_info(self, page) -> AdInfo:
         html = page.get_content()
@@ -62,13 +61,11 @@ class AdScrapper(Scrapper):
             raise Exception('Header not found!')
 
         district = short_description.next_sibling.contents[0]
-        # 2 first words of short description, e.g. "Dvosoban stan"
-        tokens = text_description.split(' ')[0:2]
-        self._image_name = ' '.join(tokens)
+
         return (text_description, district.get_text())
 
     def _scrap_images(self, soup) -> list:
-        tags = soup.find_all(src.Tags.AD_IMAGE, alt=re.compile(self._image_name))
+        tags = soup.find_all(src.Tags.AD_IMAGE, alt=re.compile(src.RegEx.AD_IMAGE))
 
         if not tags:
             raise Exception('No images found!')

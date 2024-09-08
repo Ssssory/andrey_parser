@@ -1,4 +1,3 @@
-
 class DebugMode():
     _on = False
     _observers = []
