@@ -2,3 +2,6 @@ db/
 rabbitmq/
 certbot/
 .env
+docker-compose.override.yaml
+/dump*
+/local/
