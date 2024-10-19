@@ -24,17 +24,17 @@ class CompleteMessage extends Model
 
     public function scopeLastDay(Builder $query)
     {
-        $query->whereDate('created_at', '>=', now()->subDays(1));
+        $query->where('created_at', '>=', now()->subDay()->startOfDay());
     }
 
     public function scopeLastWeek(Builder $query)
     {
-        $query->whereDate('created_at', '>=', now()->subWeeks(1));
+        $query->where('created_at', '>=', now()->subWeek()->startOfDay());
     }
 
     public function scopeLastMonth(Builder $query)
     {
-        $query->whereDate('created_at', '>=', now()->subMonths(1));
+        $query->where('created_at', '>=', now()->subMonth()->startOfDay());
     }
 
     public function scopeCountTelegramCar(Builder $query)

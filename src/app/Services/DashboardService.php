@@ -14,14 +14,14 @@ final class DashboardService
 {
     public function getTotalLinks() : int 
     {
-        $links = Url::select(DB::raw('lower(source) as source, count(source) as total'))->groupBy('source')->get();
+        $links = Url::select(DB::raw('source, count(source) as total'))->groupBy('source')->get();
         return $links->sum('total');
     }
 
     public function getCountBySource(string $model) : Collection 
     {
         
-        $result = $model::select(DB::raw('lower(source) as source, count(source) as total'))->groupBy('source')->get();
+        $result = $model::select(DB::raw('source, count(source) as total'))->groupBy('source')->get();
 
         return $result->mapWithKeys(function ($item) {
                 return [$item->source => $item->total];

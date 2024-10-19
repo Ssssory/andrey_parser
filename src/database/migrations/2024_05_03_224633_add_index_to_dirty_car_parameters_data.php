@@ -15,9 +15,6 @@ return new class extends Migration
             $table->index('car_id');
             $table->index(['property', 'is_appruved']);
         });
-        // Schema::table('complete_messages', function (Blueprint $table) {
-        //     $table->index(['model', 'model_id']);
-        // });
     }
 
     /**
@@ -28,8 +25,5 @@ return new class extends Migration
         Schema::table('dirty_car_parameters_data', function (Blueprint $table) {
             $table->dropIndex(['car_id']);
         });
-        // Schema::table('complete_messages', function (Blueprint $table) {
-        //     $table->dropIndex(['model', 'model_id']);
-        // });
     }
 };
