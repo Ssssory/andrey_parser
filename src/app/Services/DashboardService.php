@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Enums\Sources;
 use App\Enums\SourceType;
 use App\Enums\Transport;
 use App\Models\CompleteMessage;
@@ -12,41 +13,67 @@ use Illuminate\Support\Facades\DB;
 
 final class DashboardService
 {
-    public function getTotalLinks() : int 
+    public function getTotalLinks(): Collection
     {
         $links = Url::select(DB::raw('source, count(source) as total'))->groupBy('source')->get();
-        return $links->sum('total');
+
+        return $links->mapWithKeys(function ($item) {
+            return [SourceType::getGroup(Sources::from(strtolower($item->source)))->value => $item->total];
+        });
     }
 
     public function getCountBySource(string $model) : Collection 
     {
-        
         $result = $model::select(DB::raw('source, count(source) as total'))->groupBy('source')->get();
 
         return $result->mapWithKeys(function ($item) {
-                return [$item->source => $item->total];
+                return [SourceType::getGroup(Sources::from(strtolower($item->source)))->value => $item->total];
             });
+    }
+
+    public function getSendingAllMessages(Transport $transport): int
+    {
+        return  CompleteMessage::select(DB::raw('messenger, count(messenger) as total'))
+        ->groupBy('messenger')
+        ->where('messenger', $transport)
+        ->first()->total;
     }
 
     public function getSendingData(Transport $transport, SourceType $type = SourceType::Car): array
     {
-        $totalSendToTelegram = CompleteMessage::select(DB::raw('messenger, count(messenger) as total'))
-            ->groupBy('messenger')
-            ->where('messenger', $transport)
-            ->first();
-            
-        if ($type != SourceType::Car) {
+        if ($type === SourceType::Car) {
+            $lastDay = CompleteMessage::countTelegramCar()
+                ->lastDay()
+                ->get();
+            $lastWeek = CompleteMessage::countTelegramCar()
+                ->lastWeek()
+                ->get();
+            $lastMonth = CompleteMessage::countTelegramCar()
+                ->lastMonth()
+                ->get();
+        } elseif ($type === SourceType::Rent) {
+            $lastDay = CompleteMessage::countTelegramRent()
+                ->lastDay()
+                ->get();
+            $lastWeek = CompleteMessage::countTelegramRent()
+                ->lastWeek()
+                ->get();
+            $lastMonth = CompleteMessage::countTelegramRent()
+                ->lastMonth()
+                ->get();
+        } elseif ($type === SourceType::Poslovna) {
+            $lastDay = CompleteMessage::countTelegramPoslovna()
+                ->lastDay()
+                ->get();
+            $lastWeek = CompleteMessage::countTelegramPoslovna()
+                ->lastWeek()
+                ->get();
+            $lastMonth = CompleteMessage::countTelegramPoslovna()
+                ->lastMonth()
+                ->get();
+        } else {
             throw new Exception("add methods for another transport");
         }
-        $lastDay = CompleteMessage::countTelegramCar()
-            ->lastDay()
-            ->get();
-        $lastWeek = CompleteMessage::countTelegramCar()
-            ->lastWeek()
-            ->get();
-        $lastMonth = CompleteMessage::countTelegramCar()
-            ->lastMonth()
-            ->get();
 
         $messages = [];
         $messages[$type->value] = [
@@ -56,7 +83,6 @@ final class DashboardService
         ];
         return [
             'messages' => $messages,
-            'messagesAll' => $totalSendToTelegram->total,
         ];
     }
 

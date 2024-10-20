@@ -43,4 +43,18 @@ class CompleteMessage extends Model
             ->where('messenger', Transport::Telegram)
             ->where('model', DirtyCarData::class);
     }
+
+    public function scopeCountTelegramRent(Builder $query)
+    {
+        $query->select(DB::raw('count("id") as count'))
+            ->where('messenger', Transport::Telegram)
+            ->where('model', DirtyStateData::class);
+    }
+
+    public function scopeCountTelegramPoslovna(Builder $query)
+    {
+        $query->select(DB::raw('count("id") as count'))
+            ->where('messenger', Transport::Telegram)
+            ->where('model', DirtyData::class);
+    }
 }

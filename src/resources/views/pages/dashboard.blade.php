@@ -43,7 +43,9 @@
             </div>
 
         </div>
-        @include('pages.partials.dashboard.raw',['typeModel'=> $totalCarData])
+        @include('pages.partials.dashboard.raw',['model'=> $totalCarData])
+        @include('pages.partials.dashboard.raw',['model'=> $totalRentData])
+        @include('pages.partials.dashboard.raw',['model'=> $totalPoslovnaData])
     </div>
 </section>
 <!-- /.content -->
